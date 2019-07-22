@@ -1,2 +1,2 @@
-# cohen-machine
-A Leonard Cohen fansite project
+# poem-machine
+A web app for exploring a poet's corpus
