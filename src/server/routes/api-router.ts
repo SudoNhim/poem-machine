@@ -1,44 +1,44 @@
 import { Router } from 'express';
-import * as api from '../../shared/apiTypes';
+import { IDoc, IDocGraph, ISearchResults } from '../../shared/IApiTypes';
 
 export function apiRouter() {
   const router = Router();
 
   router.get('/docs/get/:id', (req, res) => {
     const id = req.params.id;
-    const result: api.IDoc = {
+    const result: IDoc = {
       text: `Sample text for a document with ID ${id}`
     };
     res.json(result);
   });
 
   router.get('/docs/graph', (req, res) => {
-    const result: api.IDocGraph = {
+    const result: IDocGraph = {
       dynamicCollectionRoot: {
-        kind: api.DocKind.DynamicCollectionRoot,
+        kind: "root",
         title: "Sample Root",
         children: ["001", "002"]
       },
       "001": {
-        kind: api.DocKind.DynamicCollection,
+        kind: "DynamicCollection",
         title: "Sample Collection 1",
         children: ["003", "004"]
       },
       "002": {
-        kind: api.DocKind.DynamicCollection,
+        kind: "DynamicCollection",
         title: "Sample Collection 2",
         children: ["004", "005"]
       },
       "003": {
-        kind: api.DocKind.DynamicCollection,
+        kind: "DynamicCollection",
         title: "Sample Document 1"
       },
       "004": {
-        kind: api.DocKind.DynamicCollection,
+        kind: "DynamicCollection",
         title: "Sample Document 2"
       },
       "005": {
-        kind: api.DocKind.DynamicCollection,
+        kind: "DynamicCollection",
         title: "Sample Document 3"
       }
     };
@@ -47,7 +47,7 @@ export function apiRouter() {
 
   router.get('/docs/search/:term', (req, res) => {
     const term = req.params.term;
-    const result: api.ISearchResults = {
+    const result: ISearchResults = {
       hits: [
         {
           id: "003",

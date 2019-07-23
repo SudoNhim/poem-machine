@@ -1,18 +1,5 @@
-import { string } from "prop-types";
-
-export enum DocKind {
-    // Documents from the database
-    Album = 1,
-    Song,
-    Prologue,
-
-    // Documents constructed by the server
-    DynamicCollection, // e.g. "Songs", "Albums"
-    DynamicCollectionRoot // collection of dynamic collections
-}
-
 export interface IDocMeta {
-    kind: DocKind;
+    kind: string;
     title: string;
     children?: string[];
 }

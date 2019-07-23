@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as api from '../shared/apiTypes';
+import * as api from '../shared/IApiTypes';
 
 export async function getDocument(id: string): Promise<api.IDoc> {
     const response = await axios.get(`/api/docs/get/${id}`);
