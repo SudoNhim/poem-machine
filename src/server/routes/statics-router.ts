@@ -10,7 +10,7 @@ export function staticsRouter() {
     const proxy = require('http-proxy-middleware');
     // All the assets are hosted by Webpack on localhost:${config.WEBPACK_PORT} (Webpack-dev-server)
     router.use(
-      '/statics',
+      '/',
       proxy({
         target: `http://localhost:${WEBPACK_PORT}/`,
       }),
@@ -19,7 +19,7 @@ export function staticsRouter() {
     const staticsPath = path.join(process.cwd(), 'dist', 'statics');
 
     // All the assets are in "statics" folder (Done by Webpack during the build phase)
-    router.use('/statics', express.static(staticsPath));
+    router.use('/', express.static(staticsPath));
   }
   return router;
 }

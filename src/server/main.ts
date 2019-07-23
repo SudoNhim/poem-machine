@@ -9,8 +9,10 @@ const app = express();
 app.set('view engine', 'ejs');
 
 app.use('/assets', express.static(path.join(process.cwd(), 'assets')));
-app.use(apiRouter());
-app.use(staticsRouter());
+app.use('/api', apiRouter());
+app.use('/statics', staticsRouter());
+
+// Everything not matched by the above falls through to the app page
 app.use(pagesRouter());
 
 app.listen(SERVER_PORT, () => {
