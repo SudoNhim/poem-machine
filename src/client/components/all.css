@@ -34,6 +34,25 @@
     padding-top: 5px;
 }
 
+.navtreenode_title {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1pt solid darkgray;
+    margin: 0pt 0pt 0pt 0pt;
+    padding: 2pt;
+  }
+
+.navtreenode_button {
+    font-family: 'Courier New', Courier, monospace;
+    padding: 3pt;
+    cursor: pointer;
+}
+
+.navtreenode_content {
+    background-color: rgba(0, 0, 255, 0.1);
+    margin: 0pt 0pt 4pt 8pt;
+  }
+
 .focuscontent {
     background-color: aliceblue;
     padding: 5pt;

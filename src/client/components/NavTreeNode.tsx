@@ -38,11 +38,25 @@ class NavTreeNodeImpl extends React.Component<IProps, IState> {
             children = (node.children || []).filter(id => this.props.highlights.indexOf(id) !== -1);
         }
 
+        const buttonEl = node.children && node.children.length ?
+            <span 
+                onClick={() => this.toggleExpand()}
+                className={css.navtreenode_button}
+            >
+                {this.state.expanded ? "[-]" : "[+]"}
+            </span>
+            : null;
+
+        const childEls = children.map((id, index) => <NavTreeNode id={id} key={index} />);
+
         return (
         <div className={css.navtreenode}>
-            <span onClick={() => this.toggleExpand()}>E/C</span>
-            NavTreeNode {this.props.graph[this.props.id].title}
-            {children.map((id, index) => <NavTreeNode id={id} key={index} />)}
+            <div className={css.navtreenode_title}>
+                {buttonEl}{node.title}
+            </div>
+            <div className={css.navtreenode_content}>
+                {childEls}
+            </div>
         </div>)
     }
 }
