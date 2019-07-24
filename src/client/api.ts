@@ -1,17 +1,17 @@
 import axios from 'axios';
-import * as api from '../shared/IApiTypes';
+import { IDoc, IDocGraph, ISearchResults } from '../shared/IApiTypes';
 
-export async function getDocument(id: string): Promise<api.IDoc> {
+export async function getDocument(id: string): Promise<IDoc> {
     const response = await axios.get(`/api/docs/get/${id}`);
-    return response.data as api.IDoc;
+    return response.data as IDoc;
 }
 
-export async function getGraph(): Promise<api.IDocGraph> {
+export async function getGraph(): Promise<IDocGraph> {
     const response = await axios.get(`/api/docs/graph`);
-    return response.data as api.IDocGraph;
+    return response.data as IDocGraph;
 }
 
-export async function getSearchResults(term: string): Promise<api.ISearchResults> {
+export async function getSearchResults(term: string): Promise<ISearchResults> {
     const response = await axios.get(`/api/docs/search/${term}`);
-    return response.data as api.ISearchResults;
+    return response.data as ISearchResults;
 }

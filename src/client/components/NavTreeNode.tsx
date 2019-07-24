@@ -1,5 +1,7 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 import { IDocGraph } from '../../shared/IApiTypes';
+import { IAppState } from '../model';
 
 interface IProps {
     graph: IDocGraph;
@@ -26,4 +28,9 @@ class NavTreeNode extends React.Component<IProps, IState> {
     }
 }
 
-export default NavTreeNode;
+const mapStateToProps = (state: IAppState, ownProps): IProps => ({
+    graph: state.docs.graph,
+    id: ownProps.id
+});
+
+export default connect(mapStateToProps, {})(NavTreeNode);

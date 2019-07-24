@@ -1,35 +1,26 @@
 import * as React from 'react';
-import { IDocGraph } from '../../shared/IApiTypes';
-import * as api from '../api';
+import { connect } from 'react-redux';
+import { getGraph } from '../api';
+import { setGraph } from '../actions';
 import NavTree from './NavTree';
 
-interface IState {
-    graph: IDocGraph;
+interface IProps {
+    setGraph: typeof setGraph;
 }
 
-export class PoemMachine extends React.Component<any, IState> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            graph: {
-                dynamicCollectionRoot: {
-                    kind: "root",
-                    title: "Graph is not loaded..."
-                }
-            }
-        };
-    }
-
+class PoemMachine extends React.Component<IProps> {
     public async componentDidMount() {
-        const graph = await api.getGraph();
-        this.setState({ graph });
+        const graph = await getGraph();
+        this.props.setGraph(graph);
     }
 
     public render() {
         return (
         <div className="poem-machine">
-            <div className="nav-pane"><NavTree graph={this.state.graph} /></div>
+            <div className="nav-pane"><NavTree /></div>
             <div className="content-pane">Content Pane</div>
         </div>)
     }
 }
+
+export default connect(null, { setGraph })(PoemMachine);
