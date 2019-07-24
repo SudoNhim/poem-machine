@@ -30,9 +30,11 @@
     display: none;
 }
 
-.navtree {
-}
-
 .navtreenode {
     padding-top: 5px;
+}
+
+.focuscontent {
+    background-color: aliceblue;
+    padding: 5pt;
 }

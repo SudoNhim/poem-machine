@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { getGraph } from '../api';
 import { setGraph } from '../actions';
+import FocusContent from './FocusContent';
 import NavTree from './NavTree';
 
 const css = require('./all.css');
@@ -20,7 +21,7 @@ class PoemMachine extends React.Component<IProps> {
         return (
         <div className={css.poemmachine}>
             <div className={css.navpane}><NavTree /></div>
-            <div className={css.contentpane}>Content Pane</div>
+            <div className={css.contentpane}><FocusContent /></div>
         </div>)
     }
 }
