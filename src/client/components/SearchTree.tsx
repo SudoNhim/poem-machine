@@ -4,6 +4,7 @@ import { ISearchResults } from '../../shared/IApiTypes';
 import { IAppState } from '../model';
 import NavTreeNode from './NavTreeNode';
 import { setSearch, setFocus } from '../actions';
+import ExpandButton from './ExpandButton';
 
 const css = require('./all.css');
 
@@ -37,15 +38,6 @@ class SearchTree extends React.Component<IProps, IState> {
             this.props.search.hits.map(hit => hit.id)
             : [];
 
-        const buttonEl = this.props.search.hits.length ?
-            <span 
-                onClick={() => this.toggleExpand()}
-                className={css.navtreenode_button}
-            >
-                {this.state.expanded ? "[-]" : "[+]"}
-            </span>
-            : null;
-
         const childEls = children.map((id, index) => <NavTreeNode id={id} key={index} />);
 
         const doclinkEl =
@@ -63,7 +55,12 @@ class SearchTree extends React.Component<IProps, IState> {
         return (
         <div className={css.navtreenode}>
             <div className={titleClasses.join(" ")}>
-                {buttonEl}{doclinkEl}
+                <ExpandButton
+                    expanded={this.state.expanded}
+                    canExpand={this.props.search.hits.length > 0}
+                    onClick={() => this.toggleExpand()}
+                />
+                {doclinkEl}
             </div>
             <div className={css.navtreenode_content}>
                 {childEls}

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { IDocGraph } from '../../shared/IApiTypes';
 import { IAppState } from '../model';
 import { setFocus } from '../actions';
+import ExpandButton from './ExpandButton';
 
 const css = require('./all.css');
 
@@ -42,15 +43,6 @@ class NavTreeNodeImpl extends React.Component<IProps, IState> {
             children = (node.children || []).filter(id => this.props.highlights.indexOf(id) !== -1);
         }
 
-        const buttonEl = node.children && node.children.length ?
-            <span 
-                onClick={() => this.toggleExpand()}
-                className={css.navtreenode_button}
-            >
-                {this.state.expanded ? "[-]" : "[+]"}
-            </span>
-            : null;
-
         const childEls = children.map((id, index) => <NavTreeNode id={id} key={index} />);
 
         const doclinkEl =
@@ -70,7 +62,11 @@ class NavTreeNodeImpl extends React.Component<IProps, IState> {
         return (
         <div className={css.navtreenode}>
             <div className={titleClasses.join(" ")}>
-                {buttonEl}{doclinkEl}
+                <ExpandButton
+                    expanded={this.state.expanded}
+                    canExpand={node.children && node.children.length > 0}
+                    onClick={() => this.toggleExpand()} />
+                {doclinkEl}
             </div>
             <div className={css.navtreenode_content}>
                 {childEls}

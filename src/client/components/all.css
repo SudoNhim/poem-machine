@@ -50,7 +50,7 @@
     font-weight: bold;
 }
 
-.navtreenode_button {
+.expandbutton {
     font-family: 'Courier New', Courier, monospace;
     padding: 3pt;
     cursor: pointer;
