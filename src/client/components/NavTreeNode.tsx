@@ -2,13 +2,16 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { IDocGraph } from '../../shared/IApiTypes';
 import { IAppState } from '../model';
+import { setFocus } from '../actions';
 
 const css = require('./all.css');
 
 interface IProps {
     id: string;
     graph: IDocGraph;
-    highlights: string[],
+    highlights: string[];
+    hasFocus: boolean;
+    setFocus: typeof setFocus;
 }
 
 interface IState {
@@ -31,6 +34,7 @@ class NavTreeNodeImpl extends React.Component<IProps, IState> {
 
     public render() {
         const node = this.props.graph[this.props.id];
+
         let children: string[] = [];
         if (this.state.expanded)
             children = node.children || [];
@@ -49,10 +53,24 @@ class NavTreeNodeImpl extends React.Component<IProps, IState> {
 
         const childEls = children.map((id, index) => <NavTreeNode id={id} key={index} />);
 
+        const doclinkEl =
+            <span
+                className={css.navtreenode_doclink}
+                onClick={() => this.props.setFocus({docId: this.props.id})}
+            >
+                {node.title}
+            </span>;
+
+        const titleClasses = [css.navtreenode_title];
+        if (this.props.highlights.indexOf(this.props.id) !== -1)
+            titleClasses.push(css.navtreenode_title_highlight);
+        if (this.props.hasFocus)
+            titleClasses.push(css.navtreenode_title_focus);
+
         return (
         <div className={css.navtreenode}>
-            <div className={css.navtreenode_title}>
-                {buttonEl}{node.title}
+            <div className={titleClasses.join(" ")}>
+                {buttonEl}{doclinkEl}
             </div>
             <div className={css.navtreenode_content}>
                 {childEls}
@@ -61,11 +79,12 @@ class NavTreeNodeImpl extends React.Component<IProps, IState> {
     }
 }
 
-const mapStateToProps = (state: IAppState, ownProps): IProps => ({
+const mapStateToProps = (state: IAppState, ownProps) => ({
     id: ownProps.id,
     graph: state.docs.graph,
-    highlights: state.search.hits.map(hit => hit.id)
+    highlights: state.search.hits.map(hit => hit.id),
+    hasFocus: (state.focus.docId === ownProps.id)
 });
 
-const NavTreeNode = connect(mapStateToProps, {})(NavTreeNodeImpl);
+const NavTreeNode = connect(mapStateToProps, { setFocus })(NavTreeNodeImpl);
 export default NavTreeNode;

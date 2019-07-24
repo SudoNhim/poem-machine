@@ -40,11 +40,23 @@
     border: 1pt solid darkgray;
     margin: 0pt 0pt 0pt 0pt;
     padding: 2pt;
-  }
+}
+
+.navtreenode_title_highlight {
+    background-color: rgba(255, 253, 111, 0.7);
+}
+
+.navtreenode_title_focus {
+    font-weight: bold;
+}
 
 .navtreenode_button {
     font-family: 'Courier New', Courier, monospace;
     padding: 3pt;
+    cursor: pointer;
+}
+
+.navtreenode_doclink {
     cursor: pointer;
 }
 

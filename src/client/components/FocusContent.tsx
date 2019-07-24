@@ -13,7 +13,7 @@ interface IProps {
 const FocusContent: React.FunctionComponent<IProps> = (props) =>  (
     <div className={css.focuscontent}>
         {props.focus.docId ? 
-            <DocViewer id={props.focus.docId}/>
+            <DocViewer id={props.focus.docId} key={props.focus.docId}/>
         : props.focus.search ?
             <SearchResultsViewer />
         : "No focus..."}
