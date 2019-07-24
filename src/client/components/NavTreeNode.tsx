@@ -59,13 +59,18 @@ class NavTreeNodeImpl extends React.Component<IProps, IState> {
         if (this.props.hasFocus)
             titleClasses.push(css.navtreenode_title_focus);
 
+        const buttonEl = <ExpandButton
+            expanded={this.state.expanded}
+            canExpand={true}
+            onClick={() => this.toggleExpand()} />;
+
+    {doclinkEl}
+
         return (
         <div className={css.navtreenode}>
             <div className={titleClasses.join(" ")}>
-                <ExpandButton
-                    expanded={this.state.expanded}
-                    canExpand={node.children && node.children.length > 0}
-                    onClick={() => this.toggleExpand()} />
+                {node.children && node.children.length ?
+                    buttonEl : null}
                 {doclinkEl}
             </div>
             <div className={css.navtreenode_content}>
