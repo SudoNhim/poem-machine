@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { IDocGraph } from '../../shared/IApiTypes';
 import { IAppState } from '../model';
 import NavTreeNode from './NavTreeNode';
+import SearchTree from './SearchTree';
 
 interface IProps {
     graph: IDocGraph;
@@ -10,6 +11,7 @@ interface IProps {
 
 const NavTree: React.FunctionComponent<IProps> = (props) =>  (
     <div>
+        <SearchTree />
         {(props.graph.dynamicCollectionRoot.children || []).map((id, index) =>
             <NavTreeNode id={id} key={index} />)}
     </div>
