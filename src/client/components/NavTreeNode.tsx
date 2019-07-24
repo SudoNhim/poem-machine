@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { IDocGraph } from '../../shared/IApiTypes';
 import { IAppState } from '../model';
 
+const css = require('./all.css');
+
 interface IProps {
     graph: IDocGraph;
     id: string;
@@ -22,7 +24,7 @@ class NavTreeNode extends React.Component<IProps, IState> {
 
     public render() {
         return (
-        <div className="navtreenode">
+        <div className={css.navtreenode}>
             NavTreeNode {this.props.graph[this.props.id].title}
         </div>)
     }
