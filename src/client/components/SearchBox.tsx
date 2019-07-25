@@ -11,13 +11,15 @@ interface IProps {
 }
 
 const SearchBox: React.FunctionComponent<IProps> = (props) =>  (
-    <input className={css.searchbox} onKeyDown={async (evt) => {
-        if (evt.key === "Enter") {
-            const searchResults = await getSearchResults(evt.currentTarget.value);
-            props.setSearch(searchResults);
-            props.setFocus({ search: true });
-        }
-    }} />
+    <div className={css.searchbox_container}>
+        <input className={css.searchbox} onKeyDown={async (evt) => {
+            if (evt.key === "Enter") {
+                const searchResults = await getSearchResults(evt.currentTarget.value);
+                props.setSearch(searchResults);
+                props.setFocus({ search: true });
+            }
+        }} />
+    </div>
 );
 
 export default connect(null, { setSearch, setFocus })(SearchBox);
