@@ -4,6 +4,7 @@ import { getGraph } from '../api';
 import { setGraph } from '../actions';
 import FocusContent from './FocusContent';
 import NavTree from './NavTree';
+import SearchBox from './SearchBox';
 
 const css = require('./all.css');
 
@@ -20,7 +21,10 @@ class PoemMachine extends React.Component<IProps> {
     public render() {
         return (
         <div className={css.poemmachine}>
-            <div className={css.navpane}><NavTree /></div>
+            <div className={css.navpane}>
+                <SearchBox />
+                <NavTree />
+            </div>
             <div className={css.contentpane}><FocusContent /></div>
         </div>)
     }

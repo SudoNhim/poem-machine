@@ -23,5 +23,6 @@ export interface ISearchHit {
 }
 
 export interface ISearchResults {
+    term: string;
     hits: ISearchHit[];
 }

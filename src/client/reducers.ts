@@ -13,6 +13,7 @@ const initialState: IAppState = {
     },
     focus: {},
     search: {
+        term: null,
         hits: []
     }
 }

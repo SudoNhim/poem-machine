@@ -3,15 +3,14 @@ import { connect } from 'react-redux';
 import { ISearchResults } from '../../shared/IApiTypes';
 import { IAppState } from '../model';
 import NavTreeNode from './NavTreeNode';
-import { setSearch, setFocus } from '../actions';
 import ExpandButton from './ExpandButton';
+import { setFocus } from '../actions';
 
 const css = require('./all.css');
 
 interface IProps {
     search: ISearchResults;
     hasFocus: boolean;
-    setSearch: typeof setSearch;
     setFocus: typeof setFocus;
 }
 
@@ -45,7 +44,7 @@ class SearchTree extends React.Component<IProps, IState> {
                 className={css.navtreenode_doclink}
                 onClick={() => this.props.setFocus({search: true})}
             >
-                Search
+                {this.props.search.term || "No search..."}
             </span>;
 
         const titleClasses = [css.navtreenode_title];
@@ -74,4 +73,4 @@ const mapStateToProps = (state: IAppState) => ({
     hasFocus: state.focus.search
 });
 
-export default connect(mapStateToProps, { setSearch, setFocus })(SearchTree);
+export default connect(mapStateToProps, { setFocus })(SearchTree);

@@ -48,6 +48,7 @@ export function apiRouter() {
   router.get('/docs/search/:term', (req, res) => {
     const term = req.params.term;
     const result: ISearchResults = {
+      term,
       hits: [
         {
           id: "003",
