@@ -5,6 +5,8 @@ import { setDoc } from '../actions';
 import { IDoc, IDocMeta } from '../../shared/IApiTypes';
 import { IAppState } from '../model';
 
+const css = require('./all.css');
+
 interface IProps {
     id: string;
     doc: IDoc;
@@ -20,9 +22,9 @@ class DocViewer extends React.Component<IProps> {
 
     public render() {
         if (!this.props.doc)
-            return <div>Loading...</div>;
+            return <div className={css.docviewer}>Loading...</div>;
         else {
-            return <div>
+            return <div className={css.docviewer}>
                 <p>{this.props.docMeta.title}</p>
                 <p>{this.props.doc.text}</p>
             </div>
