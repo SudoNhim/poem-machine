@@ -12,6 +12,9 @@ export async function getGraph(): Promise<IDocGraph> {
 }
 
 export async function getSearchResults(term: string): Promise<ISearchResults> {
+    if (term.length < 3)
+        return null;
+
     const response = await axios.get(`/api/docs/search/${term}`);
     return response.data as ISearchResults;
 }

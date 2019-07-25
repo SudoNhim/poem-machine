@@ -15,8 +15,10 @@ const SearchBox: React.FunctionComponent<IProps> = (props) =>  (
         <input className={css.searchbox} onKeyDown={async (evt) => {
             if (evt.key === "Enter") {
                 const searchResults = await getSearchResults(evt.currentTarget.value);
-                props.setSearch(searchResults);
-                props.setFocus({ search: true });
+                if (searchResults != null) {
+                    props.setSearch(searchResults);
+                    props.setFocus({ search: true });
+                }
             }
         }} />
     </div>
