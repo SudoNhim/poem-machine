@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { setFocus } from '../actions';
+import { Link } from 'react-router-dom';
 import { ISearchHit, IDocMeta } from '../../shared/IApiTypes';
 import { IAppState } from '../model';
 
@@ -9,17 +9,15 @@ const css = require('./all.css');
 interface IProps {
     hit: ISearchHit;
     docMeta: IDocMeta;
-    setFocus: typeof setFocus;
 }
 
 const SearchHit: React.FunctionComponent<IProps> = (props) =>  (
     <div className={css.searchhit}>
-        <p 
-            className={css.searchhit_title}
-            onClick={() => props.setFocus({docId: props.hit.id})}
-        >
-            {props.docMeta.title}
-        </p>
+        <Link to={`/doc/${props.hit.id}`}>
+            <p className={css.searchhit_title}>
+                {props.docMeta.title}
+            </p>
+        </Link>
         {props.hit.preview}
     </div>
 );
@@ -29,4 +27,4 @@ const mapStateToProps = (state: IAppState, ownProps) => ({
     docMeta: state.docs.graph[ownProps.hit.id]
 });
 
-export default connect(mapStateToProps, { setFocus })(SearchHit);
+export default connect(mapStateToProps)(SearchHit);

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { IDocGraph } from '../../shared/IApiTypes';
 import { IAppState } from '../model';
-import { setFocus } from '../actions';
 import ExpandButton from './ExpandButton';
 
 const css = require('./all.css');
@@ -12,7 +12,6 @@ interface IProps {
     graph: IDocGraph;
     highlights: string[];
     hasFocus: boolean;
-    setFocus: typeof setFocus;
 }
 
 interface IState {
@@ -46,12 +45,11 @@ class NavTreeNodeImpl extends React.Component<IProps, IState> {
         const childEls = children.map((id, index) => <NavTreeNode id={id} key={index} />);
 
         const doclinkEl =
-            <span
-                className={css.navtreenode_doclink}
-                onClick={() => this.props.setFocus({docId: this.props.id})}
-            >
-                {node.title}
-            </span>;
+            <Link to={`/doc/${this.props.id}`}>
+                <span className={css.navtreenode_doclink}>
+                    {node.title}
+                </span>
+            </Link>;
 
         const titleClasses = [css.navtreenode_title];
         if (this.props.highlights.indexOf(this.props.id) !== -1)
@@ -87,5 +85,5 @@ const mapStateToProps = (state: IAppState, ownProps) => ({
     hasFocus: (state.focus.docId === ownProps.id)
 });
 
-const NavTreeNode = connect(mapStateToProps, { setFocus })(NavTreeNodeImpl);
+const NavTreeNode = connect(mapStateToProps)(NavTreeNodeImpl);
 export default NavTreeNode;

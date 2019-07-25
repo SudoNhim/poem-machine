@@ -70,6 +70,7 @@ const config: webpack.Configuration = {
   },
   devServer: {
     port: WEBPACK_PORT,
+    historyApiFallback: true
   },
   plugins,
   externals: {

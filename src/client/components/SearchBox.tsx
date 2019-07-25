@@ -1,27 +1,17 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { setSearch, setFocus } from '../actions';
-import { getSearchResults } from '../api';
+import { withRouter } from 'react-router-dom';
+import { RouteComponentProps, Route } from 'react-router';
 
 const css = require('./all.css');
 
-interface IProps {
-    setSearch: typeof setSearch;
-    setFocus: typeof setFocus;
-}
-
-const SearchBox: React.FunctionComponent<IProps> = (props) =>  (
+const SearchBox: React.FunctionComponent<any> = withRouter((props: RouteComponentProps) =>  (
     <div className={css.searchbox_container}>
         <input className={css.searchbox} onKeyDown={async (evt) => {
             if (evt.key === "Enter") {
-                const searchResults = await getSearchResults(evt.currentTarget.value);
-                if (searchResults != null) {
-                    props.setSearch(searchResults);
-                    props.setFocus({ search: true });
-                }
+                props.history.push(`/search/${evt.currentTarget.value}`);
             }
         }} />
     </div>
-);
+));
 
-export default connect(null, { setSearch, setFocus })(SearchBox);
+export default SearchBox;

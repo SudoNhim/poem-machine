@@ -11,7 +11,9 @@ const AppImpl = () => (
         <Header />
         <Switch>
             <Route exact path='/' component={PoemMachine} />
-            <Route path='/about' component={About} />
+            <Route path='/doc/:docId' component={PoemMachine} />
+            <Route path='/search/:searchTerm' component={PoemMachine} />
+            <Route exact path='/about' component={About} />
         </Switch>
     </div>
   </BrowserRouter>

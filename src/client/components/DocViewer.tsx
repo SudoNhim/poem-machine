@@ -21,7 +21,9 @@ class DocViewer extends React.Component<IProps> {
     }
 
     public render() {
-        if (!this.props.doc)
+        if (!this.props.docMeta)
+            return <div className={css.docviewer}>Document does not exist.</div>;
+        else if (!this.props.doc)
             return <div className={css.docviewer}>Loading...</div>;
         else {
             return <div className={css.docviewer}>
