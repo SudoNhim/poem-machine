@@ -25,8 +25,8 @@ class DocViewer extends React.Component<IProps> {
             return <div className={css.docviewer}>Loading...</div>;
         else {
             return <div className={css.docviewer}>
-                <p>{this.props.docMeta.title}</p>
-                <p>{this.props.doc.text}</p>
+                <p className={css.docviewer_title}>{this.props.docMeta.title}</p>
+                {this.props.doc.text}
             </div>
         }
     }

@@ -104,8 +104,19 @@ input {
     margin: 5pt;
 }
 
+.docviewer_title {
+    font-weight: bold;
+    margin-top: 0pt;
+}
+
 .searchhit {
     background-color: aliceblue;
     padding: 5pt;
     margin: 5pt;
+}
+
+.searchhit_title {
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 0pt;
 }

@@ -14,7 +14,12 @@ interface IProps {
 
 const SearchHit: React.FunctionComponent<IProps> = (props) =>  (
     <div className={css.searchhit}>
-        <p>{props.docMeta.title}</p>
+        <p 
+            className={css.searchhit_title}
+            onClick={() => props.setFocus({docId: props.hit.id})}
+        >
+            {props.docMeta.title}
+        </p>
         {props.hit.preview}
     </div>
 );
