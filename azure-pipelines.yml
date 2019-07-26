@@ -9,35 +9,21 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-  NODE_ENV: 'production'
-
 steps:
 - task: NodeTool@0
   inputs:
     versionSpec: '10.x'
   displayName: 'Install Node.js'
 
-- script: env NODE_ENV=production 
-
 - script: |
     npm install
     npm run build
-  displayName: 'npm install and build'
-
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: '$(System.DefaultWorkingDirectory)'
-    Contents: |
-      dist/**
-      index.js
-      package.json
-      package-lock.json
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-
+    npm prune --production
+  displayName: 'npm install, build, and prune'
+  
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
     includeRootFolder: false
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
 
