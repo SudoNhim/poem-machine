@@ -21,7 +21,6 @@ a {
 }
 
 .poemmachine {
-    height: 95vh;
     width: 100%;
 }
 
@@ -30,7 +29,6 @@ a {
     flex-direction: column;
     float: left;
     width: 200pt;
-    height: 100%;
     scrollbar-width: none;
     overflow-y: auto;
     padding: 5pt;
