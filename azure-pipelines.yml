@@ -24,9 +24,10 @@ steps:
   inputs:
     SourceFolder: '$(System.DefaultWorkingDirectory)'
     Contents: |
-      dist\**
+      dist/**
       index.js
       package.json
+      package-lock.json
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
 - task: ArchiveFiles@2
