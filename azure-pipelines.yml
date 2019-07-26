@@ -33,3 +33,8 @@ steps:
   inputs:
     rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
     includeRootFolder: false
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
