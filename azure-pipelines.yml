@@ -9,11 +9,16 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  NODE_ENV: 'production'
+
 steps:
 - task: NodeTool@0
   inputs:
     versionSpec: '10.x'
   displayName: 'Install Node.js'
+
+- script: env NODE_ENV=production 
 
 - script: |
     npm install
