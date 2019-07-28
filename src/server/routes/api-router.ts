@@ -8,7 +8,7 @@ export function apiRouter(db: Db) {
 
   router.get('/docs/get/:id', async (req, res) => {
     const id = req.params.id;
-    const hit = await docs.findOne({ _id: id });
+    const hit = await docs.findOne({ _id: new ObjectID(id) });
     if (!hit)
       res.sendStatus(404);
     else {
