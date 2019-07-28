@@ -1,48 +1,66 @@
 import { Router } from 'express';
 import { IDoc, IDocGraph, ISearchResults } from '../../shared/IApiTypes';
+import { Db, FindOneOptions, ObjectID } from 'mongodb';
 
-export function apiRouter() {
+export function apiRouter(db: Db) {
   const router = Router();
+  const docs = db.collection("docs");
 
-  router.get('/docs/get/:id', (req, res) => {
+  router.get('/docs/get/:id', async (req, res) => {
     const id = req.params.id;
-    const result: IDoc = {
-      text: `Sample text for a document with ID ${id}`
-    };
-    res.json(result);
+    const hit = await docs.findOne({ _id: new ObjectID(id) });
+    if (!hit)
+      res.sendStatus(404);
+    else {
+      const doc: IDoc = {
+        text: hit.text,
+        date: hit.date,
+        source: hit.source,
+        authors: hit.writers,
+        links: hit.links
+      }
+      res.json(doc);
+    }
   });
 
-  router.get('/docs/graph', (req, res) => {
-    const result: IDocGraph = {
-      dynamicCollectionRoot: {
-        kind: "root",
-        title: "Sample Root",
-        children: ["001", "002"]
-      },
-      "001": {
-        kind: "DynamicCollection",
-        title: "Sample Collection 1",
-        children: ["003", "004"]
-      },
-      "002": {
-        kind: "DynamicCollection",
-        title: "Sample Collection 2",
-        children: ["004", "005"]
-      },
-      "003": {
-        kind: "DynamicCollection",
-        title: "Sample Document 1"
-      },
-      "004": {
-        kind: "DynamicCollection",
-        title: "Sample Document 2"
-      },
-      "005": {
-        kind: "DynamicCollection",
-        title: "Sample Document 3"
+  router.get('/docs/graph', async (req, res) => {
+    const opts: FindOneOptions = {
+      projection: {
+        _id: true,
+        title: true,
+        kind: true,
+        children: true
       }
     };
-    res.json(result);
+    const hits = await docs.find({}, opts).toArray();
+    const graph: IDocGraph = {
+      dynamicCollectionRoot: {
+        title: "root",
+        kind: "DynamicCollectionRoot",
+        children: []
+      }
+    };
+    hits.forEach(hit => {
+      const id: ObjectID = hit._id;
+      const sid = id.toHexString();
+      graph[sid] = {
+        title: hit.title,
+        kind: hit.kind,
+        children: hit.children
+      };
+      if (graph[hit.kind]) {
+        graph[hit.kind].children.push(sid);
+      } else {
+        graph[hit.kind] = {
+          title: hit.kind,
+          kind: "DynamicCollection",
+          children: [sid]
+        };
+        graph.dynamicCollectionRoot.children.push(hit.kind);
+      }
+    });
+
+    res.json(graph);
   });
 
   router.get('/docs/search/:term', (req, res) => {
