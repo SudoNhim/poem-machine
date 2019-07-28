@@ -1,15 +1,14 @@
 import * as express from 'express';
 import * as path from 'path';
 import { MongoClient } from 'mongodb';
-import { SERVER_PORT } from './config';
+import { SERVER_PORT, MONGODB_STR } from './config';
 import { apiRouter } from './routes/api-router';
 import { pagesRouter } from './routes/pages-router';
 import { staticsRouter } from './routes/statics-router';
 
-const mongoClientUrl = "mongodb://localhost/test";
-const mongoClient = new MongoClient(mongoClientUrl);
+const mongoClient = new MongoClient(MONGODB_STR);
 mongoClient.connect().then(client => {
-  console.log(`Connected to database at ${mongoClientUrl}`);
+  console.log(`Connected to database at ${MONGODB_STR}`);
   const db = client.db("admin");
 
   const app = express();
