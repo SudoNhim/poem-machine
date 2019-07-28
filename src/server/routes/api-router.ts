@@ -42,13 +42,23 @@ export function apiRouter(db: Db) {
     };
     hits.forEach(hit => {
       const id: ObjectID = hit._id;
-      graph[id.toHexString()] = {
+      const sid = id.toHexString();
+      graph[sid] = {
         title: hit.title,
         kind: hit.kind,
         children: hit.children
       };
-    })
-
+      if (graph[hit.kind]) {
+        graph[hit.kind].children.push(sid);
+      } else {
+        graph[hit.kind] = {
+          title: hit.kind,
+          kind: "DynamicCollection",
+          children: [sid]
+        };
+        graph.dynamicCollectionRoot.children.push(hit.kind);
+      }
+    });
 
     res.json(graph);
   });
