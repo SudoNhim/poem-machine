@@ -25,7 +25,6 @@
   "dependencies": {
     "ejs": "^2.6.2",
     "express": "^4.17.1",
-    "flexsearch": "^0.6.30",
     "mongodb": "^3.3.0-beta2",
     "tslib": "^1.10.0"
   },
