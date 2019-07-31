@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { IDoc, IDocGraph, ISearchResults } from '../../shared/IApiTypes';
-import { Db, FindOneOptions, ObjectID } from 'mongodb';
+import { Db, FindOneOptions, ObjectID, FilterQuery } from 'mongodb';
 
 export function apiRouter(db: Db) {
   const router = Router();
@@ -63,20 +63,20 @@ export function apiRouter(db: Db) {
     res.json(graph);
   });
 
-  router.get('/docs/search/:term', (req, res) => {
+  router.get('/docs/search/:term', async (req, res) => {
     const term = req.params.term;
+    const filter: FilterQuery<any> = {
+      text: {
+        $regex: new RegExp(term, "i")
+      }
+    }
+    const hits =  await docs.find(filter, {projection: {_id: true}}).toArray();
     const result: ISearchResults = {
       term,
-      hits: [
-        {
-          id: "003",
-          preview: `Sample highlight for term ${term} hit on ID 003`
-        },
-        {
-          id: "005",
-          preview: `Sample highlight for term ${term} hit on ID 005`
-        }
-      ]
+      hits: hits.map(h => ({
+        id: h._id,
+        preview: `Preview for result for ${term} (not implemented)`
+      }))
     };
     res.json(result);
   });
