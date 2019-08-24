@@ -1,6 +1,35 @@
 import { Router } from 'express';
 import { IDoc, IDocGraph, ISearchResults } from '../../shared/IApiTypes';
-import { Db, FindOneOptions, ObjectID, FilterQuery } from 'mongodb';
+import { Db, FindOneOptions, ObjectID, FilterQuery, Collection } from 'mongodb';
+import * as lunr from 'lunr';
+
+const buildSearchIndex = async (docs: Collection<any>) => {
+  const opts: FindOneOptions = {
+    projection: {
+      _id: true,
+      title: true,
+      text: true
+    }
+  };
+  const hits = await docs.find({}, opts).toArray();
+  const searchIndex = lunr(function () {
+    this.ref("id");
+    this.field("title");
+    this.field("text");
+
+    this.metadataWhitelist = ['position'];
+
+    hits.forEach(hit => {
+      this.add({
+        id: hit._id,
+        title: hit.title,
+        text: hit.text
+      });
+    });
+  });
+
+  return searchIndex;
+}
 
 export function apiRouter(db: Db) {
   const router = Router();
@@ -65,16 +94,14 @@ export function apiRouter(db: Db) {
 
   router.get('/docs/search/:term', async (req, res) => {
     const term = req.params.term;
-    const filter: FilterQuery<any> = {
-      text: {
-        $regex: new RegExp(term, "i")
-      }
-    }
-    const hits =  await docs.find(filter, {projection: {_id: true}}).toArray();
+
+    const idx = await buildSearchIndex(docs);
+    const hits = idx.search(term);
+
     const result: ISearchResults = {
       term,
       hits: hits.map(h => ({
-        id: h._id,
+        id: h.ref,
         preview: `Preview for result for ${term} (not implemented)`
       }))
     };
