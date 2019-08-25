@@ -7,7 +7,7 @@ import { pagesRouter } from './routes/pages-router';
 import { staticsRouter } from './routes/statics-router';
 
 const mongoClient = new MongoClient(MONGODB_STR);
-mongoClient.connect().then(client => {
+mongoClient.connect().then(async client => {
   console.log(`Connected to database at ${MONGODB_STR}`);
   const db = client.db("admin");
 
@@ -15,7 +15,7 @@ mongoClient.connect().then(client => {
   app.set('view engine', 'ejs');
   
   app.use('/assets', express.static(path.join(process.cwd(), 'assets')));
-  app.use('/api', apiRouter(db));
+  app.use('/api', await apiRouter(db));
   app.use('/statics', staticsRouter());
   
   // Everything not matched by the above falls through to the app page

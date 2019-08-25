@@ -1,14 +1,16 @@
 import { Router } from 'express';
-import { IDoc, IDocGraph, ISearchResults } from '../../shared/IApiTypes';
-import { Db, FindOneOptions, ObjectID, FilterQuery, Collection } from 'mongodb';
+import { IDoc, IDocGraph, IDocMeta, ISearchResults } from '../../shared/IApiTypes';
+import { Db, FindOneOptions, ObjectID, Collection } from 'mongodb';
 import * as lunr from 'lunr';
 
-const buildSearchIndex = async (docs: Collection<any>) => {
+const buildCache = async (docs: Collection<any>) => {
   const opts: FindOneOptions = {
     projection: {
       _id: true,
       title: true,
-      text: true
+      text: true,
+      children: true,
+      kind: true
     }
   };
   const hits = await docs.find({}, opts).toArray();
@@ -23,17 +25,45 @@ const buildSearchIndex = async (docs: Collection<any>) => {
       this.add({
         id: hit._id,
         title: hit.title,
-        text: hit.text
+        text: hit.text,
       });
     });
   });
 
-  return searchIndex;
+  const graph: IDocGraph = {
+    dynamicCollectionRoot: {
+      title: "root",
+      kind: "DynamicCollectionRoot",
+      children: []
+    }
+  };
+  hits.forEach(hit => {
+    const id: ObjectID = hit._id;
+    const sid = id.toHexString();
+    graph[sid] = {
+      title: hit.title,
+      kind: hit.kind,
+      children: hit.children
+    };
+    if (graph[hit.kind]) {
+      graph[hit.kind].children.push(sid);
+    } else {
+      graph[hit.kind] = {
+        title: hit.kind,
+        kind: "DynamicCollection",
+        children: [sid]
+      };
+      graph.dynamicCollectionRoot.children.push(hit.kind);
+    }
+  });
+
+  return { graph, searchIndex };
 }
 
-export function apiRouter(db: Db) {
+export async function apiRouter(db: Db) {
   const router = Router();
   const docs = db.collection("docs");
+  const cache = await buildCache(docs);
 
   router.get('/docs/get/:id', async (req, res) => {
     const id = req.params.id;
@@ -53,50 +83,12 @@ export function apiRouter(db: Db) {
   });
 
   router.get('/docs/graph', async (req, res) => {
-    const opts: FindOneOptions = {
-      projection: {
-        _id: true,
-        title: true,
-        kind: true,
-        children: true
-      }
-    };
-    const hits = await docs.find({}, opts).toArray();
-    const graph: IDocGraph = {
-      dynamicCollectionRoot: {
-        title: "root",
-        kind: "DynamicCollectionRoot",
-        children: []
-      }
-    };
-    hits.forEach(hit => {
-      const id: ObjectID = hit._id;
-      const sid = id.toHexString();
-      graph[sid] = {
-        title: hit.title,
-        kind: hit.kind,
-        children: hit.children
-      };
-      if (graph[hit.kind]) {
-        graph[hit.kind].children.push(sid);
-      } else {
-        graph[hit.kind] = {
-          title: hit.kind,
-          kind: "DynamicCollection",
-          children: [sid]
-        };
-        graph.dynamicCollectionRoot.children.push(hit.kind);
-      }
-    });
-
-    res.json(graph);
+    res.json(cache.graph);
   });
 
   router.get('/docs/search/:term', async (req, res) => {
     const term = req.params.term;
-
-    const idx = await buildSearchIndex(docs);
-    const hits = idx.search(term);
+    const hits = cache.searchIndex.search(term);
 
     const result: ISearchResults = {
       term,
