@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { ISearchResults } from '../../shared/IApiTypes';
 import { IAppState } from '../model';
+import { Link } from 'react-router-dom';
 import NavTreeNode from './NavTreeNode';
 import ExpandButton from './ExpandButton';
 import { setFocus } from '../actions';
@@ -40,12 +41,13 @@ class SearchTree extends React.Component<IProps, IState> {
         const childEls = children.map((id, index) => <NavTreeNode id={id} key={index} />);
 
         const doclinkEl =
-            <span
-                className={css.navtreenode_doclink}
-                onClick={() => this.props.setFocus({search: true})}
-            >
-                {this.props.search.term || "No search..."}
-            </span>;
+            <Link to={`/search/${this.props.search.term}`}>
+                <span className={css.navtreenode_doclink} >
+                    {this.props.search.term ?
+                        "Search: " + this.props.search.term
+                        : "No search..."}
+                </span>
+            </Link>;
 
         const titleClasses = [css.navtreenode_title];
         if (this.props.hasFocus)
