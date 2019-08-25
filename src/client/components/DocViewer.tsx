@@ -29,7 +29,7 @@ class DocViewer extends React.Component<IProps> {
       return (
         <div className={css.docviewer}>
           <p className={css.docviewer_title}>{this.props.docMeta.title}</p>
-          {this.props.doc.text.split("\n\n").map(p => (
+          {(this.props.doc.text || "").split("\n\n").map(p => (
             <p>{p.split("\n").map(l => <span>{l}<br /></span>)}</p>
           ))}
         </div>

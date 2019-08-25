@@ -67,6 +67,15 @@ export async function apiRouter(db: Db) {
 
   router.get('/docs/get/:id', async (req, res) => {
     const id = req.params.id;
+    if (cache.graph[id].kind === "DynamicCollection") {
+      const doc: IDoc = {
+        text: cache.graph[id].title + " collection"
+      }
+
+      return res.json(doc);
+    }
+
+    
     const hit = await docs.findOne({ _id: new ObjectID(id) });
     if (!hit)
       res.sendStatus(404);
