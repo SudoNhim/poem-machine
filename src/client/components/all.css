@@ -121,3 +121,8 @@ a {
     font-weight: bold;
     margin-top: 0pt;
 }
+
+.searchhit_preview {
+    margin-top: 0pt;
+    margin-bottom: 0pt;
+}

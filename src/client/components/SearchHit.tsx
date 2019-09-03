@@ -18,7 +18,8 @@ const SearchHit: React.FunctionComponent<IProps> = (props) =>  (
                 {props.docMeta.title}
             </p>
         </Link>
-        {props.hit.preview}
+        {(props.hit.preview || "").split("\n").map(l =>
+            <p className={css.searchhit_preview}>{l}</p>)}
     </div>
 );
 
