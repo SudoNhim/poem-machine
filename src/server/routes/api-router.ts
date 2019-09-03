@@ -60,6 +60,63 @@ const buildCache = async (docs: Collection<any>) => {
   return { graph, searchIndex };
 }
 
+function generatePreview(doc: IDoc, hit: lunr.Index.Result): string {
+  // build sorted list of all substring matches
+  const metadata = hit.matchData.metadata;
+  const textmatches: number[][] = [];
+  (Object.values(metadata)).forEach(v => {
+    if (v && v.text && v.text.position) {
+        v.text.position.forEach((m: number[]) => {
+        textmatches.push([m[0], m[0] + m[1]]);
+      });
+    }
+  });
+  textmatches.sort((m1, m2) => (m1[0] - m2[0]));
+  
+  // build list of all incidences of newline chars
+  const textchars = (doc.text || "").split("");
+  const newlineposarr: number[] = [0];
+  textchars.forEach((c, i) => {
+    if (c === '\n') newlineposarr.push(i);
+  });
+  newlineposarr.push(textchars.length-1);
+
+  // build list of whole lines that contain matches
+  type LineMatches = { i: number, start: number, end: number, matches: number[][] }[];
+  const lines: LineMatches = [];
+  for (var i=0; i<newlineposarr.length-1; i++) {
+    const start = newlineposarr[i];
+    const end = newlineposarr[i+1];
+    const matches: number[][] = textmatches.filter(m =>
+      (m[1] >= start && m[0] <= end));
+    if (matches.length)
+      lines.push({ i, start, end, matches });
+  }
+
+  // as appropriate break up overlong lines,
+  // add neighbors to short lines
+  const thresh = 160;
+  const parts: LineMatches = [];
+  for (var i=0; i<lines.length; i++) {
+    const a = lines[i];
+    const b = lines.length > i ? lines[i+1] : null;
+    parts.push(a);
+    if (b) {
+      if (b.i - a.i > 1) parts.push(null); // null -> '...' separator
+    }
+  }
+
+  let result = "";
+  parts.forEach(part => {
+    if (part === null) result = result + "...\n";
+    else result = result + doc.text.substring(part.start, part.end) + "\n";
+  })
+
+  console.log(result);
+  
+  return result;
+}
+
 export async function apiRouter(db: Db) {
   const router = Router();
   const docs = db.collection("docs");
@@ -98,12 +155,12 @@ export async function apiRouter(db: Db) {
   router.get('/docs/search/:term', async (req, res) => {
     const term = req.params.term;
     const hits = cache.searchIndex.search(term);
-
+    const hitdocs = await Promise.all(hits.map(h => docs.findOne({ _id: new ObjectID(h.ref) })))
     const result: ISearchResults = {
       term,
-      hits: hits.map(h => ({
+      hits: hits.map((h, i) => ({
         id: h.ref,
-        preview: `Preview for result for ${term} (not implemented)`
+        preview: generatePreview(hitdocs[i], h)
       }))
     };
     res.json(result);
