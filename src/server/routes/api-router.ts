@@ -106,10 +106,6 @@ function generatePreview(doc: IDoc, hit: lunr.Index.Result): string {
     }
   }
 
-
-  // as appropriate break up overlong lines,
-  // add neighbors to short lines
-  const thresh = 160;
   const parts: LineMatches = [];
   for (var i=0; i<lines.length; i++) {
     const a = lines[i];
