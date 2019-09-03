@@ -79,7 +79,11 @@ function generatePreview(doc: IDoc, hit: lunr.Index.Result): string {
   textchars.forEach((c, i) => {
     if (c === '\n') newlineposarr.push(i);
   });
-  newlineposarr.push(textchars.length-1);
+  newlineposarr.push(textchars.length);
+
+  // A set of text content ensures we don't add repeated lines
+  // e.g. a song may repeat the same line many times
+  const lineContents: Set<string> = new Set();
 
   // build list of whole lines that contain matches
   type LineMatches = { i: number, start: number, end: number, matches: number[][] }[];
@@ -88,10 +92,20 @@ function generatePreview(doc: IDoc, hit: lunr.Index.Result): string {
     const start = newlineposarr[i];
     const end = newlineposarr[i+1];
     const matches: number[][] = textmatches.filter(m =>
-      (m[1] >= start && m[0] <= end));
-    if (matches.length)
-      lines.push({ i, start, end, matches });
+      (m[1] > start && m[0] < end));
+    if (matches.length) {
+      const str = doc.text.substring(start, end)
+        .toLowerCase()
+        .replace(/\W/g, '');
+
+      // ensure no dupes
+      if (!lineContents.has(str)) {
+        lineContents.add(str);
+        lines.push({ i, start, end, matches });
+      }
+    }
   }
+
 
   // as appropriate break up overlong lines,
   // add neighbors to short lines
@@ -113,7 +127,7 @@ function generatePreview(doc: IDoc, hit: lunr.Index.Result): string {
   })
 
   console.log(result);
-  
+
   return result;
 }
 
