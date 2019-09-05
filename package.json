@@ -20,6 +20,9 @@
     "type": "git",
     "url": "https://github.com/SudoNhim/poem-machine.git"
   },
+  "engines": {
+    "node": "10.x"
+  },
   "author": "Brenton Milne & Gabriela Chuchro",
   "license": "ISC",
   "dependencies": {

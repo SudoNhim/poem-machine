@@ -122,8 +122,6 @@ function generatePreview(doc: IDoc, hit: lunr.Index.Result): string {
     else result = result + doc.text.substring(part.start, part.end) + "\n";
   })
 
-  console.log(result);
-
   return result;
 }
 
