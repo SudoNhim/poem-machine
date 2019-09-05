@@ -9,7 +9,7 @@ import { staticsRouter } from './routes/statics-router';
 const mongoClient = new MongoClient(MONGODB_STR);
 mongoClient.connect().then(async client => {
   console.log(`Connected to database at ${MONGODB_STR}`);
-  const db = client.db("admin");
+  const db = client.db();
 
   const app = express();
   app.set('view engine', 'ejs');
