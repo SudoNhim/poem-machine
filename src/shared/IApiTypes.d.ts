@@ -5,11 +5,18 @@ export interface IDocMeta {
 }
 
 export interface IDoc {
+    // Markdown strings
+    // Special links of the type [](#ObjectId) link to
+    // other documents
     text?: string;
-    date?: string;
+    description?: string;
     source?: string;
+
+    date?: string;
     authors?: string[];
-    links?: string[];
+
+    // List of docids of docs that have links to this one
+    referrers?: string[];
 }
 
 export interface IDocGraph {

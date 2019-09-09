@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { IDoc, IDocGraph, IDocMeta, ISearchResults } from '../../shared/IApiTypes';
+import { IDoc, IDocGraph, ISearchResults } from '../../shared/IApiTypes';
 import { Db, FindOneOptions, ObjectID, Collection } from 'mongodb';
 import * as lunr from 'lunr';
 
@@ -140,17 +140,21 @@ export async function apiRouter(db: Db) {
       return res.json(doc);
     }
 
-    
-    const hit = await docs.findOne({ _id: new ObjectID(id) });
+    const opts: FindOneOptions = { projection: { _id: true } };
+    const referrersFut = docs.find({ links: new ObjectID(id) }, opts).toArray();
+    const hitFut = docs.findOne({ _id: new ObjectID(id) });
+    const [referrers, hit] = await Promise.all([referrersFut, hitFut]);
+
     if (!hit)
       res.sendStatus(404);
     else {
       const doc: IDoc = {
         text: hit.text,
+        description: hit.description,
         date: hit.date,
         source: hit.source,
         authors: hit.writers,
-        links: hit.links
+        referrers: referrers.map(d => d._id)
       }
       res.json(doc);
     }
