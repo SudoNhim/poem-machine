@@ -113,6 +113,22 @@ a {
     margin-top: 0pt;
 }
 
+.docviewer_description {
+    font-style: italic;
+}
+
+.docreferences {
+    background-color: aliceblue;
+    padding: 5pt;
+    margin: 5pt;
+}
+
+.referrer {
+    margin: 0pt;
+    padding: 2pt;
+    text-decoration: underline;
+}
+
 .searchhit {
     background-color: aliceblue;
     padding: 5pt;
