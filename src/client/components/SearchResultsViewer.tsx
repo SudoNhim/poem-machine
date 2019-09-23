@@ -4,14 +4,18 @@ import { IAppState } from '../model';
 import { ISearchResults } from '../../shared/IApiTypes';
 import SearchHit from './SearchHit';
 
+const css = require("./all.css");
+
 interface IProps {
     searchResults: ISearchResults
 }
 
 const SearchResultsViewer: React.FunctionComponent<IProps> = (props) =>  (
     <div>
-        {props.searchResults.hits.map((hit, index) => 
-            <SearchHit hit={hit} key={index} />
+        {props.searchResults.hits.map((hit, index) =>
+            <div className={css.viewsection} key={index}>
+                <SearchHit hit={hit} />
+            </div>
         )}
     </div>
 );

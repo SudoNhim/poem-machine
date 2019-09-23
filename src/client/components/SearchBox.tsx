@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
-import { RouteComponentProps, Route } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 
 const css = require('./all.css');
 

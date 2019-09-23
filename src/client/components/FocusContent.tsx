@@ -16,7 +16,7 @@ const FocusContent: React.FunctionComponent<IProps> = (props) =>  (
             <DocViewer id={props.focus.docId} key={props.focus.docId}/>
         : props.focus.search ?
             <SearchResultsViewer />
-        : "No focus..."}
+        : <div className={css.viewsection}>"No focus..."</div>}
     </div>
 );
 

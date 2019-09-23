@@ -23,22 +23,27 @@ class DocViewer extends React.Component<IProps> {
 
   public render() {
     if (!this.props.docMeta)
-      return <div className={css.docviewer}>Document does not exist.</div>;
+      return <div className={css.viewsection}>Document does not exist.</div>;
     else if (!this.props.doc)
-      return <div className={css.docviewer}>Loading...</div>;
+      return <div className={css.viewsection}>Loading...</div>;
     else {
+      const title = <div className={css.viewsection}>
+        <p className={css.docviewer_title}>{this.props.docMeta.title}</p></div>
+
       const desc = this.props.doc.description ?
-        this.props.doc.description.split("\n\n").map((p, i) => (
-          <p className={css.docviewer_description} key={i}>{p.split("\n").map(l => <span>{l}<br /></span>)}</p>))
+        <div className={css.viewsection + ' ' + css.docviewer_description}>
+          {this.props.doc.description.split("\n\n").map((p, i) => (
+            <p key={i}>{p.split("\n").map(l => <span>{l}<br /></span>)}</p>))}</div>
         : null;
 
       const text = this.props.doc.text ?
-        this.props.doc.text.split("\n\n").map((p, i) => (
-          <p key={i}>{p.split("\n").map(l => <span>{l}<br /></span>)}</p>))
+        <div className={css.viewsection + ' ' + css.docviewer_text}>
+          {this.props.doc.text.split("\n\n").map((p, i) => (
+            <p key={i}>{p.split("\n").map(l => <span>{l}<br /></span>)}</p>))}</div>
         : null;
 
       const refs = this.props.doc.referrers && this.props.doc.referrers.length > 0 ?
-          <div className={css.docreferences}>
+          <div className={css.viewsection}>
             <p className={css.docviewer_title}>Referenced by:</p>
             {(this.props.doc.referrers || []).map(id => <Referrer id={id} key={id} />)}
           </div>
@@ -46,11 +51,9 @@ class DocViewer extends React.Component<IProps> {
 
       return (
         <div>
-          <div className={css.docviewer}>
-            <p className={css.docviewer_title}>{this.props.docMeta.title}</p>
-            {desc}
-            {text}
-          </div>
+          {title}
+          {desc}
+          {text}
           {refs}
         </div>
       );

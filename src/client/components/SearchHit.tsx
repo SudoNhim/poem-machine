@@ -12,7 +12,7 @@ interface IProps {
 }
 
 const SearchHit: React.FunctionComponent<IProps> = (props) =>  (
-    <div className={css.searchhit}>
+    <div>
         <Link to={`/doc/${props.hit.id}`}>
             <p className={css.searchhit_title}>
                 {props.docMeta.title}

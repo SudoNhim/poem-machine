@@ -52,10 +52,10 @@ class PoemMachine extends React.Component<IProps> {
         return (
         <div className={css.poemmachine}>
             <div className={css.navpane}>
-                <SearchBox />
-                <NavTree />
+                <div className={css.navsection}><SearchBox /></div>
+                <div className={css.navsection}><NavTree /></div>
             </div>
-            <div className={css.contentpane}><FocusContent /></div>
+            <div className={css.viewpane}><FocusContent /></div>
         </div>)
     }
 }
