@@ -39,7 +39,7 @@ class DocViewer extends React.Component<IProps> {
       const text = this.props.doc.text ?
         <div className={css.viewsection + ' ' + css.docviewer_text}>
           {this.props.doc.text.split("\n\n").map((p, i) => (
-            <p key={i}>{p.split("\n").map(l => <span>{l}<br /></span>)}</p>))}</div>
+            <p key={i}>{p.split("\n").map((l, i2) => <span key={i2}>{l}<br /></span>)}</p>))}</div>
         : null;
 
       const refs = this.props.doc.referrers && this.props.doc.referrers.length > 0 ?
