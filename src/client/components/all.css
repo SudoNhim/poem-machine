@@ -16,8 +16,11 @@ a {
 
 .header {
   background-color: lightblue;
-  display: inline-block;
-  width: 100%;
+  position: fixed;
+  left: 0;
+  right: -0;
+  top: 0;
+  bottom: 1em;
 }
 
 .header_title {
@@ -31,7 +34,7 @@ a {
 .poemmachine {
   display: flex;
   background-color: lightyellow;
-  position: absolute;
+  position: fixed;
   top: 2em;
   bottom: -0em;
   left: 0em;
@@ -70,6 +73,7 @@ a {
   background-color: rgb(180, 180, 180);
   position: absolute;
   left: 16em;
+  right: -0;
   top: 0;
   bottom: 0;
   z-index: 1;
@@ -93,7 +97,7 @@ a {
 .viewsection {
   margin: 0.5em;
   background-color: white;
-  width: 32em;
+  max-width: 32em;
 }
 
 .line {
@@ -105,13 +109,13 @@ a {
 }
 
 .linespan {
-  width: 32em;
+  max-width: 32em;
 }
 
 .note {
   position: absolute;
   top: 0em;
-  left: 32em;
+  left: 24em;
   right: -0em;
 }
 
