@@ -5,8 +5,12 @@ import { setDoc } from "../actions";
 import { IDoc, IDocMeta } from "../../shared/IApiTypes";
 import { IAppState } from "../model";
 import Referrer from "./Referrer";
+import * as Marked from "marked";
+import * as DomPurify from "dompurify";
 
 const css = require("./all.css");
+
+const renderer = new Marked.Renderer();
 
 interface IProps {
   id: string;
@@ -31,9 +35,9 @@ class DocViewer extends React.Component<IProps> {
         <p className={css.docviewer_title}>{this.props.docMeta.title}</p></div>
 
       const desc = this.props.doc.description ?
-        <div className={css.viewsection + ' ' + css.docviewer_description}>
-          {this.props.doc.description.split("\n\n").map((p, i) => (
-            <p key={i}>{p.split("\n").map((l, i2) => <span key={i2}>{l}<br /></span>)}</p>))}</div>
+        <div
+          className={css.viewsection + ' ' + css.docviewer_description}
+          dangerouslySetInnerHTML={{__html: DomPurify.sanitize(Marked(this.props.doc.description, { renderer }))}} />
         : null;
 
       const text = this.props.doc.text ?
