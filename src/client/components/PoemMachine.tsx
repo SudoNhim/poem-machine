@@ -67,7 +67,7 @@ class PoemMachine extends React.Component<IProps, IState> {
         return (
         <div className={css.poemmachine}>
             <div className={css.navtogglebar} onClick={() => this.setState({ navactive: true })}>
-                <span className={css.navtogglebar_text}>:: browse ::</span>
+                <div className={css.navtogglebar_text}>:: browse ::</div>
             </div>
             <div className={navpaneClasses.join(" ")}>
                 <div className={css.navsection}><SearchBox /></div>

@@ -59,12 +59,15 @@ a {
     z-index: 1;
     top: 1.5em;
     bottom: -0;
-    writing-mode: vertical-rl;
 }
 
 .navtogglebar_text {
-    margin-top: 0.5em;
-    text-orientation: sideways-right;
+    position: relative;
+    left: 0em;
+    top: 5.3em;
+    width: 12em;
+    transform: rotate(-90deg);
+    transform-origin: 5% 50%;
 }
 
 .viewpane {
