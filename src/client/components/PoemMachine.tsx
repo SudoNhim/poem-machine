@@ -51,6 +51,7 @@ class PoemMachine extends React.Component<IProps> {
     public render() {
         return (
         <div className={css.poemmachine}>
+            <div className={css.navtogglebar}><span className={css.navtogglebar_text}>:: browse ::</span></div>
             <div className={css.navpane}>
                 <div className={css.navsection}><SearchBox /></div>
                 <div className={css.navsection}><NavTree /></div>

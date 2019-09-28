@@ -41,7 +41,26 @@ a {
 .navpane {
   background-color: lightgray;
   overflow-y: scroll;
+  position: absolute;
   width: 16em;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+}
+
+.navtogglebar {
+    background-color: lightgray;
+    position: absolute;
+    width: 1.5em;
+    z-index: 1;
+    top: 0;
+    bottom: -0;
+    writing-mode: vertical-rl;
+}
+
+.navtogglebar_text {
+    margin-top: 0.5em;
+    text-orientation: sideways-right;
 }
 
 .viewpane {
@@ -49,6 +68,21 @@ a {
   overflow-y: scroll;
   flex-grow: 1;
   background-color: rgb(180, 180, 180);
+  position: absolute;
+  left: 16em;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+@media only screen and (max-width: 64em) {
+    .viewpane {
+        left: 1.5em;
+    }
+
+    .navpane {
+        visibility: hidden;
+    }
 }
 
 .navsection {
