@@ -20,7 +20,7 @@ a {
   left: 0;
   right: -0;
   top: 0;
-  bottom: 1em;
+  bottom: 1.5em;
 }
 
 .header_title {
@@ -35,7 +35,7 @@ a {
   display: flex;
   background-color: lightyellow;
   position: fixed;
-  top: 2em;
+  top: 1.5em;
   bottom: -0em;
   left: 0em;
   right: -0em;
@@ -44,19 +44,20 @@ a {
 .navpane {
   background-color: lightgray;
   overflow-y: scroll;
-  position: absolute;
+  position: fixed;
   width: 16em;
   z-index: 2;
-  top: 0;
-  bottom: 0;
+  top: 1.5em;
+  bottom: -0;
+  left: 0;
 }
 
 .navtogglebar {
     background-color: lightgray;
-    position: absolute;
+    position: fixed;
     width: 1.5em;
     z-index: 1;
-    top: 0;
+    top: 1.5em;
     bottom: -0;
     writing-mode: vertical-rl;
 }
@@ -85,7 +86,7 @@ a {
     }
 
     .navinactive {
-        visibility: hidden;
+        left: -16em;
     }
 }
 
