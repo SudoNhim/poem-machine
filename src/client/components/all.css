@@ -80,7 +80,7 @@ a {
         left: 1.5em;
     }
 
-    .navpane {
+    .navinactive {
         visibility: hidden;
     }
 }

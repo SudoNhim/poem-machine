@@ -20,7 +20,18 @@ interface IProps extends RouteComponentProps<IMatchParams> {
     setSearch: typeof setSearch;
 }
 
-class PoemMachine extends React.Component<IProps> {
+interface IState {
+    navactive: boolean;
+}
+
+class PoemMachine extends React.Component<IProps, IState> {
+    constructor(props) {
+        super(props);
+        this.state = {
+            navactive: false
+        };
+    }
+
     public async componentDidMount() {
         const graph = await getGraph();
         this.props.setGraph(graph);
@@ -49,14 +60,22 @@ class PoemMachine extends React.Component<IProps> {
     }
 
     public render() {
+        const navpaneClasses = [css.navpane];
+        if (!this.state.navactive)
+            navpaneClasses.push(css.navinactive);
+
         return (
         <div className={css.poemmachine}>
-            <div className={css.navtogglebar}><span className={css.navtogglebar_text}>:: browse ::</span></div>
-            <div className={css.navpane}>
+            <div className={css.navtogglebar} onClick={() => this.setState({ navactive: true })}>
+                <span className={css.navtogglebar_text}>:: browse ::</span>
+            </div>
+            <div className={navpaneClasses.join(" ")}>
                 <div className={css.navsection}><SearchBox /></div>
                 <div className={css.navsection}><NavTree /></div>
             </div>
-            <div className={css.viewpane}><FocusContent /></div>
+            <div className={css.viewpane} onClick={() => this.setState({ navactive: false })}>
+                <FocusContent />
+            </div>
         </div>)
     }
 }
