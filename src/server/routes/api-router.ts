@@ -153,6 +153,7 @@ export async function apiRouter(db: Db) {
         description: hit.description,
         date: hit.date,
         source: hit.source,
+        links: hit.links,
         authors: hit.writers,
         referrers: referrers.map(d => d._id)
       }

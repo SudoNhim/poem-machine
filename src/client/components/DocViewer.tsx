@@ -7,10 +7,12 @@ import { IAppState } from "../model";
 import Referrer from "./Referrer";
 import * as Marked from "marked";
 import * as DomPurify from "dompurify";
+import { number } from "prop-types";
 
 const css = require("./all.css");
 
 const renderer = new Marked.Renderer();
+const defaultRenderer = new Marked.Renderer();
 
 interface IProps {
   id: string;
@@ -26,6 +28,21 @@ class DocViewer extends React.Component<IProps> {
   }
 
   public render() {
+
+    // Special handling for links to other documents
+    const docLinks: string[] = (this.props.doc && this.props.doc.links) || [];
+    renderer.link = (href, title, text) => {
+      if (href.startsWith("#")) {
+        try {
+          const index = parseInt(href.substr(1));
+          href = `/doc/${docLinks[index]}`;
+        }
+        finally {}
+      }
+
+      return defaultRenderer.link(href, title, text);
+    }
+
     if (!this.props.docMeta)
       return <div className={css.viewsection}>Document does not exist.</div>;
     else if (!this.props.doc)

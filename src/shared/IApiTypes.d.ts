@@ -11,6 +11,7 @@ export interface IDoc {
     text?: string;
     description?: string;
     source?: string;
+    links?: string[];
 
     date?: string;
     authors?: string[];
