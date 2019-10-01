@@ -1,7 +1,6 @@
 body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 12pt;
-  background: url("/statics/halftone.png");
 }
 
 input {
@@ -41,7 +40,7 @@ a {
 }
 
 .navpane {
-  background: linear-gradient(rgba(220, 235, 252, 0.5), rgba(220, 235, 252, 0.5)),url("/statics/halftone.png");
+  background: rgba(220, 235, 252);
   overflow-y: scroll;
   position: fixed;
   width: 16em;
@@ -103,6 +102,7 @@ a {
 
 .viewsection {
   margin: 0.2cm;
+  margin-bottom: 0;
   padding: 0.2cm;
   background-color: white;
   max-width: 32em;
@@ -179,6 +179,13 @@ a {
 
 .docviewer_title {
   font-weight: bold;
+  margin: 0pt;
+}
+
+.docviewer_text {
+}
+
+.docviewer_text p {
   margin-top: 0pt;
 }
 
