@@ -1,7 +1,7 @@
 body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 12pt;
-  background-color: lightgray;
+  background: url("/statics/halftone.png");
 }
 
 input {
@@ -20,7 +20,7 @@ a {
   left: 0;
   right: -0;
   top: 0;
-  bottom: 1.5em;
+  height: 1.5em;
 }
 
 .header_title {
@@ -33,7 +33,6 @@ a {
 
 .poemmachine {
   display: flex;
-  background-color: lightyellow;
   position: fixed;
   top: 1.5em;
   bottom: -0em;
@@ -42,7 +41,7 @@ a {
 }
 
 .navpane {
-  background-color: lightgray;
+  background-color: rgba(132, 132, 138, 0.3);
   overflow-y: scroll;
   position: fixed;
   width: 16em;
@@ -59,6 +58,7 @@ a {
     z-index: 1;
     top: 1.5em;
     bottom: -0;
+    visibility: hidden;
 }
 
 .navtogglebar_text {
@@ -71,10 +71,8 @@ a {
 }
 
 .viewpane {
-  background-color: lightgray;
   overflow-y: scroll;
   flex-grow: 1;
-  background-color: rgb(180, 180, 180);
   position: absolute;
   left: 16em;
   right: -0;
@@ -91,11 +89,14 @@ a {
     .navinactive {
         left: -16em;
     }
+
+    .navtogglebar {
+      visibility: visible;
+    }
 }
 
 .navsection {
   margin: 0.5em;
-  background-color: white;
 }
 
 .viewsection {
