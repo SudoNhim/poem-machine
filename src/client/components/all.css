@@ -197,3 +197,7 @@ a {
   margin-top: 0pt;
   margin-bottom: 0pt;
 }
+
+.embedded_link_internal {
+  font-weight: bold;
+}

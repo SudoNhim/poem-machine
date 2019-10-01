@@ -4,6 +4,7 @@ import { getDoc } from "../api";
 import { setDoc } from "../actions";
 import { IDoc, IDocMeta } from "../../shared/IApiTypes";
 import { IAppState } from "../model";
+import { Link } from 'react-router-dom';
 import Referrer from "./Referrer";
 import MDReactComponent from "markdown-react-js";
 
@@ -29,10 +30,7 @@ class DocViewer extends React.Component<IProps> {
     const customMarkdownIterate = (Tag, props, children, level) => {
       if (Tag === 'a' && props.href.startsWith('#')) {
         const index = parseInt(props.href.substr(1));
-        props = {
-          ...props,
-          href: `/doc/${docLinks[index]}`
-        }
+        return <Link to={`/doc/${docLinks[index]}`} className={css.embedded_link_internal}>{children}</Link>
       }
 
       return <Tag {...props}>{children}</Tag>
