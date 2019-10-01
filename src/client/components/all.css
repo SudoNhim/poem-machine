@@ -41,7 +41,7 @@ a {
 }
 
 .navpane {
-  background-color: rgba(132, 132, 138, 0.3);
+  background: linear-gradient(rgba(168, 168, 168, 0.5), rgba(168, 168, 168, 0.5)),url("/statics/halftone.png");
   overflow-y: scroll;
   position: fixed;
   width: 16em;
