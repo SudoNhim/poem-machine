@@ -5,14 +5,9 @@ import { setDoc } from "../actions";
 import { IDoc, IDocMeta } from "../../shared/IApiTypes";
 import { IAppState } from "../model";
 import Referrer from "./Referrer";
-import * as Marked from "marked";
-import * as DomPurify from "dompurify";
-import { number } from "prop-types";
+import MDReactComponent from "markdown-react-js";
 
 const css = require("./all.css");
-
-const renderer = new Marked.Renderer();
-const defaultRenderer = new Marked.Renderer();
 
 interface IProps {
   id: string;
@@ -31,16 +26,16 @@ class DocViewer extends React.Component<IProps> {
 
     // Special handling for links to other documents
     const docLinks: string[] = (this.props.doc && this.props.doc.links) || [];
-    renderer.link = (href, title, text) => {
-      if (href.startsWith("#")) {
-        try {
-          const index = parseInt(href.substr(1));
-          href = `/doc/${docLinks[index]}`;
+    const customMarkdownIterate = (Tag, props, children, level) => {
+      if (Tag === 'a' && props.href.startsWith('#')) {
+        const index = parseInt(props.href.substr(1));
+        props = {
+          ...props,
+          href: `/doc/${docLinks[index]}`
         }
-        finally {}
       }
 
-      return defaultRenderer.link(href, title, text);
+      return <Tag {...props}>{children}</Tag>
     }
 
     if (!this.props.docMeta)
@@ -52,9 +47,11 @@ class DocViewer extends React.Component<IProps> {
         <p className={css.docviewer_title}>{this.props.docMeta.title}</p></div>
 
       const desc = this.props.doc.description ?
-        <div
-          className={css.viewsection + ' ' + css.docviewer_description}
-          dangerouslySetInnerHTML={{__html: DomPurify.sanitize(Marked(this.props.doc.description, { renderer }))}} />
+        <div className={css.viewsection + ' ' + css.docviewer_description}>
+          <MDReactComponent
+            text={this.props.doc.description}
+            onIterate={customMarkdownIterate}/>
+        </div>
         : null;
 
       const text = this.props.doc.text ?
