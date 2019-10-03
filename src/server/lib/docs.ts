@@ -5,6 +5,7 @@ import { DbDoc } from "./models";
 // e.g. map of parents to children
 export class DocsWrapper {
   private graph: IDocGraph;
+  private localStore: { [id: string]: DbDoc };
 
   constructor(corpus: { [id: string]: DbDoc }) {
     this.graph = {
@@ -32,5 +33,28 @@ export class DocsWrapper {
         this.graph.dynamicCollectionRoot.children.push(doc.kind);
       }
     });
+  }
+
+  public getGraph(): IDocGraph {
+    return this.graph;
+  }
+
+  public getDoc(id: string): IDoc {
+    if (!this.graph[id]) return null;
+
+    // These docs don't actually exist
+    if (this.graph[id].kind === "DynamicCollection")
+      return {
+        text: this.graph[id].title + " collection"
+      } as IDoc;
+
+    const dbDoc = this.localStore[id];
+    const apiDoc: IDoc = {
+      text: dbDoc.text,
+      description: dbDoc.description,
+      links: ['deprecated']
+    };
+
+    return apiDoc;
   }
 }

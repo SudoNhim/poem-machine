@@ -1,6 +1,7 @@
 import { Index } from "lunr";
 import * as lunr from "lunr";
 import { DbDoc } from "./models";
+import { ISearchResults } from "../../shared/IApiTypes";
 
 export interface SearchHit {
   id: string;
@@ -35,17 +36,20 @@ export class SearchWrapper {
     });
   }
 
-  public search(term: string): SearchHit[] {
+  public search(term: string): ISearchResults {
     const hits = this.index.search(term);
-    return hits.map((hit) => ({
+    return {
+      term,
+      hits: hits.map(hit => ({
         id: hit.ref,
         preview: this.generatePreview(hit)
-    }));
+      }))
+    };
   }
 
   private generatePreview(hit: lunr.Index.Result): string {
     const doc = this.localStore[hit.ref];
-    
+
     // build sorted list of all substring matches
     const metadata = hit.matchData.metadata;
     const textmatches: number[][] = [];
