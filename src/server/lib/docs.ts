@@ -52,7 +52,7 @@ export class DocsWrapper {
     const apiDoc: IDoc = {
       text: dbDoc.text,
       description: dbDoc.description,
-      links: ['deprecated']
+      links: ["deprecated"]
     };
 
     return apiDoc;

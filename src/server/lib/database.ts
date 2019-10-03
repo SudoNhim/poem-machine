@@ -42,9 +42,14 @@ export class DbWrapper {
   private search: SearchWrapper;
   private docs: DocsWrapper;
 
-  public async DbWrapper(mdbCollection: Collection<MdbDoc>) {
+  private constructor(mdbCollection: Collection<MdbDoc>) {
     this.dbConn = mdbCollection;
-    await this.Initialize();
+  }
+
+  public static async create(mdbCollection: Collection<MdbDoc>): Promise<DbWrapper> {
+    const db = new DbWrapper(mdbCollection);
+    await db.Initialize();
+    return db;
   }
 
   public getSearch() {
