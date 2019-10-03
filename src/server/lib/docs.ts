@@ -1,9 +1,9 @@
-import { IDocGraph } from "../../shared/IApiTypes";
+import { IDocGraph, IDoc, IDocMeta } from "../../shared/IApiTypes";
 import { DbDoc } from "./models";
 
 // Maintain pre-generated data about the document collection
 // e.g. map of parents to children
-export class GraphGenerator {
+export class DocsWrapper {
   private graph: IDocGraph;
 
   constructor(corpus: { [id: string]: DbDoc }) {

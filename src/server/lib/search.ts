@@ -2,14 +2,21 @@ import { Index } from "lunr";
 import * as lunr from "lunr";
 import { DbDoc } from "./models";
 
+export interface SearchHit {
+  id: string;
+  preview: string;
+}
+
 // Wrap a lunr.js search index to provide functionality
 // like generating previews
 export class SearchWrapper {
   private index: Index;
+  private localStore: { [id: string]: DbDoc };
 
   // Note: with lunr 2.0, the index is immutable, so if
   // a document is edited, this needs to be rebuilt
   constructor(corpus: { [id: string]: DbDoc }) {
+    this.localStore = corpus;
     this.index = lunr(function() {
       this.ref("id");
       this.field("title");
@@ -28,7 +35,17 @@ export class SearchWrapper {
     });
   }
 
-  private generatePreview(doc: DbDoc, hit: lunr.Index.Result): string {
+  public search(term: string): SearchHit[] {
+    const hits = this.index.search(term);
+    return hits.map((hit) => ({
+        id: hit.ref,
+        preview: this.generatePreview(hit)
+    }));
+  }
+
+  private generatePreview(hit: lunr.Index.Result): string {
+    const doc = this.localStore[hit.ref];
+    
     // build sorted list of all substring matches
     const metadata = hit.matchData.metadata;
     const textmatches: number[][] = [];

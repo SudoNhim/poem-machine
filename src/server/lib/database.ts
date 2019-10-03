@@ -1,7 +1,7 @@
 import { ObjectID, Collection, FindOneOptions } from "mongodb";
 import { DbDoc } from "./models";
 import { SearchWrapper } from "./search";
-import { GraphGenerator } from "./graph";
+import { DocsWrapper } from "./docs";
 
 interface MdbDoc {
   // database document id
@@ -23,27 +23,36 @@ interface MdbDoc {
 // 3) referred-to-by graph
 // 4) actual documents ?
 export class DbWrapper {
-  // if this app is ever scaled to more than one node, it will
+  // If this app is ever scaled to more than one node, it will
   // need to attach to a ChangeStream to keep up to date. for
   // now we are the only process making edits, so update as
-  // needed and restart the app if the databse is changed from
+  // needed and restart the app if the database is changed from
   // the outside (e.g. by the provisioning script)
   private dbConn: Collection<MdbDoc>;
 
-  // look up a database docid from a friendly id, only needed
+  // Look up a database docid from a friendly id, only needed
   // when saving an edit to the database
   private dbIdLookup: { [friendlyId: string]: ObjectID };
 
-  // local cache of all documents, used for most operations
+  // Local cache of all documents, used for most operations
   // and kept up to date
   private localStore: { [friendlyId: string]: DbDoc };
 
+  // Wrappers that process data for the API layer
   private search: SearchWrapper;
-  private graph: GraphGenerator;
+  private docs: DocsWrapper;
 
   public async DbWrapper(mdbCollection: Collection<MdbDoc>) {
     this.dbConn = mdbCollection;
-    return this.Initialize();
+    await this.Initialize();
+  }
+
+  public getSearch() {
+      return this.search;
+  }
+
+  public getDocs() {
+      return this.docs;
   }
 
   private async Initialize() {
@@ -61,6 +70,8 @@ export class DbWrapper {
       this.dbIdLookup[mdbDoc.friendlyId] = mdbDoc._id;
       this.localStore[mdbDoc.friendlyId] = mdbDoc.doc;
     });
+
+    this.docs = new DocsWrapper(this.localStore);
 
     // Note: this will build a lunr index, and may take
     // a few seconds
