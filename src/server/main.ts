@@ -5,7 +5,7 @@ import { SERVER_PORT, MONGODB_STR } from './config';
 import { apiRouter } from './routes/api-router';
 import { pagesRouter } from './routes/pages-router';
 import { staticsRouter } from './routes/statics-router';
-import { DbWrapper } from 'lib/database';
+import { DbWrapper } from './lib/database';
 
 const mongoClient = new MongoClient(MONGODB_STR);
 mongoClient.connect().then(async client => {
