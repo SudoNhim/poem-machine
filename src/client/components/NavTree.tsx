@@ -12,7 +12,7 @@ interface IProps {
 const NavTree: React.FunctionComponent<IProps> = (props) =>  (
     <div>
         <SearchTree />
-        {(props.graph.dynamicCollectionRoot.children || []).map((id, index) =>
+        {(props.graph.db.children || []).map((id, index) =>
             <NavTreeNode id={id} key={index} />)}
     </div>
 );

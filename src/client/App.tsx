@@ -11,7 +11,7 @@ const AppImpl = () => (
         <Header />
         <Switch>
             <Route exact path='/' component={PoemMachine} />
-            <Route path='/doc/:docId' component={PoemMachine} />
+            <Route path='/doc/*' component={PoemMachine} />
             <Route path='/search/:searchTerm' component={PoemMachine} />
             <Route exact path='/about' component={About} />
         </Switch>

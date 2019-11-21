@@ -22,7 +22,7 @@ export interface IDoc {
 
 export interface IDocGraph {
     [id: string]: IDocMeta;
-    dynamicCollectionRoot: IDocMeta;
+    db: IDocMeta;
 }
 
 export interface ISearchHit {

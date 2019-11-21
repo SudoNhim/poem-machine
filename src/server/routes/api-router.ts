@@ -9,6 +9,7 @@ export function apiRouter() {
   const searchController = new SearchController();
 
   router.get("/docs/get/*", async (req, res) => {
+    console.log(req.params);
     const doc = CanonData[req.params[0]];
 
     if (doc == null) return res.sendStatus(404);
