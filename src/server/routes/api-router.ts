@@ -1,23 +1,26 @@
 import { Router } from "express";
-import { DbWrapper } from "../lib/database";
+import { GraphController } from '../controllers/graph';
+import { SearchController } from '../controllers/search';
+import CanonData from 'cohen-db';
 
-export async function apiRouter(db: DbWrapper) {
+export function apiRouter() {
   const router = Router();
+  const graphProvider = new GraphController();
+  const searchController = new SearchController();
 
-  router.get("/docs/get/:id", async (req, res) => {
-    const id = req.params.id;
-    const doc = db.getDocs().getDoc(id);
+  router.get("/docs/get/*", async (req, res) => {
+    const doc = CanonData[req.params[0]];
 
     if (doc == null) return res.sendStatus(404);
     else return res.json(doc);
   });
 
   router.get("/docs/graph", async (req, res) => {
-    res.json(db.getDocs().getGraph());
+    res.json(graphProvider.getGraph());
   });
 
   router.get("/docs/search/:term", async (req, res) => {
-    res.json(db.getSearch().search(req.params.term));
+    res.json(searchController.search(req.params.term));
   });
 
   return router;

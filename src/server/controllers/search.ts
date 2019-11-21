@@ -1,7 +1,9 @@
 import { Index } from "lunr";
 import * as lunr from "lunr";
-import { DbDoc } from "./models";
 import { ISearchResults } from "../../shared/IApiTypes";
+import { ExplodeAllSearchable } from "../lib/explode-searchable";
+import CanonData from 'cohen-db';
+import * as jsonpath from 'jsonpath';
 
 export interface SearchHit {
   id: string;
@@ -10,43 +12,38 @@ export interface SearchHit {
 
 // Wrap a lunr.js search index to provide functionality
 // like generating previews
-export class SearchWrapper {
+export class SearchController {
   private index: Index;
-  private localStore: { [id: string]: DbDoc };
 
   // Note: with lunr 2.0, the index is immutable, so if
   // a document is edited, this needs to be rebuilt
-  constructor(corpus: { [id: string]: DbDoc }) {
-    this.localStore = corpus;
+  constructor() {
     this.index = lunr(function() {
-      this.ref("id");
-      this.field("title");
+      // Shards are identified by their JSONPath
+      this.ref("path");
       this.field("text");
 
       // Retrieve match position for generating previews
       this.metadataWhitelist = ["position"];
 
-      Object.keys(corpus).forEach(friendlyId => {
-        this.add({
-          id: friendlyId,
-          title: corpus[friendlyId].title,
-          text: corpus[friendlyId].text
-        });
-      });
+      for (var shard of ExplodeAllSearchable())
+        this.add(shard);
     });
   }
 
   public search(term: string): ISearchResults {
     const hits = this.index.search(term);
+
     return {
       term,
       hits: hits.map(hit => ({
         id: hit.ref,
-        preview: this.generatePreview(hit)
+        preview: jsonpath.query(CanonData, hit.ref)[0]
       }))
     };
   }
 
+  /*
   private generatePreview(hit: lunr.Index.Result): string {
     const doc = this.localStore[hit.ref];
 
@@ -119,5 +116,5 @@ export class SearchWrapper {
     });
 
     return result;
-  }
+  }*/
 }
