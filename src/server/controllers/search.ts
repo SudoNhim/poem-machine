@@ -37,10 +37,16 @@ export class SearchController {
     return {
       term,
       hits: hits.map(hit => ({
-        id: hit.ref,
+        id: this.docIdFromJsonPath(hit.ref),
         preview: jsonpath.query(CanonData, hit.ref)[0]
       }))
     };
+  }
+
+  private docIdFromJsonPath(ref: string): string {
+    const path = jsonpath.parse(ref);
+    console.log(path[1]);
+    return path[1].expression.value;
   }
 
   /*
