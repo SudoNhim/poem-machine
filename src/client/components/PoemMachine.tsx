@@ -10,6 +10,7 @@ import SearchBox from './SearchBox';
 const css = require('./all.css');
 
 interface IMatchParams {
+    docId?: string;
     searchTerm?: string;
 }
 
@@ -44,12 +45,10 @@ class PoemMachine extends React.Component<IProps, IState> {
     }
 
     private async handleRoute() {
-        if (this.props.match.path === '/doc/*')
-            this.props.setFocus({
-                docId: this.props.match.params[0]
-            });
-        else if (this.props.match.params.searchTerm) {
-            const searchResults = await getSearchResults(this.props.match.params.searchTerm);
+        const { docId, searchTerm } = this.props.match.params;
+        if (docId) this.props.setFocus({ docId });
+        else if (searchTerm) {
+            const searchResults = await getSearchResults(searchTerm);
             this.props.setSearch(searchResults);
             this.props.setFocus({
                 search: true

@@ -8,9 +8,8 @@ export function apiRouter() {
   const graphProvider = new GraphController();
   const searchController = new SearchController();
 
-  router.get("/docs/get/*", async (req, res) => {
-    console.log(req.params);
-    const doc = CanonData[req.params[0]];
+  router.get("/docs/get/:docId", async (req, res) => {
+    const doc = CanonData[req.params.docId];
 
     if (doc == null) return res.sendStatus(404);
     else return res.json(doc);
