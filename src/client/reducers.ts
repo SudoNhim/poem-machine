@@ -4,9 +4,9 @@ import { ActionTypes, SET_DOC, SET_GRAPH, SET_SEARCH, SET_FOCUS } from './action
 const initialState: IAppState = {
     docs: {
         graph: {
-            dynamicCollectionRoot: {
-                title: "root",
-                kind: "DynamicCollectionRoot"
+            db: {
+                title: "Database Root",
+                kind: "root"
             }
         },
         cache: {}

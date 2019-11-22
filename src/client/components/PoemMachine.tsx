@@ -46,10 +46,7 @@ class PoemMachine extends React.Component<IProps, IState> {
 
     private async handleRoute() {
         const { docId, searchTerm } = this.props.match.params;
-        if (docId)
-            this.props.setFocus({
-                docId
-            });
+        if (docId) this.props.setFocus({ docId });
         else if (searchTerm) {
             const searchResults = await getSearchResults(searchTerm);
             this.props.setSearch(searchResults);
