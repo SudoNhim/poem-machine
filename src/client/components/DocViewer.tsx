@@ -2,7 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { getDoc } from "../api";
 import { setDoc } from "../actions";
-import { IDoc, IDocMeta } from "../../shared/IApiTypes";
+import { IDoc, IDocMeta, IDocReference } from "../../shared/IApiTypes";
 import { IAppState } from "../model";
 import { Link } from 'react-router-dom';
 import Referrer from "./Referrer";
@@ -24,46 +24,50 @@ class DocViewer extends React.Component<IProps> {
   }
 
   public render() {
-
-    // Special handling for links to other documents
-    const docLinks: string[] = (this.props.doc && this.props.doc.links) || [];
-    const customMarkdownIterate = (Tag, props, children, level) => {
-      if (Tag === 'a' && props.href.startsWith('#')) {
-        const index = parseInt(props.href.substr(1));
-        return <Link to={`/doc/${docLinks[index]}`} className={css.embedded_link_internal}>{children}</Link>
-      }
-
-      return <Tag {...props}>{children}</Tag>
-    }
-
     if (!this.props.docMeta)
       return <div className={css.viewsection}>Document does not exist.</div>;
     else if (!this.props.doc)
       return <div className={css.viewsection}>Loading...</div>;
     else {
       const title = <div className={css.viewsection}>
-        <p className={css.docviewer_title}>{this.props.docMeta.title}</p></div>
+        <p className={css.docviewer_title}>{this.props.docMeta.title}</p></div>;
 
-      const desc = this.props.doc.description ?
-        <div className={css.viewsection + ' ' + css.docviewer_description}>
-          <MDReactComponent
-            text={this.props.doc.description}
-            onIterate={customMarkdownIterate}/>
-        </div>
-        : null;
+      var desc = null, text = null;
+      if (this.props.doc.file.content) {
+        const content = this.props.doc.file.content;
 
-      const text = this.props.doc.text ?
-        <div className={css.viewsection + ' ' + css.docviewer_text}>
-          {this.props.doc.text.split("\n\n").map((p, i) => (
-            <p key={i}>{p.split("\n").map((l, i2) => <span key={i2}>{l}<br /></span>)}</p>))}</div>
-        : null;
+        if (content.preamble) desc = (
+          <div className={css.viewsection + ' ' + css.docviewer_description}>
+            <MDReactComponent
+              text={this.props.doc.file.content.preamble} />
+          </div>);
+
+        if (Array.isArray(content.content)) {
+          text = content.content.map((part, i) => (
+            <div className={css.viewsection + ' ' + css.docviewer_text} key={i}>
+              {part.content.text.map((p, i2) => (
+                <p key={i2}>{
+                  Array.isArray(p)
+                    ? p.map((l, i3) => <span key={i3}>{l}<br /></span>)
+                    : <span>{p}<br /></span>
+                }</p>))}</div>
+          ));
+        } else
+          text = <div className={css.viewsection + ' ' + css.docviewer_text}>
+            {content.content.text.map((p, i2) => (
+              <p key={i2}>{
+                Array.isArray(p)
+                  ? p.map((l, i3) => <span key={i3}>{l}<br /></span>)
+                  : <span>{p}<br /></span>
+              }</p>))}</div>
+      }
 
       const refs = this.props.doc.referrers && this.props.doc.referrers.length > 0 ?
-          <div className={css.viewsection}>
-            <p className={css.docviewer_title}>Referenced by:</p>
-            {(this.props.doc.referrers || []).map(id => <Referrer id={id} key={id} />)}
-          </div>
-          : null;
+        <div className={css.viewsection}>
+          <p className={css.docviewer_title}>Referenced by:</p>
+          {(this.props.doc.referrers || []).map(ref => <Referrer id={ref.docId} key={ref.docId} />)}
+        </div>
+        : null;
 
       return (
         <div>

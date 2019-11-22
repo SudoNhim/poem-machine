@@ -12,7 +12,13 @@ export function apiRouter() {
     const doc = CanonData[req.params.docId];
 
     if (doc == null) return res.sendStatus(404);
-    else return res.json(doc);
+
+    const referrers = graphProvider.getReferrers(req.params.docId);
+
+    return res.json( {
+      file: doc,
+      referrers
+    });
   });
 
   router.get("/docs/graph", async (req, res) => {

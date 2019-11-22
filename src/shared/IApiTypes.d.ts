@@ -1,23 +1,23 @@
+import { CanonFile } from "cohen-db/schema";
+
 export interface IDocMeta {
     kind: string;
     title: string;
     children?: string[];
 }
 
-export interface IDoc {
-    // Markdown strings
-    // Special links of the type [](#ObjectId) link to
-    // other documents
-    text?: string;
-    description?: string;
-    source?: string;
-    links?: string[];
+export interface IDocReference {
+    docId: string;
+    section?: number;
+}
 
-    date?: string;
-    authors?: string[];
+export interface IDoc {
+    file: CanonFile;
 
     // List of docids of docs that have links to this one
-    referrers?: string[];
+    referrers?: IDocReference[];
+
+    // Annotations, discussion thread....
 }
 
 export interface IDocGraph {
