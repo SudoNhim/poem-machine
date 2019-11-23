@@ -13,7 +13,7 @@ interface IProps {
 class ReferrersView extends React.Component<IProps> {
   public render() {
     return <div>
-        Referenced by:
+        <div className={css.heading}>Referenced by</div>
         {this.props.referrers.map((r, i) => <DocReference key={i} reference={r} />)}
       </div>;
   }

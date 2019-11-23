@@ -12,7 +12,7 @@ interface IProps {
 class ChildrenView extends React.Component<IProps> {
   public render() {
     return <div>
-      Children:
+      <div className={css.heading}>Children</div>
       {this.props.childIds.map((id, i) => <DocReference key={i} reference={{docId: id}} />)}
     </div>;
   }
