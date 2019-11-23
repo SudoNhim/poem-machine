@@ -1,6 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { IAppState } from "../../model";
+import DocReference from "./DocReference";
 
 const css = require("./docviewer.css");
 
@@ -10,7 +11,10 @@ interface IProps {
 
 class ChildrenView extends React.Component<IProps> {
   public render() {
-    return this.props.childIds.map((id, i) => <div key={i}>{id}</div>);
+    return <div>
+      Children:
+      {this.props.childIds.map((id, i) => <DocReference key={i} reference={{docId: id}} />)}
+    </div>;
   }
 }
 

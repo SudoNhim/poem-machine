@@ -2,6 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { IDocReference } from "../../../shared/IApiTypes";
 import { IAppState } from "../../model";
+import DocReference from './DocReference'
 
 const css = require("./docviewer.css");
 
@@ -11,7 +12,10 @@ interface IProps {
 
 class ReferrersView extends React.Component<IProps> {
   public render() {
-    return this.props.referrers.map((r, i) => <div key={i}>{r.docId}</div>);
+    return <div>
+        Referenced by:
+        {this.props.referrers.map((r, i) => <DocReference key={i} reference={r} />)}
+      </div>;
   }
 }
 

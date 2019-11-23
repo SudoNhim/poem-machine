@@ -2,6 +2,7 @@ import { Router } from "express";
 import { GraphController } from '../controllers/graph';
 import { SearchController } from '../controllers/search';
 import CanonData from 'cohen-db';
+import { IDoc } from '../../shared/IApiTypes';
 
 export function apiRouter() {
   const router = Router();
@@ -15,10 +16,14 @@ export function apiRouter() {
 
     const referrers = graphProvider.getReferrers(req.params.docId);
 
-    return res.json( {
-      file: doc,
-      referrers
-    });
+    const out: IDoc = {
+      file: doc
+    };
+
+    if (referrers.length > 0)
+      out.referrers = referrers;
+
+    res.json(out);
   });
 
   router.get("/docs/graph", async (req, res) => {
