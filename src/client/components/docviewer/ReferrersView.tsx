@@ -11,7 +11,7 @@ interface IProps {
 
 class ReferrersView extends React.Component<IProps> {
   public render() {
-    return this.props.referrers.length;
+    return this.props.referrers.map((r, i) => <div key={i}>{r.docId}</div>);
   }
 }
 

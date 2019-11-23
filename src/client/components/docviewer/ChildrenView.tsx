@@ -10,7 +10,7 @@ interface IProps {
 
 class ChildrenView extends React.Component<IProps> {
   public render() {
-    return this.props.childIds.length;
+    return this.props.childIds.map((id, i) => <div key={i}>{id}</div>);
   }
 }
 

@@ -4,7 +4,6 @@ import { getDoc } from "../../api";
 import { setDoc } from "../../actions";
 import { IDoc, IDocMeta } from "../../../shared/IApiTypes";
 import { IAppState } from "../../model";
-import CanonFileView from "./CanonFileView";
 import ReferrersView from "./ReferrersView";
 import ChildrenView from "./ChildrenView";
 import ContentView from "./ContentView";
