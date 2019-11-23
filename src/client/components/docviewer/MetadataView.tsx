@@ -11,12 +11,24 @@ interface IProps {
 
 class MetadataView extends React.Component<IProps> {
   public render() {
+
+    const rows: string[] = [];
+    if (this.props.metadata.date)
+      rows.push(`Date: ${this.props.metadata.date}`);
+    if (this.props.metadata.location) {
+      const loc = this.props.metadata.location;
+      if (loc.country) rows.push(`Country: ${loc.country}`);
+      if (loc.city) rows.push(`City: ${loc.city}`);
+      if (loc.venue) rows.push(`Venue: ${loc.venue}`);
+    }
+    if (this.props.metadata.event)
+      rows.push(`Event: ${this.props.metadata.event}`);
+
     return (
       <div>
-        {Object.keys(this.props.metadata).map((key, i) => (
+        {rows.map((row, i) => (
           <div key={i}>
-            {key}
-            : {JSON.stringify(this.props.metadata[key])}
+            {row}
           </div>
         ))}
       </div>
