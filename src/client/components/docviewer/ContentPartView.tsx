@@ -23,10 +23,11 @@ class ContentPartView extends React.Component<IProps> {
 
     return (
       <div>
-        {prefix}{" "}
-        <Link to={`/doc/${this.props.part.reference}`}>
-          {this.props.target.title}
-        </Link>
+        <div className={css.reference}>{prefix}{" "}
+          <Link to={`/doc/${this.props.part.reference}`}>
+            <span className={css.link}>{this.props.target.title}</span>
+          </Link>
+        </div>
         <CanonTextView text={this.props.part.content} />
       </div>
     );

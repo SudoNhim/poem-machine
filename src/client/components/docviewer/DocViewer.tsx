@@ -29,23 +29,23 @@ class DocViewer extends React.Component<IProps> {
     else
       return (
         <div>
-          <div>{this.props.docMeta.title}</div>
+          <div className={css.section + ' ' + css.heading}>{this.props.docMeta.title}</div>
           {this.props.doc
             ? this.props.doc.file.metadata && (
-                <MetadataView metadata={this.props.doc.file.metadata} />
+              <div className={css.section}><MetadataView metadata={this.props.doc.file.metadata} /></div>
             )
-            : "Loading..."}
+            : <div className={css.section}>Loading...</div>}
           {this.props.doc
             ? this.props.doc.file.content && (
-                <ContentView content={this.props.doc.file.content} />
+              <div className={css.section}><ContentView content={this.props.doc.file.content} /></div>
               )
-            : "Loading..."}
-          {this.props.docMeta.children && <ChildrenView childIds={this.props.docMeta.children} />}
+            : <div className={css.section}>Loading...</div>}
+          {this.props.docMeta.children && <div className={css.section}><ChildrenView childIds={this.props.docMeta.children} /></div>}
           {this.props.doc
             ? this.props.doc.referrers && (
-                <ReferrersView referrers={this.props.doc.referrers} />
+              <div className={css.section}><ReferrersView referrers={this.props.doc.referrers} /></div>
               )
-            : "Loading..."}
+            : <div className={css.section}>Loading...</div>}
         </div>
       );
   }

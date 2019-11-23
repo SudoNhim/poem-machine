@@ -16,7 +16,7 @@ class DocReference extends React.Component<IProps> {
     return (
       <div>
         <Link to={`/doc/${this.props.reference.docId}`}>
-          {this.props.meta.title}
+          <span className={css.link}>{this.props.meta.title}</span>
         </Link>
       </div>
     );
