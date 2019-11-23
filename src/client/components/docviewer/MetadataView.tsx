@@ -6,18 +6,27 @@ import { Metadata } from "cohen-db/schema";
 const css = require("./docviewer.css");
 
 interface IProps {
-  metadata: Metadata
+  metadata: Metadata;
 }
 
 class MetadataView extends React.Component<IProps> {
   public render() {
-    return this.props.metadata;
+    return (
+      <div>
+        {Object.keys(this.props.metadata).map((key, i) => (
+          <div key={i}>
+            {key}
+            : {JSON.stringify(this.props.metadata[key])}
+          </div>
+        ))}
+      </div>
+    );
   }
 }
 
 // currently not using redux connection
 const mapStateToProps = (state: IAppState, ownProps: IProps) => ({
-    metadata: ownProps.metadata
+  metadata: ownProps.metadata
 });
 
 export default connect(mapStateToProps)(MetadataView);

@@ -40,7 +40,7 @@ class DocViewer extends React.Component<IProps> {
                 <ContentView content={this.props.doc.file.content} />
               )
             : "Loading..."}
-          <ChildrenView childIds={this.props.docMeta.children} />
+          {this.props.docMeta.children && <ChildrenView childIds={this.props.docMeta.children} />}
           {this.props.doc
             ? this.props.doc.referrers && (
                 <ReferrersView referrers={this.props.doc.referrers} />
