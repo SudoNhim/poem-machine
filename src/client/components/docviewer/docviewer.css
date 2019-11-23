@@ -1,0 +1,19 @@
+.heading {
+    font-weight: bold;
+}
+
+.reference {
+    font-style: italic;
+}
+
+.link {
+    text-decoration: underline;
+}
+
+.section {
+    margin: 0.2cm;
+    margin-bottom: 0;
+    padding: 0.2cm;
+    background-color: white;
+    max-width: 32em;
+  }

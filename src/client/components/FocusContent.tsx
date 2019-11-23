@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { IAppState, IFocusState } from '../model';
-import DocViewer from './DocViewer';
+import DocViewer from './docviewer/DocViewer';
 import SearchResultsViewer from './SearchResultsViewer';
 
 const css = require('./all.css');
