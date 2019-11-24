@@ -8,7 +8,14 @@ export interface IDocMeta {
 
 export interface IDocReference {
     docId: string;
+    
+    // Section is applicable only in a multipart document
     section?: number;
+
+    // Location in canonical text
+    paragraph?: number;
+    line?: number;
+    substring?: number[];
 }
 
 export interface IDoc {

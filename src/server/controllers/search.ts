@@ -2,8 +2,7 @@ import { Index } from "lunr";
 import * as lunr from "lunr";
 import { ISearchResults } from "../../shared/IApiTypes";
 import { ExplodeAllSearchable } from "../lib/explode-searchable";
-import CanonData from 'cohen-db';
-import * as jsonpath from 'jsonpath';
+import { DeserializeDocRef } from '../../shared/util';
 
 export interface SearchHit {
   id: string;
@@ -14,20 +13,24 @@ export interface SearchHit {
 // like generating previews
 export class SearchController {
   private index: Index;
+  private shardLookup: { [ref: string]: string } = {};
 
   // Note: with lunr 2.0, the index is immutable, so if
   // a document is edited, this needs to be rebuilt
   constructor() {
+    const controller = this;
     this.index = lunr(function() {
       // Shards are identified by their JSONPath
-      this.ref("path");
+      this.ref("docref");
       this.field("text");
 
       // Retrieve match position for generating previews
       this.metadataWhitelist = ["position"];
 
-      for (var shard of ExplodeAllSearchable())
+      for (var shard of ExplodeAllSearchable()) {
         this.add(shard);
+        controller.shardLookup[shard.docref] = shard.text;
+      }
     });
   }
 
@@ -38,15 +41,13 @@ export class SearchController {
       term,
       hits: hits.map(hit => ({
         id: this.docIdFromJsonPath(hit.ref),
-        preview: jsonpath.query(CanonData, hit.ref)[0]
+        preview: this.shardLookup[hit.ref]
       }))
     };
   }
 
   private docIdFromJsonPath(ref: string): string {
-    const path = jsonpath.parse(ref);
-    console.log(path[1]);
-    return path[1].expression.value;
+    return DeserializeDocRef(ref).docId;
   }
 
   /*
