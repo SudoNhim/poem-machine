@@ -12,16 +12,24 @@ interface IProps {
     preview: IDocReferencePreview;
 }
 
-const DocReferencePreview: React.FunctionComponent<IProps> = (props) =>  (
-    <div className={css.card}>
-        <Link to={`/doc/${props.preview.docRef.docId}`}>
-            <p className={css.cardtitle}>
-                {props.docMeta.title}
-            </p>
-        </Link>
-        <CanonTextView text={props.preview.preview} />
-    </div>
-);
+const DocReferencePreview: React.FunctionComponent<IProps> = (props) => {
+    const kind = props.docMeta.kind;
+    const prefix = `${kind.charAt(0).toUpperCase()}${kind.substr(1)}`;
+    
+    return (
+        <div className={css.card}>
+            <div className={css.reference}>
+                {prefix}{' '}
+                <Link to={`/doc/${props.preview.docRef.docId}`}>
+                    <span className={css.link}>
+                        {props.docMeta.title}
+                    </span>
+                </Link>
+            </div>
+            <CanonTextView text={props.preview.preview} />
+        </div>
+    );
+}
 
 const mapStateToProps = (state: IAppState, ownProps) => ({
     docMeta: state.docs.graph[ownProps.preview.docRef.docId],
