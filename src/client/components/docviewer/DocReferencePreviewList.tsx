@@ -7,21 +7,20 @@ import DocReferencePreview from "./DocReferencePreview";
 const css = require("./docviewer.css");
 
 interface IProps {
-  referrers: IDocReferencePreview[]
+  previews: IDocReferencePreview[]
 }
 
-class ReferrersView extends React.Component<IProps> {
+class DocReferencePreviewList extends React.Component<IProps> {
   public render() {
     return <div>
-        <div className={css.heading}>Referenced by</div>
-        {this.props.referrers.map((r, i) => <DocReferencePreview key={i} preview={r} />)}
+        {this.props.previews.map((r, i) => <DocReferencePreview key={i} preview={r} />)}
       </div>;
   }
 }
 
 // currently not using redux connection
 const mapStateToProps = (state: IAppState, ownProps: IProps) => ({
-    referrers: ownProps.referrers
+    previews: ownProps.previews
 });
 
-export default connect(mapStateToProps)(ReferrersView);
+export default connect(mapStateToProps)(DocReferencePreviewList);

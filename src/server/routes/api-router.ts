@@ -21,6 +21,9 @@ export function apiRouter() {
       file: doc
     };
 
+    if (doc.children)
+      out.children = doc.children.map(id => GeneratePreview({docId: id}));
+
     if (referrers.length > 0)
       out.referrers = referrers.map(ref => GeneratePreview(ref));
 

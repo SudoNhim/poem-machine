@@ -4,10 +4,9 @@ import { getDoc } from "../../api";
 import { setDoc } from "../../actions";
 import { IDoc, IDocMeta } from "../../../shared/IApiTypes";
 import { IAppState } from "../../model";
-import ReferrersView from "./ReferrersView";
-import ChildrenView from "./ChildrenView";
 import ContentView from "./ContentView";
 import MetadataView from "./MetadataView";
+import DocReferencePreviewList from "./DocReferencePreviewList";
 
 const css = require("./docviewer.css");
 
@@ -26,26 +25,29 @@ class DocViewer extends React.Component<IProps> {
 
   public render() {
     if (!this.props.docMeta) return <div>Document does not exist.</div>;
-    else
-      return (
+    else if (!this.props.doc)
+      return <div>
+        <div className={css.section + ' ' + css.heading}>{this.props.docMeta.title}</div>
+        Loading...
+      </div>;
+      else
+        return (
         <div>
           <div className={css.section + ' ' + css.heading}>{this.props.docMeta.title}</div>
-          {this.props.doc
-            ? this.props.doc.file.metadata && (
-              <div className={css.section}><MetadataView metadata={this.props.doc.file.metadata} /></div>
-            )
-            : <div className={css.section}>Loading...</div>}
-          {this.props.doc
-            ? this.props.doc.file.content && (
-              <div className={css.section}><ContentView content={this.props.doc.file.content} /></div>
-              )
-            : <div className={css.section}>Loading...</div>}
-          {this.props.docMeta.children && <div className={css.section}><ChildrenView childIds={this.props.docMeta.children} /></div>}
-          {this.props.doc
-            ? this.props.doc.referrers && (
-              <div className={css.section}><ReferrersView referrers={this.props.doc.referrers} /></div>
-              )
-            : <div className={css.section}>Loading...</div>}
+          {this.props.doc.file.metadata &&
+            <div className={css.section}><MetadataView metadata={this.props.doc.file.metadata} /></div>}
+          {this.props.doc.file.content &&
+            <div className={css.section}><ContentView content={this.props.doc.file.content} /></div>}
+          {this.props.doc.children &&
+            <div className={css.section}>
+              Children
+              <DocReferencePreviewList previews={this.props.doc.children} />
+            </div>}
+          {this.props.doc.referrers && 
+            <div className={css.section}>
+              Referred to by
+              <DocReferencePreviewList previews={this.props.doc.referrers} />
+            </div>}
         </div>
       );
   }

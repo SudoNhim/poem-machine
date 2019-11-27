@@ -23,6 +23,8 @@ export interface IDocReference {
 export interface IDoc {
     file: CanonFile;
 
+    children?: IDocReferencePreview[];
+
     // List of previews of docs that have links to this one
     referrers?: IDocReferencePreview[];
 
