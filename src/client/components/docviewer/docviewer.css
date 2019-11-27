@@ -15,7 +15,7 @@
   margin: 0.2cm;
   padding: 0.2cm;
   
-  max-width: 32em;
+  max-width: 40em;
 }
 
 .sectiontitle {
@@ -30,4 +30,15 @@
 
 .cardtitle {
   font-weight: bold;
+}
+
+.canonparagraph {
+}
+
+.canonline {
+  margin-bottom: 0.1cm;
+}
+
+.canonline:hover {
+  background-color: lightyellow;
 }

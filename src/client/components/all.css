@@ -43,7 +43,7 @@ a {
   background: rgba(220, 235, 252);
   overflow-y: scroll;
   position: fixed;
-  width: 16em;
+  width: 20em;
   z-index: 2;
   top: 1.5em;
   bottom: -0;
@@ -75,7 +75,7 @@ a {
   overflow-y: scroll;
   flex-grow: 1;
   position: absolute;
-  left: 16em;
+  left: 20em;
   right: -0;
   top: 0;
   bottom: 0;
@@ -88,7 +88,7 @@ a {
     }
 
     .navinactive {
-        left: -16em;
+        left: -20em;
     }
 
     .navtogglebar {
@@ -105,7 +105,7 @@ a {
   margin-bottom: 0;
   padding: 0.2cm;
   background-color: white;
-  max-width: 32em;
+  max-width: 40em;
 }
 
 .line {

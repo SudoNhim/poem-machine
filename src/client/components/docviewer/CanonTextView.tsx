@@ -13,9 +13,9 @@ class CanonTextView extends React.Component<IProps> {
   public render() {
     return <div className={css.viewsection + ' ' + css.docviewer_text}>
     {this.props.text.text.map((p, i2) => (
-      <p key={i2}>{
+      <p className={css.canonparagraph} key={i2}>{
         Array.isArray(p)
-          ? p.map((l, i3) => <span key={i3}>{l}<br /></span>)
+          ? p.map((l, i3) => <div className={css.canonline} key={i3}>{l}</div>)
           : <span>{p}<br /></span>
       }</p>))}</div>;
   }
