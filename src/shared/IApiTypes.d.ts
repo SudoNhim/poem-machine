@@ -23,8 +23,8 @@ export interface IDocReference {
 export interface IDoc {
     file: CanonFile;
 
-    // List of docids of docs that have links to this one
-    referrers?: IDocReference[];
+    // List of previews of docs that have links to this one
+    referrers?: IDocReferencePreview[];
 
     // Annotations, discussion thread....
 }
@@ -34,12 +34,17 @@ export interface IDocGraph {
     db: IDocMeta;
 }
 
-export interface ISearchHit {
-    id: string;
+export interface IDocReferencePreview {
+    docRef: string;
     preview: Text;
 }
 
 export interface ISearchResults {
     term: string;
-    hits: ISearchHit[];
+
+    // All search hits down to the line. Can be used for highlighting results in documents
+    hits: IDocReference[];
+
+    // A list of aggregated previews by docid/section
+    previews: IDocReferencePreview[]
 }
