@@ -3,6 +3,7 @@ import { GraphController } from '../controllers/graph';
 import { SearchController } from '../controllers/search';
 import CanonData from 'cohen-db';
 import { IDoc } from '../../shared/IApiTypes';
+import { GeneratePreview } from '../lib/generate-preview';
 
 export function apiRouter() {
   const router = Router();
@@ -21,7 +22,7 @@ export function apiRouter() {
     };
 
     if (referrers.length > 0)
-      out.referrers = referrers;
+      out.referrers = referrers.map(ref => GeneratePreview(ref));
 
     res.json(out);
   });

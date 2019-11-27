@@ -1,20 +1,20 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { IDocReference } from "../../../shared/IApiTypes";
+import { IDocReferencePreview } from "../../../shared/IApiTypes";
 import { IAppState } from "../../model";
-import DocReference from './DocReference'
+import DocReferencePreview from "./DocReferencePreview";
 
 const css = require("./docviewer.css");
 
 interface IProps {
-  referrers: IDocReference[]
+  referrers: IDocReferencePreview[]
 }
 
 class ReferrersView extends React.Component<IProps> {
   public render() {
     return <div>
         <div className={css.heading}>Referenced by</div>
-        {this.props.referrers.map((r, i) => <DocReference key={i} reference={r} />)}
+        {this.props.referrers.map((r, i) => <DocReferencePreview key={i} preview={r} />)}
       </div>;
   }
 }
