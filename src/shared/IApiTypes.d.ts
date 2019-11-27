@@ -1,4 +1,4 @@
-import { CanonFile } from "cohen-db/schema";
+import { CanonFile, Text } from "cohen-db/schema";
 
 export interface IDocMeta {
     kind: string;
@@ -15,7 +15,9 @@ export interface IDocReference {
     // Location in canonical text
     paragraph?: number;
     line?: number;
-    substring?: number[];
+
+    // One or more pairs of [start, length]
+    substrings?: number[][];
 }
 
 export interface IDoc {
@@ -34,7 +36,7 @@ export interface IDocGraph {
 
 export interface ISearchHit {
     id: string;
-    preview: string;
+    preview: Text;
 }
 
 export interface ISearchResults {
