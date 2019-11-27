@@ -10,7 +10,7 @@ export function GeneratePreview(docRef: IDocReference): IDocReferencePreview {
       return {
         docRef,
         preview: {
-          text: ["No content"]
+          text: []
         }
       };
     }
