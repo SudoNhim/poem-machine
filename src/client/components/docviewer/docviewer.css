@@ -1,20 +1,33 @@
 .heading {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .reference {
-    font-style: italic;
+  font-style: italic;
 }
 
 .link {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .section {
-    margin: 0.2cm;
-    margin-bottom: 0;
-    padding: 0.2cm;
-    padding-bottom: 0;
-    background-color: white;
-    max-width: 32em;
-  }
+    
+  margin: 0.2cm;
+  padding: 0.2cm;
+  
+  max-width: 32em;
+}
+
+.sectiontitle {
+}
+
+.card {
+  border: 1px solid lightgray;
+  background-color: white;
+  margin: 0.2cm;
+  padding: 0.2cm;
+}
+
+.cardtitle {
+  font-weight: bold;
+}

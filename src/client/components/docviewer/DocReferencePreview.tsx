@@ -5,7 +5,7 @@ import { IDocReferencePreview, IDocMeta } from '../../../shared/IApiTypes';
 import { IAppState } from '../../model';
 import CanonTextView from './CanonTextView';
 
-const css = require('../all.css');
+const css = require('./docviewer.css');
 
 interface IProps {
     docMeta: IDocMeta;
@@ -13,9 +13,9 @@ interface IProps {
 }
 
 const DocReferencePreview: React.FunctionComponent<IProps> = (props) =>  (
-    <div>
+    <div className={css.card}>
         <Link to={`/doc/${props.preview.docRef.docId}`}>
-            <p className={css.searchhit_title}>
+            <p className={css.cardtitle}>
                 {props.docMeta.title}
             </p>
         </Link>

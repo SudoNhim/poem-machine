@@ -22,7 +22,7 @@ class ContentPartView extends React.Component<IProps> {
     }[this.props.part.kind];
 
     return (
-      <div>
+      <div className={css.card}>
         <div className={css.reference}>{prefix}{" "}
           <Link to={`/doc/${this.props.part.reference}`}>
             <span className={css.link}>{this.props.target.title}</span>
@@ -35,7 +35,7 @@ class ContentPartView extends React.Component<IProps> {
 }
 
 // currently not using redux connection
-const mapStateToProps = (state: IAppState, ownProps: IProps) => ({
+const mapStateToProps = (state: IAppState, ownProps) => ({
   part: ownProps.part,
   target: state.docs.graph[ownProps.part.reference]
 });

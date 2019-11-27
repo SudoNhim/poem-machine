@@ -15,9 +15,11 @@ interface IProps {
 class ContentView extends React.Component<IProps> {
   public render() {
 
-    if (isArray(this.props.content.content))
-        return this.props.content.content.map((part, i) => <ContentPartView key={i} part={part} />);
-    else return <CanonTextView text={this.props.content.content} />
+    if (Array.isArray(this.props.content.content))
+      return this.props.content.content.map((part, i) => <ContentPartView key={i} part={part} />);
+    else return <div className={css.card}>
+      <CanonTextView text={this.props.content.content} />
+    </div>;
 
     return this.props.content;
   }
@@ -25,7 +27,7 @@ class ContentView extends React.Component<IProps> {
 
 // currently not using redux connection
 const mapStateToProps = (state: IAppState, ownProps: IProps) => ({
-    content: ownProps.content
+  content: ownProps.content
 });
 
 export default connect(mapStateToProps)(ContentView);
