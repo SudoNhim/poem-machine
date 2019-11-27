@@ -35,29 +35,41 @@ export function GeneratePreview(docRef: IDocReference): IDocReferencePreview {
 
 // Generate a shortened preview view of the text that includes the indicated paragraph/line
 function GeneratePreviewText(text: Text, paragraph: number, line: number): Text {
-    const p = text.text[paragraph];
-    const start = Math.max(line - 1, 0);
-    const end = Math.max(line + 3, 3);
-    let lines: string[];
-    if (Array.isArray(p)) {
-        lines = p.filter((_, i) => i >= start && i <= end);
-    } else {
-        lines = [p];
-    }
-
+    const budget = 4;
+    const linelen = 64;
     var cost = 0;
-    var out: string[] = [];
-    for (const str of lines) {
-        const c = Math.ceil(str.length / 64);
-        if (c + cost <= 4)
-            out.push(str);
-        else
-            out.push(TrimString(str, (4 - cost) * 64));
-        cost += c;
+
+    var out: string[][] = [];
+    while (cost < budget && paragraph < text.text.length) {
+        var pout: string[] = [];
+
+        const p = text.text[paragraph];
+        const start = Math.max(line - 1, 0);
+        const end = Math.max(line + 3, 3);
+        let lines: string[];
+        if (Array.isArray(p)) {
+            lines = p.filter((_, i) => i >= start && i <= end);
+        } else {
+            lines = [p];
+        }
+
+        for (const str of lines) {
+            const c = Math.ceil(str.length / linelen);
+            cost += c;
+            if (cost <= budget)
+                pout.push(str);
+            else {
+                pout.push(TrimString(str, (budget - cost + c) * linelen));
+                break;
+            }
+        }
+
+        out.push(pout);
+        paragraph = paragraph + 1;
     }
 
     return {
-        text: [out]
+        text: out
     };
 }
 
