@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { IAppState } from '../model';
 import { ISearchResults } from '../../shared/IApiTypes';
-import SearchHit from './SearchHit';
+import DocReferencePreveiw from './docviewer/DocReferencePreview';
 
 const css = require("./all.css");
 
@@ -12,9 +12,9 @@ interface IProps {
 
 const SearchResultsViewer: React.FunctionComponent<IProps> = (props) =>  (
     <div>
-        {props.searchResults.hits.map((hit, index) =>
+        {props.searchResults.previews.map((p, index) =>
             <div className={css.viewsection} key={index}>
-                <SearchHit hit={hit} />
+                <DocReferencePreveiw preview={p} />
             </div>
         )}
     </div>

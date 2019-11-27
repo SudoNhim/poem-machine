@@ -35,7 +35,7 @@ export interface IDocGraph {
 }
 
 export interface IDocReferencePreview {
-    docRef: string;
+    docRef: IDocReference;
     preview: Text;
 }
 

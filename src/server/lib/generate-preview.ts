@@ -2,14 +2,13 @@ import { Text } from 'cohen-db/schema';
 import { IDocReferencePreview, IDocReference } from '../../shared/IApiTypes';
 import { isNullOrUndefined } from 'util';
 import CanonData from "cohen-db";
-import { SerializeDocRef } from '../../shared/util';
 
 export function GeneratePreview(docRef: IDocReference): IDocReferencePreview {
     const doc = CanonData[docRef.docId];
 
     if (!doc.content) {
       return {
-        docRef: docRef.docId,
+        docRef,
         preview: {
           text: ["No content"]
         }
@@ -29,7 +28,7 @@ export function GeneratePreview(docRef: IDocReference): IDocReferencePreview {
       adjustedRef.section = docRef.section;
 
     return {
-      docRef: SerializeDocRef(adjustedRef),
+      docRef,
       preview: GeneratePreviewText(activeText, docRef.paragraph || 0, docRef.line || 0)
     };
 }
@@ -38,10 +37,10 @@ export function GeneratePreview(docRef: IDocReference): IDocReferencePreview {
 function GeneratePreviewText(text: Text, paragraph: number, line: number): Text {
     const p = text.text[paragraph];
     const start = Math.max(line - 1, 0);
-    const end = Math.max(line + 2, 3);
+    const end = Math.max(line + 3, 3);
     let lines: string[];
     if (Array.isArray(p)) {
-        lines = p.filter((_, i) => i >= start && i < end);
+        lines = p.filter((_, i) => i >= start && i <= end);
     } else {
         lines = [p];
     }

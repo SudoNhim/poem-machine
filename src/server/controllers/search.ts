@@ -51,7 +51,7 @@ export class SearchController {
         }
       });
 
-      const sref = ref.docId + isNullOrUndefined(ref.section) ? '' : ref.section;
+      const sref = `${ref.docId}|${(isNullOrUndefined(ref.section) ? '' : ref.section)}`;
       if (!hitsByDocPart[sref]) {
         hitsByDocPart[sref] = [];
       }
