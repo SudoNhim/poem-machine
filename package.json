@@ -29,7 +29,6 @@
     "cohen-db": "github:SudoNhim/cohen-db#270d67d",
     "ejs": "^2.7.4",
     "express": "^4.17.1",
-    "jsonpath": "^1.0.2",
     "lunr": "^2.3.8",
     "mongodb": "^3.3.4",
     "tslib": "^1.10.0"
