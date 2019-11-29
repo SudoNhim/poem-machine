@@ -7,16 +7,16 @@ const css = require("./docviewer.css");
 
 interface IProps {
   text: Text;
-  prefix: string;
 }
 
-class CanonTextView extends React.Component<IProps> {
+// similar to CanonTextView but no annotations, references, highlighting, etc
+class PreviewTextView extends React.Component<IProps> {
   public render() {
     return <div>
     {this.props.text.text.map((p, i) => (
-      <div id={`${this.props.prefix}p${i}`} className={css.canonparagraph} key={i}>{
+      <div className={css.previewparagraph} key={i}>{
         Array.isArray(p)
-          ? p.map((l, i2) => <div id={`${this.props.prefix}p${i}.l${i2}`} className={css.canonline} key={i2}>{l}</div>)
+          ? p.map((l, i2) => <div className={css.previewline} key={i2}>{l}</div>)
           : p
       }</div>))}</div>;
   }
@@ -24,8 +24,7 @@ class CanonTextView extends React.Component<IProps> {
 
 // currently not using redux connection
 const mapStateToProps = (state: IAppState, ownProps: IProps) => ({
-    text: ownProps.text,
-    prefix: ownProps.prefix
+    text: ownProps.text
 });
 
-export default connect(mapStateToProps)(CanonTextView);
+export default connect(mapStateToProps)(PreviewTextView);

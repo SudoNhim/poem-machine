@@ -10,6 +10,7 @@ const css = require("./docviewer.css");
 
 interface IProps {
   part: Prologue | Variation | Note;
+  section: number;
   target: IDocMeta;
 }
 
@@ -22,13 +23,13 @@ class ContentPartView extends React.Component<IProps> {
     }[this.props.part.kind];
 
     return (
-      <div className={css.card}>
+      <div id={`s${this.props.section}`} className={css.card}>
         <div className={css.reference}>{prefix}{" "}
           <Link to={`/doc/${this.props.part.reference}`}>
             <span className={css.link}>{this.props.target.title}</span>
           </Link>
         </div>
-        <CanonTextView text={this.props.part.content} />
+        <CanonTextView prefix={`s${this.props.section}.`} text={this.props.part.content} />
       </div>
     );
   }
@@ -37,6 +38,7 @@ class ContentPartView extends React.Component<IProps> {
 // currently not using redux connection
 const mapStateToProps = (state: IAppState, ownProps) => ({
   part: ownProps.part,
+  section: ownProps.section,
   target: state.docs.graph[ownProps.part.reference]
 });
 

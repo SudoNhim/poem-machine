@@ -4,6 +4,7 @@
 
 .reference {
   font-style: italic;
+  margin-bottom: 1.5em;
 }
 
 .link {
@@ -42,4 +43,12 @@
 
 .canonline:hover {
   background-color: lightyellow;
+}
+
+.previewparagraph {
+  margin-bottom: 1.5em;
+}
+
+.previewline {
+  margin-bottom: 0.1cm;
 }

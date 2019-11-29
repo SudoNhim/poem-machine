@@ -1,13 +1,13 @@
 import { IDocReference } from "./IApiTypes";
 import { isNullOrUndefined } from "util";
 
-export function SerializeDocRef(ref: IDocReference): string {
+export function SerializeDocRef(ref: IDocReference, includeSubstr: boolean = true): string {
   const parts: string[] = [];
   if (!isNullOrUndefined(ref.section)) parts.push(`s${ref.section}`);
   if (!isNullOrUndefined(ref.paragraph)) parts.push(`p${ref.paragraph}`);
   if (!isNullOrUndefined(ref.line)) parts.push(`l${ref.line}`);
 
-  if (!isNullOrUndefined(ref.substrings))
+  if (!isNullOrUndefined(ref.substrings) && includeSubstr)
     parts.push(ref.substrings.map(s => `i${s[0]}-${s[1]}`).join(""));
 
   return `${ref.docId}${parts.length ? "#" : ""}${parts.join(".")}`;
