@@ -36,12 +36,10 @@ class DocViewer extends React.Component<IProps> {
           <div className={css.section + ' ' + css.heading}>{this.props.docMeta.title}</div>
           {this.props.doc.file.metadata &&
             <div className={css.section}>
-              <div className={css.sectiontitle}>Metadata</div>
               <MetadataView metadata={this.props.doc.file.metadata} />
             </div>}
           {this.props.doc.file.content &&
             <div className={css.section}>
-              <div className={css.sectiontitle}>Content</div>
               <ContentView content={this.props.doc.file.content} />
               </div>}
           {this.props.doc.children &&
@@ -51,7 +49,7 @@ class DocViewer extends React.Component<IProps> {
             </div>}
           {this.props.doc.referrers && 
             <div className={css.section}>
-              <div className={css.sectiontitle}>Referred to by</div>
+              <div className={css.sectiontitle}>References</div>
               <DocReferencePreviewList previews={this.props.doc.referrers} />
             </div>}
         </div>
