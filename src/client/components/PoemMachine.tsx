@@ -6,6 +6,8 @@ import { setGraph, setFocus, setSearch } from '../actions';
 import FocusContent from './FocusContent';
 import NavTree from './NavTree';
 import SearchBox from './SearchBox';
+import { IDocReference } from '../../shared/IApiTypes';
+import { DeserializeDocRef } from '../../shared/util';
 
 const css = require('./all.css');
 
@@ -46,7 +48,9 @@ class PoemMachine extends React.Component<IProps, IState> {
 
     private async handleRoute() {
         const { docId, searchTerm } = this.props.match.params;
-        if (docId) this.props.setFocus({ docId });
+        const part = this.props.location.hash;
+        const docRef: IDocReference = DeserializeDocRef(`${docId}${part}`);
+        if (docId) this.props.setFocus({ docRef });
         else if (searchTerm) {
             const searchResults = await getSearchResults(searchTerm);
             this.props.setSearch(searchResults);

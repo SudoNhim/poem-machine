@@ -8,20 +8,24 @@ const css = require('./all.css');
 
 interface IProps {
     focus: IFocusState;
+    hasGraph: boolean;
 }
 
 const FocusContent: React.FunctionComponent<IProps> = (props) =>  (
     <div className={css.focuscontent}>
-        {props.focus.docId ? 
-            <DocViewer id={props.focus.docId} key={props.focus.docId}/>
+        {props.focus.docRef ? 
+            <DocViewer id={props.focus.docRef.docId} key={props.focus.docRef.docId}/>
         : props.focus.search ?
             <SearchResultsViewer />
-        : <div className={css.viewsection}>"No focus..."</div>}
+        : props.hasGraph ?
+            <DocViewer id='db' key='db'/>
+        : <div className={css.viewsection}>Loading...</div>}
     </div>
 );
 
 const mapStateToProps = (state: IAppState): IProps => ({
-    focus: state.focus
+    focus: state.focus,
+    hasGraph: state.docs.graph.db.children.length > 0
 });
 
 export default connect(mapStateToProps, {})(FocusContent);

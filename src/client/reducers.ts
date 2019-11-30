@@ -6,7 +6,8 @@ const initialState: IAppState = {
         graph: {
             db: {
                 title: "Database Root",
-                kind: "root"
+                kind: "group",
+                children: []
             }
         },
         cache: {}
@@ -14,7 +15,8 @@ const initialState: IAppState = {
     focus: {},
     search: {
         term: null,
-        hits: []
+        hits: [],
+        previews: []
     }
 }
 

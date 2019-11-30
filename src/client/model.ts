@@ -1,4 +1,4 @@
-import { IDoc, IDocGraph, ISearchResults } from '../shared/IApiTypes';
+import { IDoc, IDocGraph, ISearchResults, IDocReference } from '../shared/IApiTypes';
 
 export interface IDocState {
     graph: IDocGraph;
@@ -6,7 +6,7 @@ export interface IDocState {
 }
 
 export interface IFocusState {
-    docId?: string;
+    docRef?: IDocReference;
     search?: boolean;
 }
 
