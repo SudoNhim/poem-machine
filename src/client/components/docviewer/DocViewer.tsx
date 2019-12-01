@@ -1,12 +1,13 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { getDoc } from "../../api";
-import { setDoc } from "../../actions";
+import { setDoc, setScrolled } from "../../actions";
 import { IDoc, IDocMeta } from "../../../shared/IApiTypes";
-import { IAppState } from "../../model";
+import { IAppState, IFocusState } from "../../model";
 import ContentView from "./ContentView";
 import MetadataView from "./MetadataView";
 import DocReferencePreviewList from "./DocReferencePreviewList";
+import { SerializeDocRef } from "../../../shared/util";
 
 const css = require("./docviewer.css");
 
@@ -14,6 +15,8 @@ interface IProps {
   id: string;
   doc: IDoc;
   docMeta: IDocMeta;
+  focus: IFocusState;
+  setScrolled: typeof setScrolled;
   setDoc: typeof setDoc;
 }
 
@@ -23,6 +26,14 @@ class DocViewer extends React.Component<IProps> {
     this.props.setDoc(this.props.id, doc);
   }
 
+  public componentDidUpdate() {
+    if (this.props.doc && this.props.focus.waitingToScroll) {
+      const elId = SerializeDocRef(this.props.focus.docRef).split('#')[1];
+      document.getElementById(elId).scrollIntoView({ behavior: 'smooth' });
+      this.props.setScrolled();
+    }
+  }
+
   public render() {
     if (!this.props.docMeta) return <div>Document does not exist.</div>;
     else if (!this.props.doc)
@@ -30,7 +41,7 @@ class DocViewer extends React.Component<IProps> {
         <div className={css.section + ' ' + css.heading}>{this.props.docMeta.title}</div>
         Loading...
       </div>;
-      else
+      else 
         return (
         <div>
           <div className={css.section + ' ' + css.heading}>{this.props.docMeta.title}</div>
@@ -60,7 +71,8 @@ class DocViewer extends React.Component<IProps> {
 const mapStateToProps = (state: IAppState, ownProps) => ({
   id: ownProps.id,
   doc: state.docs.cache[ownProps.id],
-  docMeta: state.docs.graph[ownProps.id]
+  docMeta: state.docs.graph[ownProps.id],
+  focus: state.focus
 });
 
-export default connect(mapStateToProps, { setDoc })(DocViewer);
+export default connect(mapStateToProps, { setDoc, setScrolled })(DocViewer);

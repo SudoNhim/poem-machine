@@ -8,6 +8,10 @@ export interface IDocState {
 export interface IFocusState {
     docRef?: IDocReference;
     search?: boolean;
+
+    // Set to true when navigating to a new url using #fragment
+    // Unset when render is finished and scrollIntoView is called
+    waitingToScroll?: boolean;
 }
 
 export interface IAppState {

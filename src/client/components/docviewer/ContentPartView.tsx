@@ -16,7 +16,7 @@ interface IProps {
 
 class ContentPartView extends React.Component<IProps> {
   public render() {
-    const prefix = {
+    const titleprefix = {
       prologue: "Prologue to",
       note: "On",
       variation: "Variation of"
@@ -24,7 +24,7 @@ class ContentPartView extends React.Component<IProps> {
 
     return (
       <div id={`s${this.props.section}`} className={css.card}>
-        <div className={css.reference}>{prefix}{" "}
+        <div className={css.reference}>{titleprefix}{" "}
           <Link to={`/doc/${this.props.part.reference}`}>
             <span className={css.link}>{this.props.target.title}</span>
           </Link>

@@ -5,6 +5,7 @@ export const SET_GRAPH = 'SET_GRAPH';
 export const SET_DOC = 'SET_DOC';
 export const SET_SEARCH = 'SET_SEARCH';
 export const SET_FOCUS = 'SET_FOCUS';
+export const SET_SCROLLED = 'SET_SCROLLED';
 
 interface SetGraphAction {
     type: typeof SET_GRAPH;
@@ -26,7 +27,11 @@ interface SetFocusAction {
     payload: IFocusState;
 }
 
-export type ActionTypes = SetGraphAction | SetDocAction | SetSearchAction | SetFocusAction;
+interface SetScrolledAction {
+    type: typeof SET_SCROLLED;
+}
+
+export type ActionTypes = SetGraphAction | SetDocAction | SetSearchAction | SetFocusAction | SetScrolledAction;
 
 export function setGraph(graph: IDocGraph): SetGraphAction {
     return {
@@ -53,5 +58,11 @@ export function setFocus(focus: IFocusState): SetFocusAction {
     return {
         type: SET_FOCUS,
         payload: focus
+    };
+}
+
+export function setScrolled(): SetScrolledAction {
+    return {
+        type: SET_SCROLLED
     };
 }

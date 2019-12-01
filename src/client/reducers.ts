@@ -1,5 +1,5 @@
 import { IAppState } from './model';
-import { ActionTypes, SET_DOC, SET_GRAPH, SET_SEARCH, SET_FOCUS } from './actions';
+import { ActionTypes, SET_DOC, SET_GRAPH, SET_SEARCH, SET_FOCUS, SET_SCROLLED } from './actions';
 
 const initialState: IAppState = {
     docs: {
@@ -50,6 +50,14 @@ function rootReducer(state = initialState, action: ActionTypes): IAppState {
             return {
                 ...state,
                 focus: action.payload
+            };
+        case SET_SCROLLED:
+            return {
+                ...state,
+                focus: {
+                    ...state.focus,
+                    waitingToScroll: false
+                }
             };
         default:
             return state;
