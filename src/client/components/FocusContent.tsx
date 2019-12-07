@@ -13,18 +13,18 @@ interface IProps {
 
 const FocusContent: React.FunctionComponent<IProps> = (props) =>  (
     <div className={css.focuscontent}>
-        {props.focus.docRef ? 
+        {!props.hasGraph ?
+            <div className={css.viewsection}>Loading...</div>
+        : props.focus.docRef ? 
             <DocViewer id={props.focus.docRef.docId} key={props.focus.docRef.docId}/>
         : props.focus.search ?
             <SearchResultsViewer />
-        : props.hasGraph ?
-            <DocViewer id='db' key='db'/>
-        : <div className={css.viewsection}>Loading...</div>}
+        : <div className={css.viewsection}>Empty focus</div>}
     </div>
 );
 
-const mapStateToProps = (state: IAppState): IProps => ({
-    focus: state.focus,
+const mapStateToProps = (state: IAppState, ownProps): IProps => ({
+    focus: ownProps.focus,
     hasGraph: state.docs.graph.db.children.length > 0
 });
 
