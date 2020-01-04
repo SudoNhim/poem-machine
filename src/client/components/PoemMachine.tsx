@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { getGraph, getSearchResults } from "../api";
 import { setGraph, setFocus, setSearch } from "../actions";
-import FocusContent from "./FocusContent";
+import HistoryCarousel from "./HistoryCarousel";
 import NavTree from "./NavTree";
 import SearchBox from "./SearchBox";
 import { IDocReference } from "../../shared/IApiTypes";
@@ -55,9 +55,6 @@ class PoemMachine extends React.Component<IProps, IState> {
       docRef
     };
 
-    // If the new route includes a hash fragment, we need to scroll it into view after render
-    if (part) newFocus.waitingToScroll = true;
-
     if (docId) this.props.setFocus(newFocus);
     else if (searchTerm) {
       const searchResults = await getSearchResults(searchTerm);
@@ -94,7 +91,7 @@ class PoemMachine extends React.Component<IProps, IState> {
           className={css.viewpane}
           onClick={() => this.setState({ navactive: false })}
         >
-          <FocusContent />
+          <HistoryCarousel />
         </div>
       </div>
     );

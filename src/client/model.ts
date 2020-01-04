@@ -8,6 +8,14 @@ export interface IDocState {
 export interface IFocusState {
     docRef?: IDocReference;
     search?: boolean;
+}
+
+// We keep an array of focus states to match the navigation history
+// All are rendered; only the one corresponding to the current history
+// state is in view
+export interface IFocusStateArray {
+    frames: IFocusState[];
+    index: number;
 
     // Set to true when navigating to a new url using #fragment
     // Unset when render is finished and scrollIntoView is called
@@ -16,6 +24,6 @@ export interface IFocusState {
 
 export interface IAppState {
     docs: IDocState;
-    focus: IFocusState;
+    focus: IFocusStateArray;
     search: ISearchResults;
 }

@@ -20,17 +20,35 @@ interface IProps {
   setDoc: typeof setDoc;
 }
 
-class DocViewer extends React.Component<IProps> {
+interface IState {
+  waitingToScroll: boolean;
+}
+
+class DocViewer extends React.Component<IProps, IState> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      waitingToScroll: true
+    };
+  }
+
   public async componentDidMount() {
     const doc = await getDoc(this.props.id);
     this.props.setDoc(this.props.id, doc);
   }
 
   public componentDidUpdate() {
-    if (this.props.doc && this.props.focus.waitingToScroll) {
-      const elId = SerializeDocRef(this.props.focus.docRef).split('#')[1];
-      document.getElementById(elId).scrollIntoView({ behavior: 'smooth' });
-      this.props.setScrolled();
+    if (this.props.doc && this.state.waitingToScroll) {
+      if (this.props.focus.docRef && (this.props.focus.docRef.section || this.props.focus.docRef.paragraph)) {
+        const elId = SerializeDocRef(this.props.focus.docRef).split('#')[1];
+        document.getElementById(elId).scrollIntoView({ behavior: 'smooth' });
+      } else {
+
+      }
+
+      this.setState({
+        waitingToScroll: false
+      });
     }
   }
 
@@ -72,7 +90,7 @@ const mapStateToProps = (state: IAppState, ownProps) => ({
   id: ownProps.id,
   doc: state.docs.cache[ownProps.id],
   docMeta: state.docs.graph[ownProps.id],
-  focus: state.focus
+  focus: state.focus.frames[state.focus.index]
 });
 
 export default connect(mapStateToProps, { setDoc, setScrolled })(DocViewer);
