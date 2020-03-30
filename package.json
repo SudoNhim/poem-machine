@@ -31,7 +31,6 @@
     "express": "^4.17.1",
     "lunr": "^2.3.8",
     "mongodb": "^3.3.4",
-    "react-swipeable-views": "^0.13.3",
     "tslib": "^1.10.0"
   },
   "devDependencies": {
