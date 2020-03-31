@@ -1,6 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
+import ScrollMemory from 'react-router-scroll-memory';
 import { getGraph, getSearchResults } from "../api";
 import { setGraph, setFocus, setSearch } from "../actions";
 import FocusContent from "./FocusContent";
@@ -91,9 +92,11 @@ class PoemMachine extends React.Component<IProps, IState> {
           </div>
         </div>
         <div
+          id='viewpane'
           className={css.viewpane}
           onClick={() => this.setState({ navactive: false })}
         >
+          <ScrollMemory elementID='viewpane' />
           <FocusContent />
         </div>
       </div>
