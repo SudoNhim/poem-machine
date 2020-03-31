@@ -39,16 +39,16 @@ class PoemMachine extends React.Component<IProps, IState> {
   public async componentDidMount() {
     const graph = await getGraph();
     this.props.setGraph(graph);
-    this.handleRoute();
+    this.handleRoute(true);
   }
 
   public async componentDidUpdate(prevProps: IProps) {
     if (prevProps.match !== this.props.match) {
-      return this.handleRoute();
+      return this.handleRoute(this.props.history.action === 'PUSH');
     }
   }
 
-  private async handleRoute() {
+  private async handleRoute(isPush: boolean) {
     const { docId, searchTerm } = this.props.match.params;
     const part = this.props.location.hash;
     const docRef: IDocReference = DeserializeDocRef(`${docId}${part}`);
@@ -57,7 +57,8 @@ class PoemMachine extends React.Component<IProps, IState> {
     };
 
     // If the new route includes a hash fragment, we need to scroll it into view after render
-    if (part) newFocus.waitingToScroll = true;
+    // (but only if navigating to a new location)
+    if (part && isPush) newFocus.waitingToScroll = true;
 
     if (docId) this.props.setFocus(newFocus);
     else if (searchTerm) {
