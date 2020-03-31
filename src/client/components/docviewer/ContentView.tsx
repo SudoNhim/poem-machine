@@ -4,16 +4,22 @@ import { IAppState } from "../../model";
 import { Content } from "cohen-db/schema";
 import CanonTextView from "./CanonTextView";
 import ContentPartView from "./ContentPartView";
+import { SerializeDocRef } from "../../../shared/util";
 
 const css = require("./docviewer.css");
 
 interface IProps {
   content: Content;
+  targetId: string;
 }
 
 class ContentView extends React.Component<IProps> {
-  public render() {
+  public componentDidMount() {
+    if (this.props.targetId)
+      document.getElementById(this.props.targetId).style.borderLeft = "solid red";
+  }
 
+  public render() {
     if (Array.isArray(this.props.content.content))
       return this.props.content.content.map((part, i) => <ContentPartView section={i} key={i} part={part} />);
     else return <div className={css.card}>
@@ -24,7 +30,8 @@ class ContentView extends React.Component<IProps> {
 
 // currently not using redux connection
 const mapStateToProps = (state: IAppState, ownProps: IProps) => ({
-  content: ownProps.content
+  content: ownProps.content,
+  targetId: SerializeDocRef(state.focus.docRef).split('#')[1]
 });
 
 export default connect(mapStateToProps)(ContentView);
