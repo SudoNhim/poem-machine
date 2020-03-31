@@ -48,16 +48,10 @@ const config: webpack.Configuration = {
           {
             loader: 'css-loader',
             options: {
-              modules: true,
-              camelCase: true,
+              modules: {
+                localIdentName: IS_DEV ? '[name]__[local]' : '[hash:base64]'
+              },
               sourceMap: IS_DEV,
-            },
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              sourceMap: IS_DEV,
-              plugins: IS_DEV ? [cssnano()] : [],
             },
           },
         ],
