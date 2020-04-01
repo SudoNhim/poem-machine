@@ -4,6 +4,7 @@ import { getDoc } from "../../api";
 import { setDoc, setScrolled } from "../../actions";
 import { IDoc, IDocMeta } from "../../../shared/IApiTypes";
 import { IAppState, IFocusState } from "../../model";
+import AnnotationsView from './AnnotationsView';
 import ContentView from "./ContentView";
 import MetadataView from "./MetadataView";
 import DocReferencePreviewList from "./DocReferencePreviewList";
@@ -20,7 +21,18 @@ interface IProps {
   setDoc: typeof setDoc;
 }
 
-class DocViewer extends React.Component<IProps> {
+interface IState {
+  hasContentDom: boolean;
+}
+
+class DocViewer extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      hasContentDom: false
+    };
+  }
+
   public async componentDidMount() {
     const doc = await getDoc(this.props.id);
     this.props.setDoc(this.props.id, doc);
@@ -32,6 +44,9 @@ class DocViewer extends React.Component<IProps> {
       document.getElementById(elId).scrollIntoView({ behavior: 'smooth' });
       this.props.setScrolled();
     }
+
+    if (!this.state.hasContentDom)
+      this.setState({ hasContentDom: true });
   }
 
   public render() {
@@ -52,6 +67,7 @@ class DocViewer extends React.Component<IProps> {
           {this.props.doc.file.content &&
             <div className={css.section}>
               <ContentView content={this.props.doc.file.content} />
+              {this.state.hasContentDom && <AnnotationsView annotations={this.props.doc.annotations} />}
               </div>}
           {this.props.doc.children &&
             <div className={css.section}>
