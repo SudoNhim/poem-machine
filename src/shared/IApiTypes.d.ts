@@ -28,6 +28,8 @@ export interface IDoc {
     // List of previews of docs that have links to this one
     referrers?: IDocReferencePreview[];
 
+    annotations?: IAnnotation[];
+
     // Annotations, discussion thread....
 }
 
@@ -39,6 +41,13 @@ export interface IDocGraph {
 export interface IDocReferencePreview {
     docRef: IDocReference;
     preview: Text;
+}
+
+export interface IAnnotation {
+    // The parts of the document being annotated, e.g. ["p1.l3", "p2.l0"]
+    canonRefs: string[];
+    crossRef?: string;
+    text?: string;
 }
 
 export interface ISearchResults {
