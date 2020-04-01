@@ -8,9 +8,33 @@ interface IProps {
     annotations: IAnnotation[];
 }
 
-class AnnotationsView extends React.Component<IProps> {
+interface IState {
+    windowWidth: number;
+    windowHeight: number;
+}
+
+class AnnotationsView extends React.Component<IProps, IState> {
+    private updateDimensionsHandler: () => void;
+
     constructor(props: IProps) {
         super(props);
+        this.state = {
+            windowWidth: window.innerWidth,
+            windowHeight: window.innerHeight
+        }
+        this.updateDimensionsHandler = this.updateDimensions.bind(this);
+    }
+
+    private updateDimensions() {
+        this.setState({ windowWidth: window.innerWidth, windowHeight: window.innerHeight });
+    };
+
+    public componentDidMount() {
+        window.addEventListener('resize', this.updateDimensionsHandler);
+    }
+
+    public componentWillUnmount() {
+        window.removeEventListener('resize', this.updateDimensionsHandler);
     }
 
     public render(): JSX.Element {
