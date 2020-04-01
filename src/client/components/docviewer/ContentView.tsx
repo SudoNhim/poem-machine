@@ -10,7 +10,7 @@ const css = require("./docviewer.css");
 
 interface IProps {
   content: Content;
-  targetId: string;
+  targetId?: string;
 }
 
 class ContentView extends React.Component<IProps> {
