@@ -4,32 +4,32 @@ export class AnnotationsController {
   public getAnnotations(docId: string): IAnnotation[] {
       return [
           {
-            canonRefs: ['s0'],
-            text: 'Comment on section 0'
+            canonRefs: ['s1'],
+            text: 'Comment on section 1'
           },
           {
             canonRefs: ['s1', 's2'],
             text: 'Comment on sections 1 and 2'
           },
           {
-            canonRefs: ['s0.l2'],
-            text: 'Comment on section 0 line 2'
+            canonRefs: ['s2.l2'],
+            text: 'Comment on section 2 line 2'
           },
           {
-            canonRefs: ['s1.p0'],
-            text: 'comment on section 1 paragraph 0'
+            canonRefs: ['s1.p1'],
+            text: 'comment on section 1 paragraph 1'
           },
           {
-            canonRefs: ['p0'],
-            text: 'comment on paragraph 0'
+            canonRefs: ['p1'],
+            text: 'comment on paragraph 1'
           },
           {
-            canonRefs: ['p1.l2'],
-            text: 'comment on paragraph 1 line 2'
+            canonRefs: ['p2.l4'],
+            text: 'comment on paragraph 2 line 4'
           },
           {
-            canonRefs: ['p0.l1', 'p1.l2'],
-            text: 'comment on paragraph 0 lines 1 and 2'
+            canonRefs: ['p2.l2', 'p2.l3'],
+            text: 'comment on paragraph 2 lines 2 and 3'
           },
           {
             canonRefs: ['l8'],

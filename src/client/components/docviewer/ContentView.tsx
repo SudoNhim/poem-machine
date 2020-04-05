@@ -21,7 +21,7 @@ class ContentView extends React.Component<IProps> {
 
   public render() {
     if (Array.isArray(this.props.content.content))
-      return this.props.content.content.map((part, i) => <ContentPartView section={i} key={i} part={part} />);
+      return this.props.content.content.map((part, i) => <ContentPartView section={i + 1} key={i} part={part} />);
     else return <div className={css.card}>
       <CanonTextView prefix={''} text={this.props.content.content} />
     </div>;

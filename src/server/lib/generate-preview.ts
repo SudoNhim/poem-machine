@@ -17,7 +17,7 @@ export function GeneratePreview(docRef: IDocReference): IDocReferencePreview {
 
     // Build a preview around the first match position
     const activeText: Text = Array.isArray(doc.content.content) ?
-      doc.content.content[docRef.section || 0].content
+      doc.content.content[docRef.section - 1 || 0].content
       : doc.content.content;
 
     const adjustedRef: IDocReference = {
@@ -29,7 +29,7 @@ export function GeneratePreview(docRef: IDocReference): IDocReferencePreview {
 
     return {
       docRef,
-      preview: GeneratePreviewText(activeText, docRef.paragraph || 0, docRef.line || 0)
+      preview: GeneratePreviewText(activeText, docRef.paragraph || 1, docRef.line || 1)
     };
 }
 
@@ -38,6 +38,10 @@ function GeneratePreviewText(text: Text, paragraph: number, line: number): Text 
     const budget = 4;
     const linelen = 64;
     var cost = 0;
+
+    // 1-indexed to 0-indexed
+    paragraph--;
+    line--;
 
     var out: string[][] = [];
     while (cost < budget && paragraph < text.text.length) {

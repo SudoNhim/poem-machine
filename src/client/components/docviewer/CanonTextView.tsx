@@ -16,13 +16,13 @@ class CanonTextView extends React.Component<IProps> {
       <div>
         {this.props.text.text.map((p, i) => (
           <div
-            id={`${this.props.prefix}p${i}`}
+            id={`${this.props.prefix}p${i + 1}`}
             className={css.canonparagraph}
             key={i}
           >
             {(Array.isArray(p) ? p : [p]).map((l, i2) => (
               <div
-                id={`${this.props.prefix}p${i}.l${i2}`}
+                id={`${this.props.prefix}p${i + 1}.l${i2 + 1}`}
                 className={css.canonline}
                 key={i2}
               >

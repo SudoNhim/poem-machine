@@ -53,7 +53,7 @@ export class GraphController {
             if (part.reference === key)
               refs.push({
                 docId: otherKey,
-                section: i
+                section: i + 1
               });
           });
         }

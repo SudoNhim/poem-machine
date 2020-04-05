@@ -49,8 +49,8 @@ export function ExplodeAllSearchable(): CanonShard[] {
               docref: SerializeDocRef({
                 docId: key,
                 section,
-                paragraph: pi,
-                line: li
+                paragraph: pi + 1,
+                line: li + 1
               }),
               text: l
             });
@@ -60,7 +60,7 @@ export function ExplodeAllSearchable(): CanonShard[] {
             docref: SerializeDocRef({
               docId: key,
               section,
-              paragraph: pi
+              paragraph: pi + 1
             }),
             text: p
           });
@@ -69,7 +69,7 @@ export function ExplodeAllSearchable(): CanonShard[] {
 
     if (doc.content) {
       if (Array.isArray(doc.content.content))
-        doc.content.content.forEach((cnt, i) => addText(cnt.content, i));
+        doc.content.content.forEach((cnt, i) => addText(cnt.content, i + 1));
       else addText(doc.content.content, null);
     }
   }
