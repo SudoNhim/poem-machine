@@ -21,13 +21,13 @@ class CanonTextView extends React.Component<IProps> {
             key={i}
           >
             {(Array.isArray(p) ? p : [p]).map((l, i2) => (
-              <p className={css.canonline}><div
+              <p className={css.canonline} key={i2}>
+                <span
                 id={`${this.props.prefix}p${i + 1}.l${i2 + 1}`}
                 className={css.canonlinetext}
-                key={i2}
-              >
-                {l}
-              </div>
+                >
+                  {l}
+                </span>
               </p>
             ))}
           </div>
