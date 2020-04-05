@@ -52,3 +52,15 @@
 .previewline {
   margin-bottom: 0.1cm;
 }
+
+.annotations {
+  position: absolute;
+  top: 0em;
+  width: 24em;
+  right: -0em;
+}
+
+.annotation {
+  position: absolute;
+  background-color: lightgreen;
+}
