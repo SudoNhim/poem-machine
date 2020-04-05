@@ -15,8 +15,7 @@
     
   margin: 0.2cm;
   padding: 0.2cm;
-  
-  max-width: 40em;
+  width: 60%;
 }
 
 .sectiontitle {
@@ -56,11 +55,28 @@
 .annotations {
   position: absolute;
   top: 0em;
-  width: 24em;
+  width: 40%;
   right: -0em;
 }
 
 .annotation {
   position: absolute;
-  background-color: lightgreen;
+  left: 0;
+  right: -0;
+  margin-left: 0.4cm;
+  font-style: italic;
+  border-top: 1px solid lightblue;
+  border-left: 1px solid lightblue;
+  padding-left: 0.5em;
+}
+
+@media only screen and (max-width: 44em) {
+  .section {
+    width: auto;
+    right: -0;
+  }
+
+  .annotations {
+    visibility: hidden;
+  }
 }
