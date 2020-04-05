@@ -37,11 +37,17 @@
 }
 
 .canonline {
-  margin-bottom: 0.1cm;
+  margin: 0;
+  margin-top: 0.2em;
 }
 
-.canonline:hover {
-  background-color: lightyellow;
+.canonlinetext {
+  display: inline;
+}
+
+.canonlinetext:hover {
+  background-color: rgba(200, 200, 255, 0.2);
+  cursor: pointer;
 }
 
 .previewparagraph {
