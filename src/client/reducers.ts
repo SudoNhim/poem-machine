@@ -1,5 +1,5 @@
 import { IAppState } from './model';
-import { ActionTypes, SET_DOC, SET_GRAPH, SET_SEARCH, SET_FOCUS, SET_SCROLLED } from './actions';
+import { ActionTypes, SET_DOC, SET_GRAPH, SET_SEARCH, SET_FOCUS, SET_SCROLLED, SET_HOVER } from './actions';
 
 const initialState: IAppState = {
     docs: {
@@ -13,6 +13,7 @@ const initialState: IAppState = {
         cache: {}
     },
     focus: {},
+    hover: {},
     search: {
         term: null,
         hits: [],
@@ -51,6 +52,11 @@ function rootReducer(state = initialState, action: ActionTypes): IAppState {
                 ...state,
                 focus: action.payload
             };
+        case SET_HOVER:
+            return {
+                ...state,
+                hover: action.payload
+            }
         case SET_SCROLLED:
             return {
                 ...state,

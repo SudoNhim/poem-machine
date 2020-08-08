@@ -45,13 +45,9 @@
   display: inline;
 }
 
-.canonlinetext:hover {
+.canonhover {
   background-color: rgba(200, 200, 255, 0.2);
   cursor: pointer;
-}
-
-.linkedannotationhover {
-  background-color: rgba(200, 200, 255, 0.2);
 }
 
 .previewparagraph {
@@ -79,6 +75,13 @@
   border-left: 1px solid lightblue;
   padding-left: 0.5em;
 }
+
+
+.annotationhover {
+  background-color: rgba(200, 200, 255, 0.2);
+  cursor: pointer;
+}
+
 
 @media only screen and (max-width: 44em) {
   .section {

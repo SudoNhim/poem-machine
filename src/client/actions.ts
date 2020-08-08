@@ -1,10 +1,11 @@
 import { IDocGraph, IDoc, ISearchResults } from "../shared/IApiTypes";
-import { IFocusState } from "./model";
+import { IFocusState, IHoverState } from "./model";
 
 export const SET_GRAPH = 'SET_GRAPH';
 export const SET_DOC = 'SET_DOC';
 export const SET_SEARCH = 'SET_SEARCH';
 export const SET_FOCUS = 'SET_FOCUS';
+export const SET_HOVER = 'SET_HOVER';
 export const SET_SCROLLED = 'SET_SCROLLED';
 
 interface SetGraphAction {
@@ -27,11 +28,16 @@ interface SetFocusAction {
     payload: IFocusState;
 }
 
+interface SetHoverAction {
+    type: typeof SET_HOVER;
+    payload: IHoverState;
+}
+
 interface SetScrolledAction {
     type: typeof SET_SCROLLED;
 }
 
-export type ActionTypes = SetGraphAction | SetDocAction | SetSearchAction | SetFocusAction | SetScrolledAction;
+export type ActionTypes = SetGraphAction | SetDocAction | SetSearchAction | SetFocusAction | SetHoverAction | SetScrolledAction;
 
 export function setGraph(graph: IDocGraph): SetGraphAction {
     return {
@@ -59,6 +65,14 @@ export function setFocus(focus: IFocusState): SetFocusAction {
         type: SET_FOCUS,
         payload: focus
     };
+}
+
+export function setHover(hover: IHoverState): SetHoverAction {
+    console.log("hover: " + JSON.stringify(hover));
+    return {
+        type: SET_HOVER,
+        payload: hover
+    }
 }
 
 export function setScrolled(): SetScrolledAction {

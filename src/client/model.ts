@@ -14,8 +14,13 @@ export interface IFocusState {
     waitingToScroll?: boolean;
 }
 
+export interface IHoverState {
+    docParts?: string[];
+}
+
 export interface IAppState {
     docs: IDocState;
     focus: IFocusState;
+    hover: IHoverState;
     search: ISearchResults;
 }
