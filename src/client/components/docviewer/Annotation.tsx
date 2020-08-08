@@ -1,12 +1,11 @@
 import * as React from "react";
 import { IAnnotation } from "../../../shared/IApiTypes";
 import { connect } from "react-redux";
-import Annotation from "./Annotation";
 
 const css = require("./docviewer.css");
 
 interface IProps {
-    annotations: IAnnotation[];
+    annotation: IAnnotation
 }
 
 interface IState {
@@ -14,7 +13,7 @@ interface IState {
     windowHeight: number;
 }
 
-class AnnotationsView extends React.Component<IProps, IState> {
+class Annotation extends React.Component<IProps, IState> {
     private updateDimensionsHandler: () => void;
 
     constructor(props: IProps) {
@@ -39,14 +38,17 @@ class AnnotationsView extends React.Component<IProps, IState> {
     }
 
     public render(): JSX.Element {
-        return <div className={css.annotations}>
-            {this.props.annotations.map((anno, i) => <Annotation annotation={anno} key={i} />)}
-        </div>;
+        const anchor = document.getElementById(this.props.annotation.canonRefs[0]);
+        if (!anchor) return null;
+        const style: React.CSSProperties = {
+            top: anchor.offsetTop
+        };
+        return <div className={css.annotation} style={style} >{this.props.annotation.text}</div>;
     }
 }
 
 const mapStateToProps = (state, ownProps: IProps) => ({
-    annotations: ownProps.annotations
+    annotation: ownProps.annotation
 });
 
-export default connect(mapStateToProps)(AnnotationsView);
+export default connect(mapStateToProps)(Annotation);
