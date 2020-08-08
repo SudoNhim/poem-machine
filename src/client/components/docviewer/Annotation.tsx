@@ -27,10 +27,14 @@ class Annotation extends React.Component<IProps, IState> {
             top: anchor.offsetTop
         };
 
-        if (this.state.hover)
-            anchor.classList.add(css.linkedannotationhover);
-        else
-            anchor.classList.remove(css.linkedannotationhover);
+        for (var ref of this.props.annotation.canonRefs) {
+            const el = document.getElementById(ref);
+            if (!el) continue;
+            if (this.state.hover)
+                el.classList.add(css.linkedannotationhover);
+            else
+                el.classList.remove(css.linkedannotationhover);
+        }
 
         return <div
             className={css.annotation}
