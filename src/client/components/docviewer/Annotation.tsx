@@ -9,32 +9,15 @@ interface IProps {
 }
 
 interface IState {
-    windowWidth: number;
-    windowHeight: number;
+    hover: boolean
 }
 
 class Annotation extends React.Component<IProps, IState> {
-    private updateDimensionsHandler: () => void;
-
     constructor(props: IProps) {
         super(props);
         this.state = {
-            windowWidth: window.innerWidth,
-            windowHeight: window.innerHeight
+            hover: false
         }
-        this.updateDimensionsHandler = this.updateDimensions.bind(this);
-    }
-
-    private updateDimensions() {
-        this.setState({ windowWidth: window.innerWidth, windowHeight: window.innerHeight });
-    };
-
-    public componentDidMount() {
-        window.addEventListener('resize', this.updateDimensionsHandler);
-    }
-
-    public componentWillUnmount() {
-        window.removeEventListener('resize', this.updateDimensionsHandler);
     }
 
     public render(): JSX.Element {
@@ -43,7 +26,18 @@ class Annotation extends React.Component<IProps, IState> {
         const style: React.CSSProperties = {
             top: anchor.offsetTop
         };
-        return <div className={css.annotation} style={style} >{this.props.annotation.text}</div>;
+
+        if (this.state.hover)
+            anchor.classList.add(css.linkedannotationhover);
+        else
+            anchor.classList.remove(css.linkedannotationhover);
+
+        return <div
+            className={css.annotation}
+            style={style}
+            onMouseEnter={() => this.setState({ hover: true })}
+            onMouseLeave={() => this.setState({ hover: false })}
+            >{this.props.annotation.text}</div>;
     }
 }
 

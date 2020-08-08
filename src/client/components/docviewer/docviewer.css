@@ -50,6 +50,10 @@
   cursor: pointer;
 }
 
+.linkedannotationhover {
+  background-color: rgba(200, 200, 255, 0.2);
+}
+
 .previewparagraph {
   margin-bottom: 1.5em;
 }
