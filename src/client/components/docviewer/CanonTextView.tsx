@@ -17,7 +17,7 @@ class CanonTextView extends React.Component<IProps> {
   public render() {
     return (
       <div>
-        {this.props.text.text.map((p, pi) => this.renderParagraph(pi, p))}
+        {this.props.text.text.map((p, i) => this.renderParagraph(i + 1, p))}
       </div>
     );
   }
@@ -36,7 +36,7 @@ class CanonTextView extends React.Component<IProps> {
       onMouseOut={evt => this.onMouseOut(evt, id)}
     >
       {Array.isArray(text)
-      ? text.map((line, li) => this.renderLine(pi, li, line))
+      ? text.map((line, i) => this.renderLine(pi, i + 1, line))
       : text}
     </div>
   }
@@ -72,7 +72,7 @@ class CanonTextView extends React.Component<IProps> {
 }
 
 // currently not using redux connection
-const mapStateToProps = (state: IAppState, ownProps: IProps) => ({
+const mapStateToProps = (state: IAppState, ownProps) => ({
   text: ownProps.text,
   prefix: ownProps.prefix,
   hover: state.hover
