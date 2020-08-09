@@ -1,7 +1,8 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { IAppState, IFocusState, IHoverState } from "../../model";
+import { IAppState, IHoverState } from "../../model";
 import { Text } from "cohen-db/schema";
+import { setHover } from "../../actions";
 
 const css = require("./docviewer.css");
 
@@ -9,6 +10,7 @@ interface IProps {
   text: Text;
   prefix: string;
   hover: IHoverState;
+  setHover: typeof setHover;
 }
 
 class CanonTextView extends React.Component<IProps> {
@@ -26,7 +28,13 @@ class CanonTextView extends React.Component<IProps> {
     if (this.props.hover.docParts && this.props.hover.docParts.indexOf(id) >= 0)
       classNames.push(css.canonhover);
 
-    return <div id={id} className={classNames.join(" ")} key={pi}>
+    return <div
+      id={id}
+      className={classNames.join(" ")}
+      key={pi}
+      onMouseOver={evt => this.onMouseOver(evt, id)}
+      onMouseOut={evt => this.onMouseOut(evt, id)}
+    >
       {Array.isArray(text)
       ? text.map((line, li) => this.renderLine(pi, li, line))
       : text}
@@ -39,9 +47,27 @@ class CanonTextView extends React.Component<IProps> {
     if (this.props.hover.docParts && this.props.hover.docParts.indexOf(id) >= 0)
       classNames.push(css.canonhover);
 
-    return <p className={css.canonline} key={li}>
-      <span id={id} className={classNames.join(" ")}>{s}</span>
-    </p>;
+    return <div
+      className={css.canonline}
+      key={li}
+      onMouseOver={evt => this.onMouseOver(evt, id)}
+      onMouseOut={evt => this.onMouseOut(evt, id)}
+    >
+      <span
+        id={id}
+        className={classNames.join(" ")}
+      >{s}</span>
+    </div>;
+  }
+
+  private onMouseOver(evt: React.MouseEvent, id: string) {
+    evt.stopPropagation();
+    this.props.setHover({ docParts: [id] });
+  }
+
+  private onMouseOut(evt: React.MouseEvent, id: string) {
+    evt.stopPropagation();
+    this.props.setHover({ });
   }
 }
 
@@ -52,4 +78,4 @@ const mapStateToProps = (state: IAppState, ownProps: IProps) => ({
   hover: state.hover
 });
 
-export default connect(mapStateToProps)(CanonTextView);
+export default connect(mapStateToProps, { setHover })(CanonTextView);
