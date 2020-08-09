@@ -14,26 +14,25 @@ class CanonTextView extends React.Component<IProps> {
   public render() {
     return (
       <div>
-        {this.props.text.text.map((p, i) => (
-          <div
-            id={`${this.props.prefix}p${i + 1}`}
-            className={css.canonparagraph}
-            key={i}
-          >
-            {(Array.isArray(p) ? p : [p]).map((l, i2) => (
-              <p className={css.canonline} key={i2}>
-                <span
-                id={`${this.props.prefix}p${i + 1}.l${i2 + 1}`}
-                className={css.canonlinetext}
-                >
-                  {l}
-                </span>
-              </p>
-            ))}
-          </div>
-        ))}
+        {this.props.text.text.map((p, pi) => this.renderParagraph(pi, p))}
       </div>
     );
+  }
+
+  private renderParagraph(pi: number, text: string | string[]): JSX.Element {
+    const id = `${this.props.prefix}p${pi}`;
+    return <div id={id} className={css.canonparagraph} key={pi}>
+      {Array.isArray(text)
+      ? text.map((line, li) => this.renderLine(pi, li, line))
+      : text}
+    </div>
+  }
+
+  private renderLine(pi: number, li: number, s: string): JSX.Element {
+    const id = `${this.props.prefix}p${pi}.l${li}`;
+    return <p className={css.canonline} key={li}>
+      <span id={id} className={css.canonlinetext}>{s}</span>
+    </p>;
   }
 }
 

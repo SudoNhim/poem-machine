@@ -51,7 +51,7 @@ class Annotation extends React.Component<IProps, IState> {
     }
 }
 
-const mapStateToProps = (state: IAppState, ownProps: IProps) => ({
+const mapStateToProps = (state: IAppState, ownProps) => ({
     annotation: ownProps.annotation,
     hover: state.hover
 });
