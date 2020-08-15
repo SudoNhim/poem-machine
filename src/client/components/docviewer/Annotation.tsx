@@ -37,17 +37,23 @@ class Annotation extends React.Component<IProps, IState> {
         };
 
         const classNames: string[] = [css.annotation];
+        const containerClassNames: string[] = [css.annotationcontainer];
         if (this.props.hover.docParts) {
-            if (this.props.annotation.canonRefs.some(ref => this.props.hover.docParts.indexOf(ref) >= 0))
+            if (this.props.annotation.canonRefs.some(ref => this.props.hover.docParts.indexOf(ref) >= 0)) {
                 classNames.push(css.annotationhover);
+                containerClassNames.push(css.annotationcontainerhover);
+            }
         }
 
-        return <div
-            className={classNames.join(" ")}
-            style={style}
-            onMouseEnter={() => this.onHover()}
-            onMouseLeave={() => this.props.setHover({})}
-            >{this.props.annotation.text}</div>;
+        return <div className={containerClassNames.join(" ")} style={style}>
+                <div
+                    className={classNames.join(" ")}
+                    onMouseEnter={() => this.onHover()}
+                    onMouseLeave={() => this.props.setHover({})}
+                >
+                    {this.props.annotation.text}
+                </div>
+            </div>;
     }
 }
 

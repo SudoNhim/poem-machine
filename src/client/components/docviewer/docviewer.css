@@ -66,11 +66,21 @@
   right: -0em;
 }
 
-.annotation {
+.annotationcontainer {
+  background-color: white;
   position: absolute;
   left: 0;
   right: -0;
+  height: 5em;
   margin-left: 0.4cm;
+  z-index: 1;
+}
+
+.annotationcontainerhover {
+  z-index: 2;
+}
+
+.annotation {
   font-style: italic;
   border-top: 1px solid lightblue;
   border-left: 1px solid lightblue;
