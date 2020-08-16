@@ -39,7 +39,7 @@
 .canonline {
   margin: 0;
   padding-top: 0.4em;
-  display: inline-block;
+  display: block;
 }
 
 .canonlinetext {
