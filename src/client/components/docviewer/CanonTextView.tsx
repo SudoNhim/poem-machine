@@ -1,15 +1,18 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { IAppState, IHoverState } from "../../model";
+import { RouteComponentProps } from "react-router";
+import { withRouter } from "react-router-dom";
+import { IAppState, IHoverState, IFocusState } from "../../model";
 import { Text } from "cohen-db/schema";
 import { setHover } from "../../actions";
 
 const css = require("./docviewer.css");
 
-interface IProps {
+interface IProps extends RouteComponentProps {
   text: Text;
   prefix: string;
   hover: IHoverState;
+  focus: IFocusState;
   setHover: typeof setHover;
 }
 
@@ -34,6 +37,7 @@ class CanonTextView extends React.Component<IProps> {
       key={pi}
       onMouseOver={evt => this.onMouseOver(evt, id)}
       onMouseOut={evt => this.onMouseOut(evt, id)}
+      onMouseUp={evt => this.onMouseUp(evt, id)}
     >
       {Array.isArray(text)
       ? text.map((line, i) => this.renderLine(pi, i + 1, line))
@@ -52,6 +56,7 @@ class CanonTextView extends React.Component<IProps> {
       key={li}
       onMouseOver={evt => this.onMouseOver(evt, id)}
       onMouseOut={evt => this.onMouseOut(evt, id)}
+      onMouseUp={evt => this.onMouseUp(evt, id)}
     >
       <span
         id={id}
@@ -69,13 +74,23 @@ class CanonTextView extends React.Component<IProps> {
     evt.stopPropagation();
     this.props.setHover({ });
   }
+
+  private onMouseUp(evt: React.MouseEvent, id: string) {
+    evt.stopPropagation();
+    const base = `/doc/${this.props.focus.docRef.docId}`;
+    if (this.props.location.hash === `#${id}`)
+      this.props.history.push(base);
+    else
+      this.props.history.push(`${base}#${id}`);
+  } 
 }
 
 // currently not using redux connection
 const mapStateToProps = (state: IAppState, ownProps) => ({
   text: ownProps.text,
   prefix: ownProps.prefix,
-  hover: state.hover
+  hover: state.hover,
+  focus: state.focus
 });
 
-export default connect(mapStateToProps, { setHover })(CanonTextView);
+export default connect(mapStateToProps, { setHover })(withRouter(CanonTextView));

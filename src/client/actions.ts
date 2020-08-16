@@ -68,7 +68,6 @@ export function setFocus(focus: IFocusState): SetFocusAction {
 }
 
 export function setHover(hover: IHoverState): SetHoverAction {
-    console.log("hover: " + JSON.stringify(hover));
     return {
         type: SET_HOVER,
         payload: hover

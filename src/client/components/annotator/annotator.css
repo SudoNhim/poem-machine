@@ -1,0 +1,11 @@
+.annotatorcontainer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    min-width: 36em;
+    min-height: 20em;
+    background-color: white;
+    border-top: 1px solid lightgray;
+    z-index: 5;
+}

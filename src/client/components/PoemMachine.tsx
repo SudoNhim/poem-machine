@@ -5,6 +5,7 @@ import ScrollMemory from 'react-router-scroll-memory';
 import { getGraph, getSearchResults } from "../api";
 import { setGraph, setFocus, setSearch } from "../actions";
 import FocusContent from "./FocusContent";
+import Annotator from "./annotator/Annotator";
 import NavTree from "./NavTree";
 import SearchBox from "./SearchBox";
 import { IDocReference } from "../../shared/IApiTypes";
@@ -100,6 +101,7 @@ class PoemMachine extends React.Component<IProps, IState> {
           <ScrollMemory elementID='viewpane' />
           <FocusContent />
         </div>
+        <Annotator />
       </div>
     );
   }

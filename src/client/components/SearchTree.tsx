@@ -5,14 +5,12 @@ import { IAppState } from "../model";
 import { Link } from "react-router-dom";
 import NavTreeNode from "./NavTreeNode";
 import ExpandButton from "./ExpandButton";
-import { setFocus } from "../actions";
 
 const css = require("./all.css");
 
 interface IProps {
   search: ISearchResults;
   hasFocus: boolean;
-  setFocus: typeof setFocus;
 }
 
 interface IState {
@@ -79,4 +77,4 @@ const mapStateToProps = (state: IAppState) => ({
   hasFocus: state.focus.search
 });
 
-export default connect(mapStateToProps, { setFocus })(SearchTree);
+export default connect(mapStateToProps, {})(SearchTree);
