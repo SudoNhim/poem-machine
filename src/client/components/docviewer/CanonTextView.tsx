@@ -43,7 +43,7 @@ class CanonTextView extends React.Component<IProps> {
       onMouseUp={evt => this.onMouseUp(evt, id)}
     >
       {Array.isArray(text)
-      ? text.map((line, i) => this.renderLine(pi, i + 1, line))
+      ? text.map((line, i) => [this.renderLine(pi, i + 1, line), <br key={-i}/>])
       : text}
     </div>
   }
