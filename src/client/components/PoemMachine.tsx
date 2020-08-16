@@ -10,7 +10,7 @@ import NavTree from "./NavTree";
 import SearchBox from "./SearchBox";
 import { IDocReference } from "../../shared/IApiTypes";
 import { DeserializeDocRef } from "../../shared/util";
-import { IFocusState } from "../model";
+import { IFocusState, IAppState } from "../model";
 
 const css = require("./all.css");
 
@@ -20,6 +20,7 @@ interface IMatchParams {
 }
 
 interface IProps extends RouteComponentProps<IMatchParams> {
+  focus: IFocusState;
   setGraph: typeof setGraph;
   setFocus: typeof setFocus;
   setSearch: typeof setSearch;
@@ -58,8 +59,9 @@ class PoemMachine extends React.Component<IProps, IState> {
     };
 
     // If the new route includes a hash fragment, we need to scroll it into view after render
-    // (but only if navigating to a new location)
-    if (part && isPush) newFocus.waitingToScroll = true;
+    // (but only if navigating to a new document)
+    const curDocId = this.props.focus.docRef && this.props.focus.docRef.docId;
+    if (part && isPush && docId !== curDocId) newFocus.waitingToScroll = true;
 
     if (docId) this.props.setFocus(newFocus);
     else if (searchTerm) {
@@ -107,4 +109,8 @@ class PoemMachine extends React.Component<IProps, IState> {
   }
 }
 
-export default connect(null, { setGraph, setFocus, setSearch })(PoemMachine);
+const mapStateToProps = (state: IAppState, ownProps) => ({
+  focus: state.focus
+});
+
+export default connect(mapStateToProps, { setGraph, setFocus, setSearch })(PoemMachine);

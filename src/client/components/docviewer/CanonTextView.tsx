@@ -90,7 +90,6 @@ class CanonTextView extends React.Component<IProps> {
   } 
 }
 
-// currently not using redux connection
 const mapStateToProps = (state: IAppState, ownProps) => ({
   text: ownProps.text,
   prefix: ownProps.prefix,
