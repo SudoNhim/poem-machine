@@ -10,13 +10,10 @@ const css = require("./docviewer.css");
 
 interface IProps {
   content: Content;
-  targetId?: string;
 }
 
 class ContentView extends React.Component<IProps> {
   public componentDidMount() {
-    if (this.props.targetId)
-      document.getElementById(this.props.targetId).style.borderLeft = "solid red";
   }
 
   public render() {
@@ -30,8 +27,7 @@ class ContentView extends React.Component<IProps> {
 
 // currently not using redux connection
 const mapStateToProps = (state: IAppState, ownProps: IProps) => ({
-  content: ownProps.content,
-  targetId: SerializeDocRef(state.focus.docRef).split('#')[1]
+  content: ownProps.content
 });
 
 export default connect(mapStateToProps)(ContentView);

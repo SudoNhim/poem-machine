@@ -5,6 +5,7 @@ import { withRouter } from "react-router-dom";
 import { IAppState, IHoverState, IFocusState } from "../../model";
 import { Text } from "cohen-db/schema";
 import { setHover } from "../../actions";
+import { SerializeDocRef } from "../../../shared/util";
 
 const css = require("./docviewer.css");
 
@@ -30,6 +31,8 @@ class CanonTextView extends React.Component<IProps> {
     const classNames: string[] = [css.canonparagraph];
     if (this.props.hover.docParts && this.props.hover.docParts.indexOf(id) >= 0)
       classNames.push(css.canonhover);
+    if (SerializeDocRef(this.props.focus.docRef).split('#')[1] === id)
+      classNames.push(css.canonfocus);
 
     return <div
       id={id}
@@ -50,6 +53,8 @@ class CanonTextView extends React.Component<IProps> {
     const classNames: string[] = [css.canonlinetext];
     if (this.props.hover.docParts && this.props.hover.docParts.indexOf(id) >= 0)
       classNames.push(css.canonhover);
+    if (SerializeDocRef(this.props.focus.docRef).split('#')[1] === id)
+      classNames.push(css.canonfocus);
 
     return <div
       className={css.canonline}

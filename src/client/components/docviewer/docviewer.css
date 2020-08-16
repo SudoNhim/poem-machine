@@ -51,6 +51,10 @@
   cursor: pointer;
 }
 
+.canonfocus {
+  background-color: lightyellow;
+}
+
 .previewparagraph {
   margin-bottom: 1.5em;
 }
