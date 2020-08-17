@@ -7,10 +7,17 @@
     background-color: white;
     border-top: 1px solid lightgray;
     z-index: 5;
+    padding: 0.5em;
 }
 
 .annotation {
     border: 1px solid lightgray;
     padding: 0.5em;
-    margin: 0.5em;
+    margin-top: 0.5em;
+}
+
+.newannotation {
+    border: 1px solid lightgreen;
+    padding: 0.5em;
+    margin-top: 0.5em;
 }
