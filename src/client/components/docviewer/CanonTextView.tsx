@@ -45,7 +45,7 @@ class CanonTextView extends React.Component<IProps> {
       {Array.isArray(text)
       ? text.map((line, i) => [this.renderLine(pi, i + 1, line), <br key={-i}/>])
       : text}
-    </div>
+    </div>;
   }
 
   private renderLine(pi: number, li: number, s: string): JSX.Element {
