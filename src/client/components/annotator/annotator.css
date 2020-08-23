@@ -4,6 +4,7 @@
     left: 0;
     right: 0;
     height: 20em;
+    overflow: scroll;
     background-color: white;
     border-top: 1px solid lightgray;
     z-index: 5;
