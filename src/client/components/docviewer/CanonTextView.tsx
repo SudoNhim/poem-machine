@@ -6,6 +6,7 @@ import { IAppState, IHoverState, IFocusState } from "../../model";
 import { Text } from "cohen-db/schema";
 import { setHover } from "../../actions";
 import { SerializeDocRef } from "../../../shared/util";
+import { IAnnotation } from "../../../shared/IApiTypes";
 
 const css = require("./docviewer.css");
 
@@ -14,6 +15,7 @@ interface IProps extends RouteComponentProps {
   prefix: string;
   hover: IHoverState;
   focus: IFocusState;
+  annotations: IAnnotation[];
   setHover: typeof setHover;
 }
 
@@ -51,10 +53,13 @@ class CanonTextView extends React.Component<IProps> {
   private renderLine(pi: number, li: number, s: string): JSX.Element {
     const id = `${this.props.prefix}p${pi}.l${li}`;
     const classNames: string[] = [css.canonlinetext];
+    
     if (this.props.hover.docParts && this.props.hover.docParts.indexOf(id) >= 0)
       classNames.push(css.canonhover);
-    if (SerializeDocRef(this.props.focus.docRef).split('#')[1] === id)
+    else if (SerializeDocRef(this.props.focus.docRef).split('#')[1] === id)
       classNames.push(css.canonfocus);
+    else if (this.props.annotations.find(anno => anno.canonRefs.indexOf(id) >= 0))
+      classNames.push(css.annotationmarker);
 
     return <div
       className={css.canonline}
@@ -94,7 +99,8 @@ const mapStateToProps = (state: IAppState, ownProps) => ({
   text: ownProps.text,
   prefix: ownProps.prefix,
   hover: state.hover,
-  focus: state.focus
+  focus: state.focus,
+  annotations: state.docs.cache[state.focus.docRef.docId].annotations
 });
 
 export default connect(mapStateToProps, { setHover })(withRouter(CanonTextView));

@@ -42,18 +42,16 @@ class Annotator extends React.Component<IProps, IState> {
     );
 
     return <div className={css.annotatorcontainer}>
-      <p>
-        {this.renderFocusString()}
-        {this.renderCreateNew()}
-        {annotations.map((anno, i) => this.renderAnnotation(anno, i, false))}
-      </p>
-      {onContainingParagraph.length > 0 && <p>
+      {this.renderFocusString()}
+      {this.renderCreateNew()}
+      {annotations.map((anno, i) => this.renderAnnotation(anno, i, false))}
+      {onContainingParagraph.length > 0 && <div>
         Containing paragraph
         {onContainingParagraph.map((anno, i) => this.renderAnnotation(anno, i, false))}
-      </p>}
-      { childOfFocused.length > 0 && <p>
+      </div>}
+      { childOfFocused.length > 0 && <div>
         {childOfFocused.map((anno, i) => this.renderAnnotation(anno, i, true))}
-      </p>}
+      </div>}
     </div>;
   }
 
