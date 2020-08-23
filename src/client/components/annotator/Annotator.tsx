@@ -5,6 +5,7 @@ import { withRouter } from "react-router-dom";
 import { IAppState, IFocusState, IDocState } from "../../model";
 import { IAnnotation } from "../../../shared/IApiTypes";
 import { SerializeDocRef } from "../../../shared/util";
+import Editor from "./Editor";
 
 const css = require("./annotator.css");
 
@@ -14,11 +15,15 @@ interface IProps extends RouteComponentProps {
 }
 
 interface IState {
+  editing: boolean;
 }
 
 class Annotator extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
+    this.state = {
+      editing: false
+    };
   }
 
   public render() {
@@ -46,7 +51,7 @@ class Annotator extends React.Component<IProps, IState> {
       <div className={css.closebutton} onClick={() => this.close()}>x</div>
       {this.renderFocusString()}
       {annotations.map((anno, i) => this.renderAnnotation(anno, i, false))}
-      {this.renderCreateNew()}
+      {this.state.editing ? <Editor /> : this.renderCreateNew()}
       {onContainingParagraph.length > 0 && <div>
         Containing paragraph
         {onContainingParagraph.map((anno, i) => this.renderAnnotation(anno, i, false))}
@@ -75,8 +80,8 @@ class Annotator extends React.Component<IProps, IState> {
   }
 
   private renderCreateNew(): JSX.Element {
-    return <div className={css.newannotation}>
-    Create a new annotation
+    return <div className={css.newannotation} onClick={() => this.setState({ editing: true })}>
+    Create new
   </div>;
   }
 
