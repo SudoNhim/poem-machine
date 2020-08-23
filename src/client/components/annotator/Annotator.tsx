@@ -1,16 +1,16 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { setFocus } from "../../actions";
+import { RouteComponentProps } from "react-router";
+import { withRouter } from "react-router-dom";
 import { IAppState, IFocusState, IDocState } from "../../model";
 import { IAnnotation } from "../../../shared/IApiTypes";
 import { SerializeDocRef } from "../../../shared/util";
 
 const css = require("./annotator.css");
 
-interface IProps {
+interface IProps extends RouteComponentProps {
   focus: IFocusState;
   docs: IDocState;
-  setFocus: typeof setFocus;
 }
 
 interface IState {
@@ -45,8 +45,8 @@ class Annotator extends React.Component<IProps, IState> {
     return <div className={css.annotatorcontainer}>
       <div className={css.closebutton} onClick={() => this.close()}>x</div>
       {this.renderFocusString()}
-      {this.renderCreateNew()}
       {annotations.map((anno, i) => this.renderAnnotation(anno, i, false))}
+      {this.renderCreateNew()}
       {onContainingParagraph.length > 0 && <div>
         Containing paragraph
         {onContainingParagraph.map((anno, i) => this.renderAnnotation(anno, i, false))}
@@ -58,12 +58,7 @@ class Annotator extends React.Component<IProps, IState> {
   }
 
   private close() {
-    this.props.setFocus({
-      ...this.props.focus,
-      docRef: {
-        docId: this.props.focus.docRef.docId
-      }
-    });
+    this.props.history.push(this.props.focus.docRef.docId);
   }
 
   private renderFocusString(): string {
@@ -104,4 +99,4 @@ const mapStateToProps = (state: IAppState, ownProps) => ({
   docs: state.docs
 });
 
-export default connect(mapStateToProps, { setFocus })(Annotator);
+export default connect(mapStateToProps, { })(withRouter(Annotator));
