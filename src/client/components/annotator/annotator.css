@@ -16,6 +16,14 @@
     margin-top: 0.5em;
 }
 
+.relatedannotation {
+    margin-top: 1em;
+}
+
+.title {
+    font-style: italic;
+}
+
 .newannotation {
     border: 1px solid lightgreen;
     padding: 0.5em;

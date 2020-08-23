@@ -38,22 +38,21 @@ class Annotator extends React.Component<IProps, IState> {
       && (!!annotation.canonRefs.find(ref => ref === refPart.split('.l')[0]))
     );
     const childOfFocused = (doc.annotations || []).filter(annotation =>
-      (!!annotation.canonRefs.find(ref => ref.startsWith(refPart)))
+      (!!annotation.canonRefs.find(ref => (ref.startsWith(refPart) && ref !== refPart)))
     );
 
     return <div className={css.annotatorcontainer}>
       <p>
         {this.renderFocusString()}
         {this.renderCreateNew()}
-        {annotations.map((anno, i) => this.renderAnnotation(anno, i))}
+        {annotations.map((anno, i) => this.renderAnnotation(anno, i, false))}
       </p>
       {onContainingParagraph.length > 0 && <p>
-        Related
-        {onContainingParagraph.map((anno, i) => this.renderAnnotation(anno, i))}
+        Containing paragraph
+        {onContainingParagraph.map((anno, i) => this.renderAnnotation(anno, i, false))}
       </p>}
       { childOfFocused.length > 0 && <p>
-        Related
-        {childOfFocused.map((anno, i) => this.renderAnnotation(anno, i))}
+        {childOfFocused.map((anno, i) => this.renderAnnotation(anno, i, true))}
       </p>}
     </div>;
   }
@@ -68,7 +67,7 @@ class Annotator extends React.Component<IProps, IState> {
     if (docRef.line)
       terms.push(`line ${docRef.line}`);
 
-    return `On ${terms.join(', ')}`;
+    return `Selected (${terms.join(', ')})`;
   }
 
   private renderCreateNew(): JSX.Element {
@@ -77,9 +76,16 @@ class Annotator extends React.Component<IProps, IState> {
   </div>;
   }
 
-  private renderAnnotation(annotation: IAnnotation, key: number): JSX.Element {
-    return <div className={css.annotation} key={key}>
-      {annotation.text}
+  private renderAnnotation(annotation: IAnnotation, key: number, withTitle: boolean): JSX.Element {
+    const el = document.getElementById(annotation.canonRefs[0]);
+    var text = el && el.textContent;
+    if (!text) text = annotation.canonRefs[0];
+
+    return <div className={css.relatedannotation} key={key}>
+      {withTitle ? <div className={css.title}>{text}</div> : null}
+      <div className={css.annotation}>
+        {annotation.text}
+      </div>
     </div>;
   }
 }
