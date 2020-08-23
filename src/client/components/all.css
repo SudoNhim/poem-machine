@@ -53,6 +53,7 @@ a {
 
 .navtogglebar {
     background-color: rgba(220, 235, 252, 0.5);
+    cursor: pointer;
     border: solid lightgrey 1px;
     margin: 0.1em;
     position: fixed;

@@ -1,12 +1,13 @@
 .annotatorcontainer {
     position: absolute;
     bottom: 0;
-    left: 0;
-    right: 0;
-    height: 20em;
+    left: 5vw;
+    right: 5vw;
+    height: 40vh;
     overflow: scroll;
     background-color: white;
-    border-top: 1px solid lightgray;
+    border: 1px solid lightgray;
+    box-shadow: 0 0 1em 1em lightgray;
     z-index: 5;
     padding: 0.5em;
 }
@@ -23,6 +24,16 @@
 
 .title {
     font-style: italic;
+}
+
+.closebutton {
+    position: absolute;
+    cursor: pointer;
+    background-color: rgba(220, 235, 252);
+    border: 1px solid lightgray;
+    right: 0;
+    top: 0;
+    padding: 0.2em 0.8em;
 }
 
 .newannotation {

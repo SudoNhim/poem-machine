@@ -1,6 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { setDoc, setScrolled } from "../../actions";
+import { setFocus } from "../../actions";
 import { IAppState, IFocusState, IDocState } from "../../model";
 import { IAnnotation } from "../../../shared/IApiTypes";
 import { SerializeDocRef } from "../../../shared/util";
@@ -10,6 +10,7 @@ const css = require("./annotator.css");
 interface IProps {
   focus: IFocusState;
   docs: IDocState;
+  setFocus: typeof setFocus;
 }
 
 interface IState {
@@ -42,6 +43,7 @@ class Annotator extends React.Component<IProps, IState> {
     );
 
     return <div className={css.annotatorcontainer}>
+      <div className={css.closebutton} onClick={() => this.close()}>x</div>
       {this.renderFocusString()}
       {this.renderCreateNew()}
       {annotations.map((anno, i) => this.renderAnnotation(anno, i, false))}
@@ -53,6 +55,15 @@ class Annotator extends React.Component<IProps, IState> {
         {childOfFocused.map((anno, i) => this.renderAnnotation(anno, i, true))}
       </div>}
     </div>;
+  }
+
+  private close() {
+    this.props.setFocus({
+      ...this.props.focus,
+      docRef: {
+        docId: this.props.focus.docRef.docId
+      }
+    });
   }
 
   private renderFocusString(): string {
@@ -93,4 +104,4 @@ const mapStateToProps = (state: IAppState, ownProps) => ({
   docs: state.docs
 });
 
-export default connect(mapStateToProps, { setDoc, setScrolled })(Annotator);
+export default connect(mapStateToProps, { setFocus })(Annotator);
