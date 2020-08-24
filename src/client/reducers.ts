@@ -1,5 +1,5 @@
 import { IAppState } from './model';
-import { ActionTypes, SET_DOC, SET_GRAPH, SET_SEARCH, SET_FOCUS, SET_SCROLLED, SET_HOVER } from './actions';
+import { ActionTypes, SET_DOC, SET_GRAPH, SET_SEARCH, SET_FOCUS, SET_SCROLLED, SET_HOVER, SET_ANNOTATION } from './actions';
 
 const initialState: IAppState = {
     docs: {
@@ -34,6 +34,23 @@ function rootReducer(state = initialState, action: ActionTypes): IAppState {
                     }
                 }
             };
+        case SET_ANNOTATION:
+            return {
+                ...state,
+                docs: {
+                    ...state.docs,
+                    cache: {
+                        ...state.docs.cache,
+                        [action.payload.docId]: {
+                            ...state.docs.cache[action.payload.docId],
+                            annotations: [
+                                ...(state.docs.cache[action.payload.docId].annotations || []),
+                                action.payload.annotation
+                            ]
+                        }
+                    }
+                }
+            }
         case SET_GRAPH:
             return {
                 ...state,

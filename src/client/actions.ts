@@ -1,8 +1,9 @@
-import { IDocGraph, IDoc, ISearchResults } from "../shared/IApiTypes";
+import { IDocGraph, IDoc, ISearchResults, IAnnotation } from "../shared/IApiTypes";
 import { IFocusState, IHoverState } from "./model";
 
 export const SET_GRAPH = 'SET_GRAPH';
 export const SET_DOC = 'SET_DOC';
+export const SET_ANNOTATION = 'SET_ANNOTATION';
 export const SET_SEARCH = 'SET_SEARCH';
 export const SET_FOCUS = 'SET_FOCUS';
 export const SET_HOVER = 'SET_HOVER';
@@ -16,6 +17,11 @@ interface SetGraphAction {
 interface SetDocAction {
     type: typeof SET_DOC;
     payload: { id: string, doc: IDoc };
+}
+
+interface SetAnnotationAction {
+    type: typeof SET_ANNOTATION;
+    payload: { docId: string, annotation: IAnnotation };
 }
 
 interface SetSearchAction {
@@ -37,7 +43,14 @@ interface SetScrolledAction {
     type: typeof SET_SCROLLED;
 }
 
-export type ActionTypes = SetGraphAction | SetDocAction | SetSearchAction | SetFocusAction | SetHoverAction | SetScrolledAction;
+export type ActionTypes =
+    SetGraphAction |
+    SetDocAction |
+    SetAnnotationAction |
+    SetSearchAction |
+    SetFocusAction |
+    SetHoverAction |
+    SetScrolledAction;
 
 export function setGraph(graph: IDocGraph): SetGraphAction {
     return {
@@ -50,6 +63,13 @@ export function setDoc(id: string, doc: IDoc): SetDocAction {
     return {
         type: SET_DOC,
         payload: { id, doc }
+    };
+}
+
+export function setAnnotation(docId: string, annotation: IAnnotation): SetAnnotationAction {
+    return {
+        type: SET_ANNOTATION,
+        payload: { docId, annotation }
     };
 }
 

@@ -1,13 +1,17 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { IAppState } from "../../model";
-import { IAnnotation } from "../../../shared/IApiTypes";
+import { IAnnotation, IDocReference } from "../../../shared/IApiTypes";
+import { setAnnotation } from "../../actions";
+import { SerializeDocRef } from "../../../shared/util";
 
 const css = require("./annotator.css");
 
 interface IProps {
-  source?: IAnnotation;
+  source?: IAnnotation; // if updating an existing annotation
+  docRef: IDocReference;
   onClose: () => void;
+  setAnnotation: typeof setAnnotation;
 }
 
 interface IState {
@@ -30,6 +34,10 @@ class Editor extends React.Component<IProps, IState> {
   }
 
   private onSubmit() {
+    this.props.setAnnotation(this.props.docRef.docId, {
+      canonRefs: [ SerializeDocRef(this.props.docRef).split('#')[1] ],
+      text: this.state.text
+    })
     this.props.onClose();
   }
 
@@ -47,7 +55,8 @@ const mapStateToProps = (state: IAppState, ownProps: IProps) => ({
   focus: state.focus,
   docs: state.docs,
   source: ownProps.source,
-  onClose: ownProps.onClose
+  onClose: ownProps.onClose,
+  docRef: ownProps.docRef,
 });
 
-export default connect(mapStateToProps, { })(Editor);
+export default connect(mapStateToProps, { setAnnotation })(Editor);

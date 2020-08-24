@@ -57,7 +57,9 @@ class Annotator extends React.Component<IProps, IState> {
       <div className={css.closebutton} onClick={() => this.close()}>x</div>
       {this.renderFocusString()}
       {annotations.map((anno, i) => this.renderAnnotation(anno, i, false))}
-      {this.state.editing ? <Editor onClose={() => this.setState({ editing: false })}/> : this.renderCreateNew()}
+      {this.state.editing
+        ? <Editor docRef={docRef} onClose={() => this.setState({ editing: false })}/>
+        : this.renderCreateNew()}
       {onContainingParagraph.length > 0 && <div>
         Containing paragraph
         {onContainingParagraph.map((anno, i) => this.renderAnnotation(anno, i, false))}
