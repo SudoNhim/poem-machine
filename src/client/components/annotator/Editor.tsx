@@ -4,6 +4,7 @@ import { IAppState } from "../../model";
 import { IAnnotation, IDocReference } from "../../../shared/IApiTypes";
 import { setAnnotation } from "../../actions";
 import { SerializeDocRef } from "../../../shared/util";
+import * as api from "../../api";
 
 const css = require("./annotator.css");
 
@@ -33,11 +34,15 @@ class Editor extends React.Component<IProps, IState> {
     });
   }
 
-  private onSubmit() {
-    this.props.setAnnotation(this.props.docRef.docId, {
+  private async onSubmit() {
+    const newAnnotation: IAnnotation = {
       canonRefs: [ SerializeDocRef(this.props.docRef).split('#')[1] ],
       text: this.state.text
-    })
+    };
+
+    await api.setAnnotation(this.props.docRef.docId, newAnnotation);
+    
+    this.props.setAnnotation(this.props.docRef.docId, newAnnotation);
     this.props.onClose();
   }
 
@@ -51,7 +56,7 @@ class Editor extends React.Component<IProps, IState> {
   }
 }
 
-const mapStateToProps = (state: IAppState, ownProps: IProps) => ({
+const mapStateToProps = (state: IAppState, ownProps) => ({
   focus: state.focus,
   docs: state.docs,
   source: ownProps.source,

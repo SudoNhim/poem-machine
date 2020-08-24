@@ -3,8 +3,11 @@ import { AnnotationsController } from '../controllers/annotations';
 import { GraphController } from '../controllers/graph';
 import { SearchController } from '../controllers/search';
 import CanonData from 'cohen-db';
-import { IDoc } from '../../shared/IApiTypes';
+import { IDoc, IAnnotation } from '../../shared/IApiTypes';
 import { GeneratePreview } from '../lib/generate-preview';
+import * as bodyParser from 'body-parser';
+
+const jsonParser = bodyParser.json();
 
 export function apiRouter() {
   const router = Router();
@@ -40,6 +43,13 @@ export function apiRouter() {
 
   router.get("/docs/search/:term", async (req, res) => {
     res.json(searchController.search(req.params.term));
+  });
+
+  router.post("/docs/set/:docId/annotations", jsonParser, async (req, res) => {
+    const docId: string = req.params.docId;
+    const annotation: IAnnotation = req.body.annotation;
+    annotationsProvider.addAnnotation(docId, annotation);
+    res.end();
   });
 
   return router;

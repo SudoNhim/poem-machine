@@ -26,6 +26,7 @@
   "author": "Brenton Milne & Gabriela Chuchro",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "cohen-db": "github:SudoNhim/cohen-db#c2af9a2",
     "ejs": "^2.7.4",
     "express": "^4.17.1",
