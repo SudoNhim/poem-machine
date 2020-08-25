@@ -34,21 +34,23 @@ class Editor extends React.Component<IProps, IState> {
     });
   }
 
-  private async onSubmit() {
+  private async onSubmit(evt: React.FormEvent<HTMLFormElement>) {
+    evt.preventDefault();
+
     const newAnnotation: IAnnotation = {
       canonRefs: [ SerializeDocRef(this.props.docRef).split('#')[1] ],
       text: this.state.text
     };
 
     await api.setAnnotation(this.props.docRef.docId, newAnnotation);
-    
+
     this.props.setAnnotation(this.props.docRef.docId, newAnnotation);
     this.props.onClose();
   }
 
   public render() {
     return <div className={css.editor}>
-        <form onSubmit={() => this.onSubmit()}>
+        <form onSubmit={(evt) => this.onSubmit(evt)}>
           <textarea className={css.editortextarea} value={this.state.text} onChange={(evt) => this.onChange(evt)} />
           <input className={css.editorsubmit} type="submit" value="Submit" />
         </form>
