@@ -20,4 +20,8 @@ export class AnnotationsController {
       annotation
     ];
   }
+
+  public getUpdates(): {[docId: string]: IAnnotation[]} {
+    return liveUpdates;
+  }
 }

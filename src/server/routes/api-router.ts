@@ -52,5 +52,9 @@ export function apiRouter() {
     res.end();
   });
 
+  router.get("/updates", async (req, res) => {
+    res.json(annotationsProvider.getUpdates());
+  });
+
   return router;
 }
