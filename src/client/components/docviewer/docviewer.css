@@ -69,9 +69,9 @@
   right: -0em;
 }
 
-.annotationcontainer {
-  background-color: white;
+.annotationsgroup {
   position: absolute;
+  background-color: white;
   left: 0;
   right: -0;
   height: 15em;
@@ -79,10 +79,9 @@
   z-index: 1;
 }
 
-.annotationcontainerhover {
-  z-index: 2;
+.annotationsgrouphover {
   height: unset;
-  padding-bottom: 2em;
+  z-index: 2;
 }
 
 .annotation {
@@ -91,6 +90,7 @@
   border-top: 1px solid lightblue;
   border-left: 1px solid lightblue;
   padding-left: 0.5em;
+  padding-bottom: 0.5em;
 }
 
 

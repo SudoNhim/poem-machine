@@ -43,12 +43,6 @@ class Annotation extends React.Component<IProps, IState> {
       } 
 
     public render(): JSX.Element {
-        const anchor = document.getElementById(this.props.annotation.canonRefs[0]);
-        if (!anchor) return null;
-        const style: React.CSSProperties = {
-            top: anchor.offsetTop
-        };
-
         const classNames: string[] = [css.annotation];
         const containerClassNames: string[] = [css.annotationcontainer];
         if (this.props.hover.docParts) {
@@ -59,17 +53,12 @@ class Annotation extends React.Component<IProps, IState> {
         }
 
         return <div
-            className={containerClassNames.join(" ")}
-            style={style}
+                className={classNames.join(" ")}
+                onMouseEnter={() => this.onHover()}
+                onMouseLeave={() => this.props.setHover({})}
+                onMouseUp={(evt) => this.onMouseUp(evt)}
             >
-                <div
-                    className={classNames.join(" ")}
-                    onMouseEnter={() => this.onHover()}
-                    onMouseLeave={() => this.props.setHover({})}
-                    onMouseUp={(evt) => this.onMouseUp(evt)}
-                >
-                    {this.props.annotation.text}
-                </div>
+                {this.props.annotation.text}
             </div>;
     }
 }

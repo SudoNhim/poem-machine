@@ -1,7 +1,7 @@
 import * as React from "react";
 import { IAnnotation } from "../../../shared/IApiTypes";
 import { connect } from "react-redux";
-import Annotation from "./Annotation";
+import AnnotationsGroup from "./AnnotationsGroup";
 
 const css = require("./docviewer.css");
 
@@ -39,8 +39,14 @@ class AnnotationsView extends React.Component<IProps, IState> {
     }
 
     public render(): JSX.Element {
+        const groups = [...new Set(this.props.annotations.map(anno => anno.canonRefs[0]))].sort()
+            .map(anchor => ({
+                anchor,
+                annotations: this.props.annotations.filter(anno => anno.canonRefs[0] === anchor)
+            }));
+
         return <div className={css.annotations}>
-            {this.props.annotations.map((anno, i) => <Annotation annotation={anno} key={i} />)}
+            {groups.map(grp => <AnnotationsGroup anchor={grp.anchor} annotations={grp.annotations} />)}
         </div>;
     }
 }
