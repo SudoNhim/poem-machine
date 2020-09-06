@@ -1,4 +1,6 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router';
 import { fade, makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -77,12 +79,12 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-interface IProps {
+interface IProps extends RouteComponentProps {
   navPaneOpen: boolean;
   setNavPaneOpen: typeof setNavPaneOpen;
 }
 
-function PrimarySearchAppBar(props: IProps) {
+const PrimarySearchAppBar = withRouter((props: IProps) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -101,6 +103,12 @@ function PrimarySearchAppBar(props: IProps) {
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
+  };
+
+  const handleSearchOnKeyDown = (evt: React.KeyboardEvent<HTMLInputElement>) => {
+    if (evt.key === "Enter") {
+      props.history.push(`/search/${evt.currentTarget.value}`);
+    }
   };
 
   const toggleNavPane = () => {
@@ -169,6 +177,7 @@ function PrimarySearchAppBar(props: IProps) {
             </div>
             <InputBase
               placeholder="Search…"
+              onKeyDown={handleSearchOnKeyDown}
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
@@ -195,7 +204,7 @@ function PrimarySearchAppBar(props: IProps) {
       {renderMenu}
     </div>
   );
-}
+});
 
 const mapStateToProps = (state: IAppState) => ({
    navPaneOpen: !!state.ui.navPaneOpen
