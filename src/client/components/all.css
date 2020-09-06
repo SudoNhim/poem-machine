@@ -14,6 +14,10 @@ a {
   color: black;
 }
 
+@font-face {
+  font-family: 'LCHandwriting';
+  src: url('/assets/fonts/LCHandwriting.ttf')  format('truetype');
+}
 .header {
   background-color: lightblue;
   position: fixed;
@@ -34,7 +38,7 @@ a {
 .poemmachine {
   display: flex;
   position: fixed;
-  top: 1.5em;
+  top: 4em;
   bottom: -0em;
   left: 0em;
   right: -0em;
@@ -46,9 +50,9 @@ a {
   position: fixed;
   width: 20em;
   z-index: 2;
-  top: 1.5em;
+  top: 4.5em;
   bottom: -0;
-  left: 0;
+  left: 6.5px;
 }
 
 .navtogglebar {
@@ -59,7 +63,8 @@ a {
     position: fixed;
     width: 1.5em;
     z-index: 1;
-    top: 1.5em;
+    top: 4.5em;
+    left: 6.5px;
     bottom: -0;
     visibility: hidden;
 }
@@ -79,7 +84,7 @@ a {
   position: absolute;
   left: 20em;
   right: -0;
-  top: 0;
+  top: 4em;
   bottom: 0;
   z-index: 1;
 }
