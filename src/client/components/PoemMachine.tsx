@@ -3,11 +3,10 @@ import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import ScrollMemory from 'react-router-scroll-memory';
 import { getGraph, getSearchResults } from "../api";
-import { setGraph, setFocus, setSearch } from "../actions";
+import { setGraph, setFocus, setSearch, setNavPaneOpen } from "../actions";
 import FocusContent from "./FocusContent";
 import Annotator from "./annotator/Annotator";
 import NavTree from "./NavTree";
-import SearchBox from "./SearchBox";
 import { IDocReference } from "../../shared/IApiTypes";
 import { DeserializeDocRef } from "../../shared/util";
 import { IFocusState, IAppState } from "../model";
@@ -21,21 +20,16 @@ interface IMatchParams {
 
 interface IProps extends RouteComponentProps<IMatchParams> {
   focus: IFocusState;
+  navactive: boolean;
   setGraph: typeof setGraph;
   setFocus: typeof setFocus;
   setSearch: typeof setSearch;
+  setNavPaneOpen: typeof setNavPaneOpen;
 }
 
-interface IState {
-  navactive: boolean;
-}
-
-class PoemMachine extends React.Component<IProps, IState> {
+class PoemMachine extends React.Component<IProps> {
   constructor(props) {
     super(props);
-    this.state = {
-      navactive: false
-    };
   }
 
   public async componentDidMount() {
@@ -75,22 +69,11 @@ class PoemMachine extends React.Component<IProps, IState> {
 
   public render() {
     const navpaneClasses = [css.navpane];
-    if (!this.state.navactive) navpaneClasses.push(css.navinactive);
+    if (!this.props.navactive) navpaneClasses.push(css.navinactive);
 
     return (
       <div className={css.poemmachine}>
-        {!this.state.navactive ? (
-          <div
-            className={css.navtogglebar}
-            onClick={() => this.setState({ navactive: true })}
-          >
-            <div className={css.navtogglebar_text}>:: browse ::</div>
-          </div>
-        ) : null}
         <div className={navpaneClasses.join(" ")}>
-          <div className={css.navsection}>
-            <SearchBox />
-          </div>
           <div className={css.navsection}>
             <NavTree />
           </div>
@@ -98,7 +81,7 @@ class PoemMachine extends React.Component<IProps, IState> {
         <div
           id='viewpane'
           className={css.viewpane}
-          onClick={() => this.setState({ navactive: false })}
+          onClick={() => this.props.setNavPaneOpen(false)}
         >
           <ScrollMemory elementID='viewpane' />
           <FocusContent />
@@ -109,8 +92,9 @@ class PoemMachine extends React.Component<IProps, IState> {
   }
 }
 
-const mapStateToProps = (state: IAppState, ownProps) => ({
-  focus: state.focus
+const mapStateToProps = (state: IAppState) => ({
+  focus: state.focus,
+  navactive: !!state.ui.navPaneOpen
 });
 
-export default connect(mapStateToProps, { setGraph, setFocus, setSearch })(PoemMachine);
+export default connect(mapStateToProps, { setGraph, setFocus, setSearch, setNavPaneOpen })(PoemMachine);

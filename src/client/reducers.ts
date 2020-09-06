@@ -1,5 +1,5 @@
 import { IAppState } from './model';
-import { ActionTypes, SET_DOC, SET_GRAPH, SET_SEARCH, SET_FOCUS, SET_SCROLLED, SET_HOVER, SET_ANNOTATION } from './actions';
+import { ActionTypes, SET_DOC, SET_GRAPH, SET_SEARCH, SET_FOCUS, SET_SCROLLED, SET_HOVER, SET_ANNOTATION, SET_NAV_PANE_OPEN } from './actions';
 
 const initialState: IAppState = {
     docs: {
@@ -18,6 +18,9 @@ const initialState: IAppState = {
         term: null,
         hits: [],
         previews: []
+    },
+    ui: {
+        navPaneOpen: false
     }
 }
 
@@ -82,6 +85,13 @@ function rootReducer(state = initialState, action: ActionTypes): IAppState {
                     waitingToScroll: false
                 }
             };
+        case SET_NAV_PANE_OPEN:
+            return {
+                ...state,
+                ui: {
+                    navPaneOpen: action.payload
+                }
+            }
         default:
             return state;
     }

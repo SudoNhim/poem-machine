@@ -8,6 +8,7 @@ export const SET_SEARCH = 'SET_SEARCH';
 export const SET_FOCUS = 'SET_FOCUS';
 export const SET_HOVER = 'SET_HOVER';
 export const SET_SCROLLED = 'SET_SCROLLED';
+export const SET_NAV_PANE_OPEN = 'SET_NAV_PANE_OPEN';
 
 interface SetGraphAction {
     type: typeof SET_GRAPH;
@@ -43,6 +44,11 @@ interface SetScrolledAction {
     type: typeof SET_SCROLLED;
 }
 
+interface SetNavPaneOpenAction {
+    type: typeof SET_NAV_PANE_OPEN;
+    payload: boolean;
+}
+
 export type ActionTypes =
     SetGraphAction |
     SetDocAction |
@@ -50,7 +56,8 @@ export type ActionTypes =
     SetSearchAction |
     SetFocusAction |
     SetHoverAction |
-    SetScrolledAction;
+    SetScrolledAction |
+    SetNavPaneOpenAction;
 
 export function setGraph(graph: IDocGraph): SetGraphAction {
     return {
@@ -91,6 +98,13 @@ export function setHover(hover: IHoverState): SetHoverAction {
     return {
         type: SET_HOVER,
         payload: hover
+    }
+}
+
+export function setNavPaneOpen(isOpen: boolean): SetNavPaneOpenAction {
+    return {
+        type: SET_NAV_PANE_OPEN,
+        payload: isOpen
     }
 }
 
