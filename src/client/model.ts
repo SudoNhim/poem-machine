@@ -18,9 +18,17 @@ export interface IHoverState {
     docParts?: string[];
 }
 
+export interface IUiState {
+
+    // Always open on large screens, on smaller screens this toggles
+    // the navigation pane
+    navPaneOpen: boolean;
+}
+
 export interface IAppState {
     docs: IDocState;
     focus: IFocusState;
     hover: IHoverState;
     search: ISearchResults;
+    ui: IUiState;
 }

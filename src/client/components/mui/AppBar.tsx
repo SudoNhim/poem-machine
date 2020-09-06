@@ -5,15 +5,14 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
-import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import MoreIcon from '@material-ui/icons/MoreVert';
+import { connect } from 'react-redux';
+import { IAppState } from '../../model';
+import { setNavPaneOpen } from "../../actions";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -78,7 +77,12 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function PrimarySearchAppBar() {
+interface IProps {
+  navPaneOpen: boolean;
+  setNavPaneOpen: typeof setNavPaneOpen;
+}
+
+function PrimarySearchAppBar(props: IProps) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -89,7 +93,7 @@ export default function PrimarySearchAppBar() {
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  
+
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
@@ -98,6 +102,10 @@ export default function PrimarySearchAppBar() {
     setAnchorEl(null);
     handleMobileMenuClose();
   };
+
+  const toggleNavPane = () => {
+    props.setNavPaneOpen(!props.navPaneOpen);
+  }
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -148,7 +156,7 @@ export default function PrimarySearchAppBar() {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
-            onClick={() => this.setState({ navactive: true })}
+            onClick={toggleNavPane}
           >
             <MenuIcon />
           </IconButton>
@@ -188,3 +196,9 @@ export default function PrimarySearchAppBar() {
     </div>
   );
 }
+
+const mapStateToProps = (state: IAppState) => ({
+   navPaneOpen: !!state.ui.navPaneOpen
+});
+
+export default connect(mapStateToProps, { setNavPaneOpen })(PrimarySearchAppBar);
