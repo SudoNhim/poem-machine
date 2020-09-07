@@ -44,14 +44,18 @@ export interface IDocReferencePreview {
 }
 
 export interface IAnnotationTokenText {
+    kind: "text";
     text: string;
 }
 
-export interface IAnnotationTokenLink extends IAnnotationTokenText {
+export interface IAnnotationTokenLink {
+    kind: "link";
+    text: string;
     link: string;
 }
 
 export interface IAnnotationTokenDocRef {
+    kind: "docref";
     docRef: string;
 }
 

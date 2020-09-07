@@ -39,7 +39,7 @@ class Editor extends React.Component<IProps, IState> {
 
     const newAnnotation: IAnnotation = {
       anchor: SerializeDocRef(this.props.docRef).split('#')[1],
-      tokens: [{ text: this.state.text }]
+      tokens: [{ kind: "text", text: this.state.text }]
     };
 
     await api.setAnnotation(this.props.docRef.docId, newAnnotation);
