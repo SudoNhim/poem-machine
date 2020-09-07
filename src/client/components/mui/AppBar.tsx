@@ -106,7 +106,7 @@ const PrimarySearchAppBar = withRouter((props: IProps) => {
   };
 
   const handleSearchOnKeyDown = (evt: React.KeyboardEvent<HTMLInputElement>) => {
-    if (evt.key === "Enter") {
+    if (evt.key === "Enter" && evt.currentTarget.value !== '') {
       props.history.push(`/search/${evt.currentTarget.value}`);
     }
   };
