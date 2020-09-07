@@ -26,6 +26,15 @@
     font-style: italic;
 }
 
+.link {
+    text-decoration: underline;
+  }
+  
+  .externallink {
+    color: darkblue;
+    text-decoration: underline;
+  }
+
 .closebutton {
     position: absolute;
     cursor: pointer;

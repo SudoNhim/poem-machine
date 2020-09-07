@@ -2,6 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import { IAppState, IFocusState, IDocState } from "../../model";
 import { IAnnotation, IAnnotationTokenText, IAnnotationTokenDocRef, IAnnotationTokenLink, IDocGraph } from "../../../shared/IApiTypes";
 import { SerializeDocRef } from "../../../shared/util";
@@ -93,12 +94,21 @@ class Annotator extends React.Component<IProps, IState> {
   </div>;
   }
 
-  private tokenToString(tok: (IAnnotationTokenText|IAnnotationTokenLink|IAnnotationTokenDocRef)) {
-    if ((tok as IAnnotationTokenDocRef).docRef)
-        return this.props.docs.graph[(tok as IAnnotationTokenDocRef).docRef].title;
+  private renderToken(tok: (IAnnotationTokenText|IAnnotationTokenLink|IAnnotationTokenDocRef), key: number) {
+    const docRef = (tok as IAnnotationTokenDocRef).docRef;
+    const link = (tok as IAnnotationTokenLink).link;
+    const text = (tok as IAnnotationTokenText).text;
+    if (docRef)
+        return <Link to={`/doc/${docRef}`} key={key} >
+            <span className={css.link}>
+                {this.props.docs.graph[docRef].title}
+            </span>
+        </Link>
+    else if (link)
+        return <a className={css.externallink} href={link} key={key} >{text}</a>;
     else
-        return (tok as IAnnotationTokenText).text;
-}
+        return <span key={key} >{text}</span>
+  }
 
   private renderAnnotation(annotation: IAnnotation, key: number, withTitle: boolean): JSX.Element {
     const el = document.getElementById(annotation.anchor);
@@ -108,7 +118,7 @@ class Annotator extends React.Component<IProps, IState> {
     return <div className={css.relatedannotation} key={key}>
       {withTitle ? <div className={css.title}>{text}</div> : null}
       <div className={css.annotation}>
-        {annotation.tokens.map(tok => this.tokenToString(tok)).join("")}
+        {annotation.tokens.map((tok, i) => this.renderToken(tok, i))}
       </div>
     </div>;
   }

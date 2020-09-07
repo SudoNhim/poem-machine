@@ -22,7 +22,7 @@ interface IState {
 class Editor extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
-    const intialText = this.props.source && this.props.source.text;
+    const intialText = '';
     this.state = {
       text: intialText || ''
     };
@@ -38,8 +38,8 @@ class Editor extends React.Component<IProps, IState> {
     evt.preventDefault();
 
     const newAnnotation: IAnnotation = {
-      canonRefs: [ SerializeDocRef(this.props.docRef).split('#')[1] ],
-      text: this.state.text
+      anchor: SerializeDocRef(this.props.docRef).split('#')[1],
+      tokens: [{ text: this.state.text }]
     };
 
     await api.setAnnotation(this.props.docRef.docId, newAnnotation);

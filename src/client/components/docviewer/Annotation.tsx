@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from 'react-router-dom';
 import { IAnnotation, IAnnotationTokenText, IAnnotationTokenDocRef, IAnnotationTokenLink, IDocGraph } from "../../../shared/IApiTypes";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -43,11 +44,20 @@ class Annotation extends React.Component<IProps, IState> {
           this.props.history.push(`${base}#${id}`);
       }
 
-    private tokenToString(tok: (IAnnotationTokenText|IAnnotationTokenLink|IAnnotationTokenDocRef)) {
-        if ((tok as IAnnotationTokenDocRef).docRef)
-            return this.props.graph[(tok as IAnnotationTokenDocRef).docRef].title;
+    private renderToken(tok: (IAnnotationTokenText|IAnnotationTokenLink|IAnnotationTokenDocRef), key: number) {
+        const docRef = (tok as IAnnotationTokenDocRef).docRef;
+        const link = (tok as IAnnotationTokenLink).link;
+        const text = (tok as IAnnotationTokenText).text;
+        if (docRef)
+            return <Link to={`/doc/${docRef}`} key={key} >
+                <span className={css.link}>
+                    {this.props.graph[docRef].title}
+                </span>
+            </Link>
+        else if (link)
+            return <a className={css.externallink} href={link} key={key} >{text}</a>;
         else
-            return (tok as IAnnotationTokenText).text;
+            return <span key={key} >{text}</span>
     }
 
     public render(): JSX.Element {
@@ -66,7 +76,7 @@ class Annotation extends React.Component<IProps, IState> {
                 onMouseLeave={() => this.props.setHover({})}
                 onMouseUp={(evt) => this.onMouseUp(evt)}
             >
-                {this.props.annotation.tokens.map(tok => this.tokenToString(tok)).join('')}
+                {this.props.annotation.tokens.map((tok, i) => this.renderToken(tok, i))}
             </div>;
     }
 }
