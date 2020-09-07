@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
 import { IAppState, IFocusState, IDocState } from "../../model";
-import { IAnnotation, IAnnotationTokenText, IAnnotationTokenDocRef } from "../../../shared/IApiTypes";
+import { IAnnotation, IAnnotationTokenText, IAnnotationTokenDocRef, IAnnotationTokenLink, IDocGraph } from "../../../shared/IApiTypes";
 import { SerializeDocRef } from "../../../shared/util";
 import Editor from "./Editor";
 
@@ -93,9 +93,12 @@ class Annotator extends React.Component<IProps, IState> {
   </div>;
   }
 
-  private tokenToString(tok) {
-    return (tok as IAnnotationTokenText).text || (tok as IAnnotationTokenDocRef).docRef;
-  }
+  private tokenToString(tok: (IAnnotationTokenText|IAnnotationTokenLink|IAnnotationTokenDocRef)) {
+    if ((tok as IAnnotationTokenDocRef).docRef)
+        return this.props.docs.graph[(tok as IAnnotationTokenDocRef).docRef].title;
+    else
+        return (tok as IAnnotationTokenText).text;
+}
 
   private renderAnnotation(annotation: IAnnotation, key: number, withTitle: boolean): JSX.Element {
     const el = document.getElementById(annotation.anchor);
@@ -105,7 +108,7 @@ class Annotator extends React.Component<IProps, IState> {
     return <div className={css.relatedannotation} key={key}>
       {withTitle ? <div className={css.title}>{text}</div> : null}
       <div className={css.annotation}>
-        {annotation.tokens.map(tok => this.tokenToString(tok)).join(" ")}
+        {annotation.tokens.map(tok => this.tokenToString(tok)).join("")}
       </div>
     </div>;
   }

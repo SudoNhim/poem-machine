@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IAnnotation, IAnnotationTokenText, IAnnotationTokenDocRef } from "../../../shared/IApiTypes";
+import { IAnnotation, IAnnotationTokenText, IAnnotationTokenDocRef, IAnnotationTokenLink, IDocGraph } from "../../../shared/IApiTypes";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
@@ -12,6 +12,7 @@ interface IProps extends RouteComponentProps {
     annotation: IAnnotation;
     hover: IHoverState;
     focus: IFocusState;
+    graph: IDocGraph;
     setHover: typeof setHover;
 }
 
@@ -42,8 +43,11 @@ class Annotation extends React.Component<IProps, IState> {
           this.props.history.push(`${base}#${id}`);
       }
 
-    private tokenToString(tok) {
-        return (tok as IAnnotationTokenText).text || (tok as IAnnotationTokenDocRef).docRef;
+    private tokenToString(tok: (IAnnotationTokenText|IAnnotationTokenLink|IAnnotationTokenDocRef)) {
+        if ((tok as IAnnotationTokenDocRef).docRef)
+            return this.props.graph[(tok as IAnnotationTokenDocRef).docRef].title;
+        else
+            return (tok as IAnnotationTokenText).text;
     }
 
     public render(): JSX.Element {
@@ -62,7 +66,7 @@ class Annotation extends React.Component<IProps, IState> {
                 onMouseLeave={() => this.props.setHover({})}
                 onMouseUp={(evt) => this.onMouseUp(evt)}
             >
-                {this.props.annotation.tokens.map(tok => this.tokenToString(tok)).join(" ")}
+                {this.props.annotation.tokens.map(tok => this.tokenToString(tok)).join('')}
             </div>;
     }
 }
@@ -70,7 +74,8 @@ class Annotation extends React.Component<IProps, IState> {
 const mapStateToProps = (state: IAppState, ownProps) => ({
     annotation: ownProps.annotation,
     hover: state.hover,
-    focus: state.focus
+    focus: state.focus,
+    graph: state.docs.graph
 });
 
 export default connect(mapStateToProps, { setHover })(withRouter(Annotation));
