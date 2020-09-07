@@ -1,6 +1,7 @@
-import { IDocGraph, IDocReference } from "../../shared/IApiTypes";
+import { IDocGraph, IDocReference, IAnnotationTokenDocRef } from "../../shared/IApiTypes";
 import CanonData from 'cohen-db';
 import { isArray } from 'util';
+import { DeserializeDocRef } from '../../shared/util';
 
 // Maintain pre-generated data about the document collection
 // e.g. map of parents to children
@@ -43,6 +44,7 @@ export class GraphController {
   private buildReferences() {
     this.references = {};
     
+    // Add all doc section references
     for (var key in CanonData) {
       const refs: IDocReference[] = [];
       for (var otherKey in CanonData) {
@@ -60,6 +62,20 @@ export class GraphController {
       }
 
       this.references[key] = refs;
+    }
+
+    // Add all annotation references
+    for (var key in CanonData) {
+      const annotations = CanonData[key].annotations || [];
+      for (var anno of annotations) {
+        for (var tok of anno.tokens) {
+          var ref = (tok as IAnnotationTokenDocRef).docRef;
+          if (ref) this.references[ref] = [
+            ...this.references[ref],
+            DeserializeDocRef(`${key}#${anno.anchor}`)
+          ];
+        }
+      }
     }
   }
 }
