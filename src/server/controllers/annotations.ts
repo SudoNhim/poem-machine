@@ -6,10 +6,11 @@ const liveUpdates: {[docId: string]: IAnnotation[]} = {};
 export class AnnotationsController {
   public getAnnotations(docId: string): IAnnotation[] {
     const file = CanonData[docId];
-    const dbAnnotations = (file.annotations || []).map(anno => ({
-      canonRefs: [anno.anchor],
-      text: anno.tokens.map(tok => tok.text).join("")
-    }));
+    const dbAnnotations: IAnnotation[] = (file.annotations || [])
+      .map(anno => ({
+        ...anno,
+        tokens: anno.tokens
+          .map(tok => ({...tok, text: tok.text || tok.link}))}));
     const liveAnnotations = liveUpdates[docId] || [];
     return [...dbAnnotations, ...liveAnnotations];
   }

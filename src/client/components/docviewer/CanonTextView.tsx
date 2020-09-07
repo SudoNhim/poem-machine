@@ -58,7 +58,7 @@ class CanonTextView extends React.Component<IProps> {
       classNames.push(css.canonhover);
     else if (SerializeDocRef(this.props.focus.docRef).split('#')[1] === id)
       classNames.push(css.canonfocus);
-    else if (this.props.annotations.find(anno => anno.canonRefs.indexOf(id) >= 0))
+    else if (this.props.annotations.find(anno => anno.anchor === id))
       classNames.push(css.annotationmarker);
 
     return <div

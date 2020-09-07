@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IAnnotation } from "../../../shared/IApiTypes";
+import { IAnnotation, IAnnotationTokenText, IAnnotationTokenDocRef } from "../../../shared/IApiTypes";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
@@ -28,25 +28,29 @@ class Annotation extends React.Component<IProps, IState> {
 
     private onHover() {
         this.props.setHover({
-            docParts: this.props.annotation.canonRefs
+            docParts: [this.props.annotation.anchor]
         });
     }
 
     private onMouseUp(evt: React.MouseEvent) {
         evt.stopPropagation();
-        const id = this.props.annotation.canonRefs[0];
+        const id = this.props.annotation.anchor;
         const base = `/doc/${this.props.focus.docRef.docId}`;
         if (this.props.location.hash === `#${id}`)
           this.props.history.push(base);
         else
           this.props.history.push(`${base}#${id}`);
-      } 
+      }
+
+    private tokenToString(tok) {
+        return (tok as IAnnotationTokenText).text || (tok as IAnnotationTokenDocRef).docRef;
+    }
 
     public render(): JSX.Element {
         const classNames: string[] = [css.annotation];
         const containerClassNames: string[] = [css.annotationcontainer];
         if (this.props.hover.docParts) {
-            if (this.props.annotation.canonRefs.some(ref => this.props.hover.docParts.indexOf(ref) >= 0)) {
+            if (this.props.hover.docParts.indexOf(this.props.annotation.anchor) >= 0) {
                 classNames.push(css.annotationhover);
                 containerClassNames.push(css.annotationcontainerhover);
             }
@@ -58,7 +62,7 @@ class Annotation extends React.Component<IProps, IState> {
                 onMouseLeave={() => this.props.setHover({})}
                 onMouseUp={(evt) => this.onMouseUp(evt)}
             >
-                {this.props.annotation.text}
+                {this.props.annotation.tokens.map(tok => this.tokenToString(tok)).join(" ")}
             </div>;
     }
 }

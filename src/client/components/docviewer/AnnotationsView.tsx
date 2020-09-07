@@ -39,10 +39,10 @@ class AnnotationsView extends React.Component<IProps, IState> {
     }
 
     public render(): JSX.Element {
-        const groups = [...new Set(this.props.annotations.map(anno => anno.canonRefs[0]))].sort()
+        const groups = [...new Set(this.props.annotations.map(anno => anno.anchor))].sort()
             .map(anchor => ({
                 anchor,
-                annotations: this.props.annotations.filter(anno => anno.canonRefs[0] === anchor)
+                annotations: this.props.annotations.filter(anno => anno.anchor === anchor)
             }));
 
         return <div className={css.annotations}>

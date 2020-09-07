@@ -43,11 +43,21 @@ export interface IDocReferencePreview {
     preview: Text;
 }
 
+export interface IAnnotationTokenText {
+    text: string;
+}
+
+export interface IAnnotationTokenLink extends IAnnotationTokenText {
+    link: string;
+}
+
+export interface IAnnotationTokenDocRef {
+    docRef: string;
+}
+
 export interface IAnnotation {
-    // The parts of the document being annotated, e.g. ["p1.l3", "p2.l0"]
-    canonRefs: string[];
-    crossRef?: string;
-    text?: string;
+    anchor: string;
+    tokens: (IAnnotationTokenText | IAnnotationTokenLink | IAnnotationTokenDocRef)[];
 }
 
 export interface ISearchResults {

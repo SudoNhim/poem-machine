@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
 import { IAppState, IFocusState, IDocState } from "../../model";
-import { IAnnotation } from "../../../shared/IApiTypes";
+import { IAnnotation, IAnnotationTokenText, IAnnotationTokenDocRef } from "../../../shared/IApiTypes";
 import { SerializeDocRef } from "../../../shared/util";
 import Editor from "./Editor";
 
@@ -43,14 +43,14 @@ class Annotator extends React.Component<IProps, IState> {
 
     const refPart = SerializeDocRef(docRef).split('#')[1];
     const annotations = (doc.annotations || []).filter(annotation =>
-      !!(annotation.canonRefs.find(ref => ref === refPart))
+      !!(annotation.anchor === refPart)
     );
     const onContainingParagraph = (doc.annotations || []).filter(annotation =>
       (refPart.split('.l').length > 1)
-      && (!!annotation.canonRefs.find(ref => ref === refPart.split('.l')[0]))
+      && (annotation.anchor === refPart.split('.l')[0])
     );
     const childOfFocused = (doc.annotations || []).filter(annotation =>
-      (!!annotation.canonRefs.find(ref => (ref.startsWith(refPart) && ref !== refPart)))
+      (annotation.anchor.startsWith(refPart) && annotation.anchor !== refPart)
     );
 
     return <div className={css.annotatorcontainer}>
@@ -93,15 +93,19 @@ class Annotator extends React.Component<IProps, IState> {
   </div>;
   }
 
+  private tokenToString(tok) {
+    return (tok as IAnnotationTokenText).text || (tok as IAnnotationTokenDocRef).docRef;
+  }
+
   private renderAnnotation(annotation: IAnnotation, key: number, withTitle: boolean): JSX.Element {
-    const el = document.getElementById(annotation.canonRefs[0]);
+    const el = document.getElementById(annotation.anchor);
     var text = el && el.textContent;
-    if (!text) text = annotation.canonRefs[0];
+    if (!text) text = annotation.anchor;
 
     return <div className={css.relatedannotation} key={key}>
       {withTitle ? <div className={css.title}>{text}</div> : null}
       <div className={css.annotation}>
-        {annotation.text}
+        {annotation.tokens.map(tok => this.tokenToString(tok)).join(" ")}
       </div>
     </div>;
   }
