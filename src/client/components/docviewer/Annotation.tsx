@@ -17,15 +17,9 @@ interface IProps extends RouteComponentProps {
     setHover: typeof setHover;
 }
 
-interface IState {
-}
-
-class Annotation extends React.Component<IProps, IState> {
+class Annotation extends React.Component<IProps> {
     constructor(props: IProps) {
         super(props);
-        this.state = {
-            hover: false
-        }
     }
 
     private onHover() {
@@ -34,7 +28,7 @@ class Annotation extends React.Component<IProps, IState> {
         });
     }
 
-    private onMouseUp(evt: React.MouseEvent) {
+    private onClick(evt: React.MouseEvent) {
         evt.stopPropagation();
         const id = this.props.annotation.anchor;
         const base = `/doc/${this.props.focus.docRef.docId}`;
@@ -49,13 +43,24 @@ class Annotation extends React.Component<IProps, IState> {
         const link = (tok as IAnnotationTokenLink).link;
         const text = (tok as IAnnotationTokenText).text;
         if (docRef)
-            return <Link to={`/doc/${docRef}`} key={key} >
+            return <Link
+                to={`/doc/${docRef}`}
+                key={key}
+                onClick={e => e.stopPropagation()}
+            >
                 <span className={css.link}>
                     {this.props.graph[docRef].title}
                 </span>
             </Link>
         else if (link)
-            return <a className={css.externallink} href={link} key={key} >{text}</a>;
+            return <a
+                className={css.externallink}
+                href={link}
+                onClick={e => e.stopPropagation()}
+                key={key}
+                >
+                    {text}
+                </a>;
         else
             return <span key={key} >{text}</span>
     }
@@ -74,7 +79,7 @@ class Annotation extends React.Component<IProps, IState> {
                 className={classNames.join(" ")}
                 onMouseEnter={() => this.onHover()}
                 onMouseLeave={() => this.props.setHover({})}
-                onMouseUp={(evt) => this.onMouseUp(evt)}
+                onClick={(evt) => this.onClick(evt)}
             >
                 {this.props.annotation.tokens.map((tok, i) => this.renderToken(tok, i))}
             </div>;
