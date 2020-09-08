@@ -49,8 +49,10 @@ class Annotation extends React.Component<IProps> {
                 onClick={e => e.stopPropagation()}
             >
                 <span className={css.link}>
-                    {this.props.graph[docRef].title}
-                </span>
+                {this.props.graph[docRef]
+                  ? this.props.graph[docRef].title
+                  : <span style={{color: "red"}}>{docRef}</span>}
+            </span>
             </Link>
         else if (link)
             return <a

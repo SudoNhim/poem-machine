@@ -101,7 +101,9 @@ class Annotator extends React.Component<IProps, IState> {
     if (docRef)
         return <Link to={`/doc/${docRef}`} key={key} >
             <span className={css.link}>
-                {this.props.docs.graph[docRef].title}
+                {this.props.docs.graph[docRef]
+                  ? this.props.docs.graph[docRef].title
+                  : <span style={{color: "red"}}>{docRef}</span>}
             </span>
         </Link>
     else if (link)
