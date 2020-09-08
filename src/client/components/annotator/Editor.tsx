@@ -1,7 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { IAppState } from "../../model";
-import { IAnnotation, IDocReference } from "../../../shared/IApiTypes";
+import { IAnnotation, IDocReference, IAnnotationTokenDocRef, IAnnotationToken } from "../../../shared/IApiTypes";
 import { setAnnotation } from "../../actions";
 import { SerializeDocRef } from "../../../shared/util";
 import * as api from "../../api";
@@ -34,12 +34,60 @@ class Editor extends React.Component<IProps, IState> {
     });
   }
 
+  private tokenize(str: string): IAnnotationToken[] {
+    const out: IAnnotationToken[] = [];
+    while (str.length > 0) {
+      let textLen = str.length;
+
+      // Match markdown style hyperlinks like [title of page](www.url.com)
+      const linkMatch: RegExpMatchArray = str.match(/\[([^\[\]]+)\]\(([^)]+)\)/);
+      if (linkMatch && linkMatch.index !== null) {
+        console.log(linkMatch);
+        if (linkMatch.index === 0) {
+          out.push({
+            kind: 'link',
+            text: linkMatch[1],
+            link: linkMatch[2]
+          });
+          const len = linkMatch[0].length;
+          str = str.substr(len);
+        }
+        textLen = Math.min(textLen, linkMatch.index);
+      }
+
+      // Match references to other documents, like #symbol.heart
+      const refMatch: RegExpMatchArray = str.match(/#([\w._#]+)/);
+      if (refMatch && refMatch.index !== null) {
+        console.log(refMatch);
+        if (refMatch.index === 0) {
+          out.push({
+            kind: 'docref',
+            docRef: refMatch[1]
+          });
+          const len = refMatch[0].length;
+          str = str.substr(len);
+        }
+        textLen = Math.min(textLen, refMatch.index);
+      }
+
+      if (textLen > 0) {
+        out.push({
+          kind: 'text',
+          text: str.substr(0, textLen)
+        });
+        str = str.substr(textLen);
+      }
+    }
+
+    return out;
+  }
+
   private async onSubmit(evt: React.FormEvent<HTMLFormElement>) {
     evt.preventDefault();
 
     const newAnnotation: IAnnotation = {
       anchor: SerializeDocRef(this.props.docRef).split('#')[1],
-      tokens: [{ kind: "text", text: this.state.text }]
+      tokens: this.tokenize(this.state.text)
     };
 
     await api.setAnnotation(this.props.docRef.docId, newAnnotation);
@@ -51,6 +99,7 @@ class Editor extends React.Component<IProps, IState> {
   public render() {
     return <div className={css.editor}>
         <form onSubmit={(evt) => this.onSubmit(evt)}>
+          <p>Use #type.name syntax to refer to other documents, and [text](www.url.com) format for external links</p>
           <textarea className={css.editortextarea} value={this.state.text} onChange={(evt) => this.onChange(evt)} />
           <input className={css.editorsubmit} type="submit" value="Submit" />
         </form>

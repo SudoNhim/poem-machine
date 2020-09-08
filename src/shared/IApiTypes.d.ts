@@ -59,9 +59,11 @@ export interface IAnnotationTokenDocRef {
     docRef: string;
 }
 
+export type IAnnotationToken = (IAnnotationTokenText | IAnnotationTokenLink | IAnnotationTokenDocRef);
+
 export interface IAnnotation {
     anchor: string;
-    tokens: (IAnnotationTokenText | IAnnotationTokenLink | IAnnotationTokenDocRef)[];
+    tokens: IAnnotationToken[];
 }
 
 export interface ISearchResults {
