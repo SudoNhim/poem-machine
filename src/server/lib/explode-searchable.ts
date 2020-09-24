@@ -69,7 +69,7 @@ export function ExplodeAllSearchable(): CanonShard[] {
 
     if (doc.content) {
       if (Array.isArray(doc.content.content))
-        doc.content.content.forEach((cnt, i) => addText(cnt.content, i + 1));
+        doc.content.content.forEach((cnt, i) => cnt.content && addText(cnt.content, i + 1));
       else addText(doc.content.content, null);
     }
   }

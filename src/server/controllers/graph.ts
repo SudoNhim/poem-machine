@@ -52,7 +52,7 @@ export class GraphController {
         var parts = otherDoc.content && otherDoc.content.content;
         if (isArray(parts)) {
           parts.forEach((part, i) => {
-            if (part.reference === key)
+            if (part.reference === key && part.content) // Don't add refs for empty parts
               refs.push({
                 docId: otherKey,
                 section: i + 1

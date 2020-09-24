@@ -44,7 +44,7 @@ function GeneratePreviewText(text: Text, paragraph: number, line: number): Text 
     line--;
 
     var out: string[][] = [];
-    while (cost < budget && paragraph < text.text.length) {
+    while (cost < budget && paragraph < (text ? text.text.length : 0)) {
         var pout: string[] = [];
 
         const p = text.text[paragraph];

@@ -29,7 +29,7 @@ class ContentPartView extends React.Component<IProps> {
             <span className={css.link}>{this.props.target.title}</span>
           </Link>
         </div>
-        <CanonTextView prefix={`s${this.props.section}.`} text={this.props.part.content} />
+        {this.props.part.content && <CanonTextView prefix={`s${this.props.section}.`} text={this.props.part.content} />}
       </div>
     );
   }
