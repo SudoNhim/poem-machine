@@ -89,7 +89,7 @@ a {
   z-index: 1;
 }
 
-@media only screen and (max-width: 64em) {
+@media only screen and (max-width: 960px) {
     .viewpane {
         left: 1.5em;
     }

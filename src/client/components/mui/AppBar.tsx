@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     menuButton: {
       marginRight: theme.spacing(2),
+      [theme.breakpoints.up('md')]: {
+        display: 'none'
+      }
     },
     title: {
       fontFamily: 'LCHandwriting',
