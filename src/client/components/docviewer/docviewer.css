@@ -76,7 +76,7 @@
 
 .annotationsgroup {
   position: absolute;
-  background-color: white;
+  background-color: #f5f5f5;
   left: 0;
   right: -0;
   height: 15em;
@@ -91,7 +91,7 @@
 
 .annotation {
   font-style: italic;
-  box-shadow: 0 0 0.2em 0.2em white;
+  box-shadow: 0 0 0.2em 0.2em #f5f5f5;
   border-top: 1px solid lightblue;
   border-left: 1px solid lightblue;
   padding-left: 0.5em;
