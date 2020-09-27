@@ -6,10 +6,10 @@ import { getGraph, getSearchResults } from "../api";
 import { setGraph, setFocus, setSearch, setNavPaneOpen } from "../actions";
 import FocusContent from "./FocusContent";
 import Annotator from "./annotator/Annotator";
-import NavTree from "./NavTree";
 import { IDocReference } from "../../shared/IApiTypes";
 import { DeserializeDocRef } from "../../shared/util";
 import { IFocusState, IAppState } from "../model";
+import MuiNavTree from "./mui/MuiNavTree";
 
 const css = require("./all.css");
 
@@ -75,7 +75,7 @@ class PoemMachine extends React.Component<IProps> {
       <div className={css.poemmachine}>
         <div className={navpaneClasses.join(" ")}>
           <div className={css.navsection}>
-            <NavTree />
+            <MuiNavTree />
           </div>
         </div>
         <div

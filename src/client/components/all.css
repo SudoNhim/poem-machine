@@ -45,7 +45,7 @@ a {
 }
 
 .navpane {
-  background: rgba(220, 235, 252);
+  background-color: white;
   overflow-y: scroll;
   position: fixed;
   width: 20em;
