@@ -4,6 +4,7 @@ import { IAppState } from "../../model";
 import { Content } from "cohen-db/schema";
 import CanonTextView from "./CanonTextView";
 import ContentPartView from "./ContentPartView";
+import { Divider } from "@material-ui/core";
 
 const css = require("./docviewer.css");
 
@@ -16,9 +17,17 @@ class ContentView extends React.Component<IProps> {
   }
 
   public render() {
-    if (Array.isArray(this.props.content.content))
-      return this.props.content.content.map((part, i) => <ContentPartView section={i + 1} key={i} part={part} />);
-    else return <CanonTextView prefix={''} text={this.props.content.content} />;
+    if (Array.isArray(this.props.content.content)) {
+      const parts = this.props.content.content.map((part, i) =>
+        <ContentPartView section={i + 1} key={i} part={part} />);
+      let withDividers: JSX.Element[] = [];
+      parts.forEach((part, i) => {
+        withDividers.push(part);
+        if (i < parts.length - 1)
+          withDividers.push(<Divider key={-i}/>);
+      });
+      return withDividers;
+    } else return <CanonTextView prefix={''} text={this.props.content.content} />;
   }
 }
 
