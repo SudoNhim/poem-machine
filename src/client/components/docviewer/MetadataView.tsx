@@ -25,7 +25,7 @@ class MetadataView extends React.Component<IProps> {
       rows.push(`Event: ${this.props.metadata.event}`);
 
     return (
-      <div className={css.card}>
+      <div>
         {rows.map((row, i) => (
           <div key={i}>
             {row}

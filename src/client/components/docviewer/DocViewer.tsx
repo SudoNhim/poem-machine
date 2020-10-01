@@ -10,6 +10,7 @@ import ContentView from "./ContentView";
 import MetadataView from "./MetadataView";
 import DocReferencePreviewList from "./DocReferencePreviewList";
 import { SerializeDocRef } from "../../../shared/util";
+import { Paper, Typography } from "@material-ui/core";
 
 const css = require("./docviewer.css");
 
@@ -60,16 +61,16 @@ class DocViewer extends React.Component<IProps, IState> {
       else 
         return (
         <div>
-          <div className={css.section + ' ' + css.heading}>{this.props.docMeta.title}</div>
-          {this.props.doc.file.metadata &&
-            <div className={css.section}>
-              <MetadataView metadata={this.props.doc.file.metadata} />
-            </div>}
-          {this.props.doc.file.content &&
-            <div className={css.section}>
-              <ContentView content={this.props.doc.file.content} />
-              {this.state.hasContentDom && <AnnotationsView annotations={this.props.doc.annotations} />}
-              </div>}
+          <Paper className={css.section}>
+            <Typography variant="h6" component="h2">
+                {this.props.docMeta.title}
+            </Typography>
+            {this.props.doc.file.metadata &&
+                <MetadataView metadata={this.props.doc.file.metadata} />}
+            {this.props.doc.file.content &&
+                <ContentView content={this.props.doc.file.content} />}
+          </Paper>
+          {this.state.hasContentDom && <AnnotationsView annotations={this.props.doc.annotations} />}
           {this.props.doc.children &&
             <div className={css.section}>
               <div className={css.sectiontitle}>Children</div>

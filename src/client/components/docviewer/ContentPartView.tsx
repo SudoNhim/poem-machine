@@ -23,7 +23,7 @@ class ContentPartView extends React.Component<IProps> {
     }[this.props.part.kind];
 
     return (
-      <div id={`s${this.props.section}`} className={css.card}>
+      <div id={`s${this.props.section}`}>
         <div className={css.reference}>{titleprefix}{" "}
           <Link to={`/doc/${this.props.part.reference}`}>
             <span className={css.link}>{this.props.target.title}</span>

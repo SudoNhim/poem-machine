@@ -4,7 +4,6 @@ import { IAppState } from "../../model";
 import { Content } from "cohen-db/schema";
 import CanonTextView from "./CanonTextView";
 import ContentPartView from "./ContentPartView";
-import { SerializeDocRef } from "../../../shared/util";
 
 const css = require("./docviewer.css");
 
@@ -19,9 +18,7 @@ class ContentView extends React.Component<IProps> {
   public render() {
     if (Array.isArray(this.props.content.content))
       return this.props.content.content.map((part, i) => <ContentPartView section={i + 1} key={i} part={part} />);
-    else return <div className={css.card}>
-      <CanonTextView prefix={''} text={this.props.content.content} />
-    </div>;
+    else return <CanonTextView prefix={''} text={this.props.content.content} />;
   }
 }
 
