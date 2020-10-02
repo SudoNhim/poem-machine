@@ -19,8 +19,8 @@ import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
 
-import { setNavPaneOpen } from "../../actions";
-import { IAppState } from "../../model";
+import { setNavPaneOpen } from "../actions";
+import { IAppState } from "../model";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

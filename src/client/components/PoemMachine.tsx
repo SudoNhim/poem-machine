@@ -10,7 +10,7 @@ import { getGraph, getSearchResults } from "../api";
 import { IAppState, IFocusState } from "../model";
 import Annotator from "./annotator/Annotator";
 import FocusContent from "./FocusContent";
-import MuiNavTree from "./mui/MuiNavTree";
+import NavTree from "./NavTree";
 
 const css = require("./all.css");
 
@@ -79,7 +79,7 @@ class PoemMachine extends React.Component<IProps> {
       <div className={css.poemmachine}>
         <div className={navpaneClasses.join(" ")}>
           <div className={css.navsection}>
-            <MuiNavTree />
+            <NavTree />
           </div>
         </div>
         <div
