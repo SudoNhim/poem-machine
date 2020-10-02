@@ -41,8 +41,8 @@ const NavTree = withRouter((props: IProps) => {
 
   function handleSelect(event: React.MouseEvent, nodeId) {
     // uncomment the following to make chevrons only expand/collapse
-    // if ((event.target as Element).classList.contains("MuiTreeItem-label"))
-    props.history.push(`/doc/${nodeId}`);
+    if ((event.target as Element).classList.contains("MuiTreeItem-label"))
+      props.history.push(`/doc/${nodeId}`);
   }
 
   const selected = [];
