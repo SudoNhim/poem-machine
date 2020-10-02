@@ -3,15 +3,16 @@ import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { IAppState, IFocusState, IDocState } from "../../model";
+
 import {
   IAnnotation,
-  IAnnotationTokenText,
   IAnnotationTokenDocRef,
   IAnnotationTokenLink,
+  IAnnotationTokenText,
   IDocGraph,
 } from "../../../shared/IApiTypes";
 import { SerializeDocRef } from "../../../shared/util";
+import { IAppState, IDocState, IFocusState } from "../../model";
 import Editor from "./Editor";
 
 const css = require("./annotator.css");

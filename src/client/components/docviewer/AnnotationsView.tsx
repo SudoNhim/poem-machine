@@ -1,6 +1,7 @@
 import * as React from "react";
-import { IAnnotation } from "../../../shared/IApiTypes";
 import { connect } from "react-redux";
+
+import { IAnnotation } from "../../../shared/IApiTypes";
 import AnnotationsGroup from "./AnnotationsGroup";
 
 const css = require("./docviewer.css");

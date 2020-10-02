@@ -1,10 +1,11 @@
+import { Divider } from "@material-ui/core";
+import { Content } from "cohen-db/schema";
 import * as React from "react";
 import { connect } from "react-redux";
+
 import { IAppState } from "../../model";
-import { Content } from "cohen-db/schema";
 import CanonTextView from "./CanonTextView";
 import ContentPartView from "./ContentPartView";
-import { Divider } from "@material-ui/core";
 
 const css = require("./docviewer.css");
 

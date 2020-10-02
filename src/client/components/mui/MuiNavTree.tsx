@@ -1,14 +1,15 @@
+import { makeStyles } from "@material-ui/core/styles";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import TreeItem from "@material-ui/lab/TreeItem";
+import TreeView from "@material-ui/lab/TreeView";
 import React from "react";
 import { connect } from "react-redux";
-import { IAppState, IFocusState } from "../../model";
-import { withRouter } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
-import { makeStyles } from "@material-ui/core/styles";
-import TreeView from "@material-ui/lab/TreeView";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import TreeItem from "@material-ui/lab/TreeItem";
+import { withRouter } from "react-router-dom";
+
 import { IDocGraph, IDocMeta } from "../../../shared/IApiTypes";
+import { IAppState, IFocusState } from "../../model";
 
 const useStyles = makeStyles({
   root: {

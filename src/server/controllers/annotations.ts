@@ -1,5 +1,6 @@
-import { IAnnotation } from "../../shared/IApiTypes";
 import CanonData from "cohen-db";
+
+import { IAnnotation } from "../../shared/IApiTypes";
 
 const liveUpdates: { [docId: string]: IAnnotation[] } = {};
 

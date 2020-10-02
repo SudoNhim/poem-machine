@@ -1,7 +1,9 @@
-import { Text } from "cohen-db/schema";
-import { IDocReferencePreview, IDocReference } from "../../shared/IApiTypes";
 import { isNullOrUndefined } from "util";
+
 import CanonData from "cohen-db";
+import { Text } from "cohen-db/schema";
+
+import { IDocReference, IDocReferencePreview } from "../../shared/IApiTypes";
 
 export function GeneratePreview(docRef: IDocReference): IDocReferencePreview {
   const doc = CanonData[docRef.docId];

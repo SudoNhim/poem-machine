@@ -1,5 +1,7 @@
-import * as express from "express";
 import * as path from "path";
+
+import * as express from "express";
+
 import { SERVER_PORT } from "./config";
 import { apiRouter } from "./routes/api-router";
 import { pagesRouter } from "./routes/pages-router";

@@ -1,14 +1,16 @@
+import { isNullOrUndefined } from "util";
+
 import { Index } from "lunr";
 import * as lunr from "lunr";
+
 import {
-  ISearchResults,
   IDocReference,
   IDocReferencePreview,
+  ISearchResults,
 } from "../../shared/IApiTypes";
+import { DeserializeDocRef, SerializeDocRef } from "../../shared/util";
 import { ExplodeAllSearchable } from "../lib/explode-searchable";
 import { GeneratePreview } from "../lib/generate-preview";
-import { DeserializeDocRef, SerializeDocRef } from "../../shared/util";
-import { isNullOrUndefined } from "util";
 
 export interface SearchHit {
   id: string;

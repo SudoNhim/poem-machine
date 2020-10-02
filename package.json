@@ -61,8 +61,10 @@
     "css-loader": "^3.4.2",
     "cssnano": "^4.1.10",
     "dotenv": "^8.2.0",
+    "import-sort-style-module": "^6.0.0",
     "markdown-react-js": "^1.0.2",
-    "prettier": "2.1.2",
+    "prettier": "^2.1.2",
+    "prettier-plugin-import-sort": "0.0.6",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-hot-loader": "^4.12.18",
@@ -82,5 +84,11 @@
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.11.0",
     "webpack-manifest-plugin": "^2.2.0"
+  },
+  "importSort": {
+    ".js, .jsx, .ts, .tsx": {
+      "style": "module",
+      "parser": "typescript"
+    }
   }
 }

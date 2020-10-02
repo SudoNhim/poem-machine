@@ -2,13 +2,14 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import ScrollMemory from "react-router-scroll-memory";
-import { getGraph, getSearchResults } from "../api";
-import { setGraph, setFocus, setSearch, setNavPaneOpen } from "../actions";
-import FocusContent from "./FocusContent";
-import Annotator from "./annotator/Annotator";
+
 import { IDocReference } from "../../shared/IApiTypes";
 import { DeserializeDocRef } from "../../shared/util";
-import { IFocusState, IAppState } from "../model";
+import { setFocus, setGraph, setNavPaneOpen, setSearch } from "../actions";
+import { getGraph, getSearchResults } from "../api";
+import { IAppState, IFocusState } from "../model";
+import Annotator from "./annotator/Annotator";
+import FocusContent from "./FocusContent";
 import MuiNavTree from "./mui/MuiNavTree";
 
 const css = require("./all.css");

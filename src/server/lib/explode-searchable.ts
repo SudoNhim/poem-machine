@@ -1,6 +1,7 @@
 import CanonData from "cohen-db";
-import { SerializeDocRef } from "../../shared/util";
 import { Text } from "cohen-db/schema";
+
+import { SerializeDocRef } from "../../shared/util";
 
 export interface CanonShard {
   docref: string; // serialized docref

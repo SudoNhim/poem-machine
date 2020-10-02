@@ -1,9 +1,10 @@
 import axios from "axios";
+
 import {
+  IAnnotation,
   IDoc,
   IDocGraph,
   ISearchResults,
-  IAnnotation,
 } from "../shared/IApiTypes";
 
 export async function getDoc(id: string): Promise<IDoc> {

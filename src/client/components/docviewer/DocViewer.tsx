@@ -1,16 +1,17 @@
+import { Paper, Typography } from "@material-ui/core";
 import * as React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { getDoc } from "../../api";
-import { setDoc, setScrolled } from "../../actions";
+
 import { IDoc, IDocMeta } from "../../../shared/IApiTypes";
+import { SerializeDocRef } from "../../../shared/util";
+import { setDoc, setScrolled } from "../../actions";
+import { getDoc } from "../../api";
 import { IAppState, IFocusState } from "../../model";
 import AnnotationsView from "./AnnotationsView";
 import ContentView from "./ContentView";
-import MetadataView from "./MetadataView";
 import DocReferencePreviewList from "./DocReferencePreviewList";
-import { SerializeDocRef } from "../../../shared/util";
-import { Paper, Typography } from "@material-ui/core";
+import MetadataView from "./MetadataView";
 
 const css = require("./docviewer.css");
 

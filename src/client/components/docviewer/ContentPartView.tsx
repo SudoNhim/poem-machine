@@ -1,10 +1,11 @@
+import { Note, Prologue, Variation } from "cohen-db/schema";
 import * as React from "react";
 import { connect } from "react-redux";
-import { IAppState } from "../../model";
-import { Prologue, Variation, Note } from "cohen-db/schema";
 import { Link } from "react-router-dom";
-import CanonTextView from "./CanonTextView";
+
 import { IDocMeta } from "../../../shared/IApiTypes";
+import { IAppState } from "../../model";
+import CanonTextView from "./CanonTextView";
 
 const css = require("./docviewer.css");
 

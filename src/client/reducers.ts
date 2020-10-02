@@ -1,15 +1,15 @@
-import { IAppState } from "./model";
 import {
   ActionTypes,
-  SET_DOC,
-  SET_GRAPH,
-  SET_SEARCH,
-  SET_FOCUS,
-  SET_SCROLLED,
-  SET_HOVER,
   SET_ANNOTATION,
+  SET_DOC,
+  SET_FOCUS,
+  SET_GRAPH,
+  SET_HOVER,
   SET_NAV_PANE_OPEN,
+  SET_SCROLLED,
+  SET_SEARCH,
 } from "./actions";
+import { IAppState } from "./model";
 
 const initialState: IAppState = {
   docs: {

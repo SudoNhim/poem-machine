@@ -1,8 +1,8 @@
 import {
-  IDocGraph,
-  IDoc,
-  ISearchResults,
   IAnnotation,
+  IDoc,
+  IDocGraph,
+  ISearchResults,
 } from "../shared/IApiTypes";
 import { IFocusState, IHoverState } from "./model";
 

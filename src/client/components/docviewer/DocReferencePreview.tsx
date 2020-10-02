@@ -3,13 +3,14 @@ import {
   Card,
   CardActions,
   CardContent,
-  makeStyles,
   Typography,
+  makeStyles,
 } from "@material-ui/core";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
-import { IDocReferencePreview, IDocMeta } from "../../../shared/IApiTypes";
+
+import { IDocMeta, IDocReferencePreview } from "../../../shared/IApiTypes";
 import { SerializeDocRef } from "../../../shared/util";
 import { IAppState } from "../../model";
 import PreviewTextView from "./PreviewTextView";

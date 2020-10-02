@@ -1,12 +1,13 @@
+import { Text } from "cohen-db/schema";
 import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
-import { IAppState, IHoverState, IFocusState } from "../../model";
-import { Text } from "cohen-db/schema";
-import { setHover } from "../../actions";
-import { SerializeDocRef } from "../../../shared/util";
+
 import { IAnnotation } from "../../../shared/IApiTypes";
+import { SerializeDocRef } from "../../../shared/util";
+import { setHover } from "../../actions";
+import { IAppState, IFocusState, IHoverState } from "../../model";
 
 const css = require("./docviewer.css");
 

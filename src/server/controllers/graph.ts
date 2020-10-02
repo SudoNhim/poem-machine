@@ -1,10 +1,12 @@
+import { isArray } from "util";
+
+import CanonData from "cohen-db";
+
 import {
+  IAnnotationTokenDocRef,
   IDocGraph,
   IDocReference,
-  IAnnotationTokenDocRef,
 } from "../../shared/IApiTypes";
-import CanonData from "cohen-db";
-import { isArray } from "util";
 import { DeserializeDocRef } from "../../shared/util";
 
 // Maintain pre-generated data about the document collection

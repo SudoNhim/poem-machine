@@ -1,25 +1,26 @@
-import React from "react";
-import { withRouter } from "react-router-dom";
-import { RouteComponentProps } from "react-router";
+import AppBar from "@material-ui/core/AppBar";
+import IconButton from "@material-ui/core/IconButton";
+import InputBase from "@material-ui/core/InputBase";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import {
-  fade,
-  makeStyles,
   Theme,
   createStyles,
+  fade,
+  makeStyles,
 } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import InputBase from "@material-ui/core/InputBase";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
+import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
-import AccountCircle from "@material-ui/icons/AccountCircle";
+import React from "react";
 import { connect } from "react-redux";
-import { IAppState } from "../../model";
+import { RouteComponentProps } from "react-router";
+import { withRouter } from "react-router-dom";
+
 import { setNavPaneOpen } from "../../actions";
+import { IAppState } from "../../model";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

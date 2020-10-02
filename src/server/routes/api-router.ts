@@ -1,11 +1,12 @@
+import * as bodyParser from "body-parser";
+import CanonData from "cohen-db";
 import { Router } from "express";
+
+import { IAnnotation, IDoc } from "../../shared/IApiTypes";
 import { AnnotationsController } from "../controllers/annotations";
 import { GraphController } from "../controllers/graph";
 import { SearchController } from "../controllers/search";
-import CanonData from "cohen-db";
-import { IDoc, IAnnotation } from "../../shared/IApiTypes";
 import { GeneratePreview } from "../lib/generate-preview";
-import * as bodyParser from "body-parser";
 
 const jsonParser = bodyParser.json();
 

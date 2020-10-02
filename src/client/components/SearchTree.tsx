@@ -1,10 +1,11 @@
 import * as React from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+
 import { ISearchResults } from "../../shared/IApiTypes";
 import { IAppState } from "../model";
-import { Link } from "react-router-dom";
-import NavTreeNode from "./NavTreeNode";
 import ExpandButton from "./ExpandButton";
+import NavTreeNode from "./NavTreeNode";
 
 const css = require("./all.css");
 

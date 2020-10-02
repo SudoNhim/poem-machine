@@ -1,7 +1,8 @@
+import { Text } from "cohen-db/schema";
 import * as React from "react";
 import { connect } from "react-redux";
+
 import { IAppState } from "../../model";
-import { Text } from "cohen-db/schema";
 
 const css = require("./docviewer.css");
 

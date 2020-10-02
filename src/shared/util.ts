@@ -1,5 +1,6 @@
-import { IDocReference } from "./IApiTypes";
 import { isNullOrUndefined } from "util";
+
+import { IDocReference } from "./IApiTypes";
 
 export function SerializeDocRef(
   ref: IDocReference,

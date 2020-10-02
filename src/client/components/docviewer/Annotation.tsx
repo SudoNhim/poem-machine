@@ -1,17 +1,18 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
-import {
-  IAnnotation,
-  IAnnotationTokenText,
-  IAnnotationTokenDocRef,
-  IAnnotationTokenLink,
-  IDocGraph,
-} from "../../../shared/IApiTypes";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
+import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
+
+import {
+  IAnnotation,
+  IAnnotationTokenDocRef,
+  IAnnotationTokenLink,
+  IAnnotationTokenText,
+  IDocGraph,
+} from "../../../shared/IApiTypes";
 import { setHover } from "../../actions";
-import { IHoverState, IAppState, IFocusState } from "../../model";
+import { IAppState, IFocusState, IHoverState } from "../../model";
 
 const css = require("./docviewer.css");
 

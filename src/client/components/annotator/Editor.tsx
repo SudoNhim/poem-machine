@@ -1,15 +1,16 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { IAppState } from "../../model";
+
 import {
   IAnnotation,
-  IDocReference,
-  IAnnotationTokenDocRef,
   IAnnotationToken,
+  IAnnotationTokenDocRef,
+  IDocReference,
 } from "../../../shared/IApiTypes";
-import { setAnnotation } from "../../actions";
 import { SerializeDocRef } from "../../../shared/util";
+import { setAnnotation } from "../../actions";
 import * as api from "../../api";
+import { IAppState } from "../../model";
 
 const css = require("./annotator.css");
 

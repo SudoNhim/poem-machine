@@ -1,8 +1,8 @@
 import {
   IDoc,
   IDocGraph,
-  ISearchResults,
   IDocReference,
+  ISearchResults,
 } from "../shared/IApiTypes";
 
 export interface IDocState {
