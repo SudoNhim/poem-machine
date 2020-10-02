@@ -45,6 +45,7 @@ class PoemMachine extends React.Component<IProps> {
   }
 
   private async handleRoute(isPush: boolean) {
+
     const { docId, searchTerm } = this.props.match.params;
     const part = this.props.location.hash;
     const docRef: IDocReference = DeserializeDocRef(`${docId}${part}`);
@@ -64,6 +65,8 @@ class PoemMachine extends React.Component<IProps> {
       this.props.setFocus({
         search: true
       });
+    } else { // otherwise go home
+      this.props.setFocus({});
     }
   }
 

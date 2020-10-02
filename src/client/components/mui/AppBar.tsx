@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme: Theme) =>
       fontFamily: 'LCHandwriting',
       fontSize: '2.25rem',
       display: 'none',
+      cursor: 'pointer',
       [theme.breakpoints.up('sm')]: {
         display: 'block',
       },
@@ -114,6 +115,10 @@ const PrimarySearchAppBar = withRouter((props: IProps) => {
     }
   };
 
+  const goHome = () => {
+    props.history.push('/');
+  }
+
   const toggleNavPane = () => {
     props.setNavPaneOpen(!props.navPaneOpen);
   }
@@ -171,7 +176,7 @@ const PrimarySearchAppBar = withRouter((props: IProps) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
+          <Typography className={classes.title} variant="h6" onClick={goHome} noWrap>
             Leonard Cohen  Notes
           </Typography>
           <div className={classes.search}>
