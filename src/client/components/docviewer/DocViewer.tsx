@@ -10,7 +10,7 @@ import { getDoc } from "../../api";
 import { IAppState, IFocusState } from "../../model";
 import AnnotationsView from "./AnnotationsView";
 import ContentView from "./ContentView";
-import DocReferencePreviewList from "./DocReferencePreviewList";
+import DocReferencePreview from "./DocReferencePreview";
 import MetadataView from "./MetadataView";
 
 const css = require("./docviewer.css");
@@ -82,13 +82,17 @@ class DocViewer extends React.Component<IProps, IState> {
           {this.props.doc.children && (
             <div className={css.section}>
               <div className={css.sectiontitle}>Children</div>
-              <DocReferencePreviewList previews={this.props.doc.children} />
+              {this.props.doc.children.map((child) => (
+                <DocReferencePreview preview={child} />
+              ))}
             </div>
           )}
           {this.props.doc.referrers && (
             <div className={css.section}>
               <div className={css.sectiontitle}>References</div>
-              <DocReferencePreviewList previews={this.props.doc.referrers} />
+              {this.props.doc.referrers.map((referrer) => (
+                <DocReferencePreview preview={referrer} />
+              ))}
             </div>
           )}
         </div>

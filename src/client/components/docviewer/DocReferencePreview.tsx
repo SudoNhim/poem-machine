@@ -13,9 +13,6 @@ import { Link as RouterLink } from "react-router-dom";
 import { IDocMeta, IDocReferencePreview } from "../../../shared/IApiTypes";
 import { SerializeDocRef } from "../../../shared/util";
 import { IAppState } from "../../model";
-import PreviewTextView from "./PreviewTextView";
-
-const css = require("./docviewer.css");
 
 const useStyles = makeStyles({
   root: {
