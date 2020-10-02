@@ -44,7 +44,7 @@ const DocReferencePreview: React.FunctionComponent<IProps> = (props) => {
             <Typography variant="h6" component="h2">
                 {props.docMeta.title}
             </Typography>
-            <Typography variant="body2" component="p">
+            <Typography variant="body2" component="div">
                 {props.preview.preview.text.map((p, i) => (
                     <p key={i}>{
                     Array.isArray(p)

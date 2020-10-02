@@ -28,7 +28,7 @@ const MuiNavTree = withRouter((props: IProps) => {
 
   function recurse(meta: IDocMeta): JSX.Element[] {
     return (meta.children || []).map(childId =>
-      <TreeItem nodeId={childId} label={props.graph[childId].title}>
+      <TreeItem nodeId={childId} label={props.graph[childId].title} key={childId}>
         {recurse(props.graph[childId])}
       </TreeItem>);
   }

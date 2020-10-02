@@ -24,7 +24,7 @@ class ContentView extends React.Component<IProps> {
       parts.forEach((part, i) => {
         withDividers.push(part);
         if (i < parts.length - 1)
-          withDividers.push(<Divider key={-i}/>);
+          withDividers.push(<Divider key={i + parts.length}/>);
       });
       return withDividers;
     } else return <CanonTextView prefix={''} text={this.props.content.content} />;
