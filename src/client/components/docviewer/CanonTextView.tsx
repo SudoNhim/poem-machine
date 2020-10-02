@@ -33,46 +33,52 @@ class CanonTextView extends React.Component<IProps> {
     const classNames: string[] = [css.canonparagraph];
     if (this.props.hover.docParts && this.props.hover.docParts.indexOf(id) >= 0)
       classNames.push(css.canonhover);
-    if (SerializeDocRef(this.props.focus.docRef).split('#')[1] === id)
+    if (SerializeDocRef(this.props.focus.docRef).split("#")[1] === id)
       classNames.push(css.canonfocus);
 
-    return <div
-      id={id}
-      className={classNames.join(" ")}
-      key={pi}
-      onMouseOver={evt => this.onMouseOver(evt, id)}
-      onMouseOut={evt => this.onMouseOut(evt, id)}
-      onMouseUp={evt => this.onMouseUp(evt, id)}
-    >
-      {Array.isArray(text)
-      ? text.map((line, i) => [this.renderLine(pi, i + 1, line), <br key={-i}/>])
-      : text}
-    </div>;
+    return (
+      <div
+        id={id}
+        className={classNames.join(" ")}
+        key={pi}
+        onMouseOver={(evt) => this.onMouseOver(evt, id)}
+        onMouseOut={(evt) => this.onMouseOut(evt, id)}
+        onMouseUp={(evt) => this.onMouseUp(evt, id)}
+      >
+        {Array.isArray(text)
+          ? text.map((line, i) => [
+              this.renderLine(pi, i + 1, line),
+              <br key={-i} />,
+            ])
+          : text}
+      </div>
+    );
   }
 
   private renderLine(pi: number, li: number, s: string): JSX.Element {
     const id = `${this.props.prefix}p${pi}.l${li}`;
     const classNames: string[] = [css.canonlinetext];
-    
+
     if (this.props.hover.docParts && this.props.hover.docParts.indexOf(id) >= 0)
       classNames.push(css.canonhover);
-    else if (SerializeDocRef(this.props.focus.docRef).split('#')[1] === id)
+    else if (SerializeDocRef(this.props.focus.docRef).split("#")[1] === id)
       classNames.push(css.canonfocus);
-    else if (this.props.annotations.find(anno => anno.anchor === id))
+    else if (this.props.annotations.find((anno) => anno.anchor === id))
       classNames.push(css.annotationmarker);
 
-    return <div
-      className={css.canonline}
-      key={li}
-      onMouseOver={evt => this.onMouseOver(evt, id)}
-      onMouseOut={evt => this.onMouseOut(evt, id)}
-      onMouseUp={evt => this.onMouseUp(evt, id)}
-    >
-      <span
-        id={id}
-        className={classNames.join(" ")}
-      >{s}</span>
-    </div>;
+    return (
+      <div
+        className={css.canonline}
+        key={li}
+        onMouseOver={(evt) => this.onMouseOver(evt, id)}
+        onMouseOut={(evt) => this.onMouseOut(evt, id)}
+        onMouseUp={(evt) => this.onMouseUp(evt, id)}
+      >
+        <span id={id} className={classNames.join(" ")}>
+          {s}
+        </span>
+      </div>
+    );
   }
 
   private onMouseOver(evt: React.MouseEvent, id: string) {
@@ -82,17 +88,15 @@ class CanonTextView extends React.Component<IProps> {
 
   private onMouseOut(evt: React.MouseEvent, id: string) {
     evt.stopPropagation();
-    this.props.setHover({ });
+    this.props.setHover({});
   }
 
   private onMouseUp(evt: React.MouseEvent, id: string) {
     evt.stopPropagation();
     const base = `/doc/${this.props.focus.docRef.docId}`;
-    if (this.props.location.hash === `#${id}`)
-      this.props.history.push(base);
-    else
-      this.props.history.push(`${base}#${id}`);
-  } 
+    if (this.props.location.hash === `#${id}`) this.props.history.push(base);
+    else this.props.history.push(`${base}#${id}`);
+  }
 }
 
 const mapStateToProps = (state: IAppState, ownProps) => ({
@@ -100,7 +104,9 @@ const mapStateToProps = (state: IAppState, ownProps) => ({
   prefix: ownProps.prefix,
   hover: state.hover,
   focus: state.focus,
-  annotations: state.docs.cache[state.focus.docRef.docId].annotations
+  annotations: state.docs.cache[state.focus.docRef.docId].annotations,
 });
 
-export default connect(mapStateToProps, { setHover })(withRouter(CanonTextView));
+export default connect(mapStateToProps, { setHover })(
+  withRouter(CanonTextView)
+);

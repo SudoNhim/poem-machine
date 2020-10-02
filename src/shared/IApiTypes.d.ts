@@ -1,77 +1,80 @@
 import { CanonFile, Text } from "cohen-db/schema";
 
 export interface IDocMeta {
-    kind: string;
-    title: string;
-    children?: string[];
+  kind: string;
+  title: string;
+  children?: string[];
 }
 
 export interface IDocReference {
-    docId: string;
-    
-    // Section is applicable only in a multipart document
-    section?: number;
+  docId: string;
 
-    // Location in canonical text
-    paragraph?: number;
-    line?: number;
+  // Section is applicable only in a multipart document
+  section?: number;
 
-    // One or more pairs of [start, length]
-    substrings?: number[][];
+  // Location in canonical text
+  paragraph?: number;
+  line?: number;
+
+  // One or more pairs of [start, length]
+  substrings?: number[][];
 }
 
 export interface IDoc {
-    file: CanonFile;
+  file: CanonFile;
 
-    children?: IDocReferencePreview[];
+  children?: IDocReferencePreview[];
 
-    // List of previews of docs that have links to this one
-    referrers?: IDocReferencePreview[];
+  // List of previews of docs that have links to this one
+  referrers?: IDocReferencePreview[];
 
-    annotations?: IAnnotation[];
+  annotations?: IAnnotation[];
 
-    // Annotations, discussion thread....
+  // Annotations, discussion thread....
 }
 
 export interface IDocGraph {
-    [id: string]: IDocMeta;
-    db: IDocMeta;
+  [id: string]: IDocMeta;
+  db: IDocMeta;
 }
 
 export interface IDocReferencePreview {
-    docRef: IDocReference;
-    preview: Text;
+  docRef: IDocReference;
+  preview: Text;
 }
 
 export interface IAnnotationTokenText {
-    kind: "text";
-    text: string;
+  kind: "text";
+  text: string;
 }
 
 export interface IAnnotationTokenLink {
-    kind: "link";
-    text: string;
-    link: string;
+  kind: "link";
+  text: string;
+  link: string;
 }
 
 export interface IAnnotationTokenDocRef {
-    kind: "docref";
-    docRef: string;
+  kind: "docref";
+  docRef: string;
 }
 
-export type IAnnotationToken = (IAnnotationTokenText | IAnnotationTokenLink | IAnnotationTokenDocRef);
+export type IAnnotationToken =
+  | IAnnotationTokenText
+  | IAnnotationTokenLink
+  | IAnnotationTokenDocRef;
 
 export interface IAnnotation {
-    anchor: string;
-    tokens: IAnnotationToken[];
+  anchor: string;
+  tokens: IAnnotationToken[];
 }
 
 export interface ISearchResults {
-    term: string;
+  term: string;
 
-    // All search hits down to the line. Can be used for highlighting results in documents
-    hits: IDocReference[];
+  // All search hits down to the line. Can be used for highlighting results in documents
+  hits: IDocReference[];
 
-    // A list of aggregated previews by docid/section
-    previews: IDocReferencePreview[]
+  // A list of aggregated previews by docid/section
+  previews: IDocReferencePreview[];
 }

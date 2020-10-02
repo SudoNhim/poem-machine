@@ -16,8 +16,8 @@ a {
 }
 
 @font-face {
-  font-family: 'LCHandwriting';
-  src: url('/assets/fonts/LCHandwriting.ttf')  format('truetype');
+  font-family: "LCHandwriting";
+  src: url("/assets/fonts/LCHandwriting.ttf") format("truetype");
 }
 .header {
   background-color: lightblue;
@@ -57,26 +57,26 @@ a {
 }
 
 .navtogglebar {
-    background-color: rgba(220, 235, 252, 0.5);
-    cursor: pointer;
-    border: solid lightgrey 1px;
-    margin: 0.1em;
-    position: fixed;
-    width: 1.5em;
-    z-index: 1;
-    top: 4.5em;
-    left: 6.5px;
-    bottom: -0;
-    visibility: hidden;
+  background-color: rgba(220, 235, 252, 0.5);
+  cursor: pointer;
+  border: solid lightgrey 1px;
+  margin: 0.1em;
+  position: fixed;
+  width: 1.5em;
+  z-index: 1;
+  top: 4.5em;
+  left: 6.5px;
+  bottom: -0;
+  visibility: hidden;
 }
 
 .navtogglebar_text {
-    position: relative;
-    left: 0em;
-    top: 5.3em;
-    width: 12em;
-    transform: rotate(-90deg);
-    transform-origin: 5% 50%;
+  position: relative;
+  left: 0em;
+  top: 5.3em;
+  width: 12em;
+  transform: rotate(-90deg);
+  transform-origin: 5% 50%;
 }
 
 .viewpane {
@@ -91,17 +91,17 @@ a {
 }
 
 @media only screen and (max-width: 960px) {
-    .viewpane {
-        left: 1.5em;
-    }
+  .viewpane {
+    left: 1.5em;
+  }
 
-    .navinactive {
-        left: -20em;
-    }
+  .navinactive {
+    left: -20em;
+  }
 
-    .navtogglebar {
-      visibility: visible;
-    }
+  .navtogglebar {
+    visibility: visible;
+  }
 }
 
 .navsection {
@@ -182,7 +182,7 @@ a {
 
 .focuscontent {
   padding: 5pt;
-  margin-bottom: 20em;;
+  margin-bottom: 20em;
 }
 
 .docviewer_title {

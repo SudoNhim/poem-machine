@@ -17,9 +17,9 @@ export function ExplodeAllSearchable(): CanonShard[] {
     // titles
     out.push({
       docref: SerializeDocRef({
-        docId: key
+        docId: key,
       }),
-      text: doc.title
+      text: doc.title,
     });
 
     // metadata properties appropriate for searching
@@ -33,9 +33,9 @@ export function ExplodeAllSearchable(): CanonShard[] {
         if (loc.venue) parts.push(loc.venue);
         out.push({
           docref: SerializeDocRef({
-            docId: key
+            docId: key,
           }),
-          text: parts.join(" ")
+          text: parts.join(" "),
         });
       }
     }
@@ -50,9 +50,9 @@ export function ExplodeAllSearchable(): CanonShard[] {
                 docId: key,
                 section,
                 paragraph: pi + 1,
-                line: li + 1
+                line: li + 1,
               }),
-              text: l
+              text: l,
             });
           });
         else
@@ -60,16 +60,18 @@ export function ExplodeAllSearchable(): CanonShard[] {
             docref: SerializeDocRef({
               docId: key,
               section,
-              paragraph: pi + 1
+              paragraph: pi + 1,
             }),
-            text: p
+            text: p,
           });
       });
     };
 
     if (doc.content) {
       if (Array.isArray(doc.content.content))
-        doc.content.content.forEach((cnt, i) => cnt.content && addText(cnt.content, i + 1));
+        doc.content.content.forEach(
+          (cnt, i) => cnt.content && addText(cnt.content, i + 1)
+        );
       else addText(doc.content.content, null);
     }
   }

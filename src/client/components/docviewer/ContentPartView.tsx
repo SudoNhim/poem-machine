@@ -19,17 +19,23 @@ class ContentPartView extends React.Component<IProps> {
     const titleprefix = {
       prologue: "Prologue to",
       note: "On",
-      variation: "Variation of"
+      variation: "Variation of",
     }[this.props.part.kind];
 
     return (
       <div id={`s${this.props.section}`}>
-        <div className={css.reference}>{titleprefix}{" "}
+        <div className={css.reference}>
+          {titleprefix}{" "}
           <Link to={`/doc/${this.props.part.reference}`}>
             <span className={css.link}>{this.props.target.title}</span>
           </Link>
         </div>
-        {this.props.part.content && <CanonTextView prefix={`s${this.props.section}.`} text={this.props.part.content} />}
+        {this.props.part.content && (
+          <CanonTextView
+            prefix={`s${this.props.section}.`}
+            text={this.props.part.content}
+          />
+        )}
       </div>
     );
   }
@@ -39,7 +45,7 @@ class ContentPartView extends React.Component<IProps> {
 const mapStateToProps = (state: IAppState, ownProps) => ({
   part: ownProps.part,
   section: ownProps.section,
-  target: state.docs.graph[ownProps.part.reference]
+  target: state.docs.graph[ownProps.part.reference],
 });
 
 export default connect(mapStateToProps)(ContentPartView);

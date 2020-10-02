@@ -1,7 +1,12 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { IAppState } from "../../model";
-import { IAnnotation, IDocReference, IAnnotationTokenDocRef, IAnnotationToken } from "../../../shared/IApiTypes";
+import {
+  IAnnotation,
+  IDocReference,
+  IAnnotationTokenDocRef,
+  IAnnotationToken,
+} from "../../../shared/IApiTypes";
 import { setAnnotation } from "../../actions";
 import { SerializeDocRef } from "../../../shared/util";
 import * as api from "../../api";
@@ -22,15 +27,15 @@ interface IState {
 class Editor extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
-    const intialText = '';
+    const intialText = "";
     this.state = {
-      text: intialText || ''
+      text: intialText || "",
     };
   }
 
   private onChange(evt: React.ChangeEvent<HTMLTextAreaElement>) {
     this.setState({
-      text: evt.target.value
+      text: evt.target.value,
     });
   }
 
@@ -40,14 +45,16 @@ class Editor extends React.Component<IProps, IState> {
       let textLen = str.length;
 
       // Match markdown style hyperlinks like [title of page](www.url.com)
-      const linkMatch: RegExpMatchArray = str.match(/\[([^\[\]]+)\]\(([^)]+)\)/);
+      const linkMatch: RegExpMatchArray = str.match(
+        /\[([^\[\]]+)\]\(([^)]+)\)/
+      );
       if (linkMatch && linkMatch.index !== null) {
         console.log(linkMatch);
         if (linkMatch.index === 0) {
           out.push({
-            kind: 'link',
+            kind: "link",
             text: linkMatch[1],
-            link: linkMatch[2]
+            link: linkMatch[2],
           });
           const len = linkMatch[0].length;
           str = str.substr(len);
@@ -61,8 +68,8 @@ class Editor extends React.Component<IProps, IState> {
         console.log(refMatch);
         if (refMatch.index === 0) {
           out.push({
-            kind: 'docref',
-            docRef: refMatch[1]
+            kind: "docref",
+            docRef: refMatch[1],
           });
           const len = refMatch[0].length;
           str = str.substr(len);
@@ -72,8 +79,8 @@ class Editor extends React.Component<IProps, IState> {
 
       if (textLen > 0) {
         out.push({
-          kind: 'text',
-          text: str.substr(0, textLen)
+          kind: "text",
+          text: str.substr(0, textLen),
         });
         str = str.substr(textLen);
       }
@@ -86,8 +93,8 @@ class Editor extends React.Component<IProps, IState> {
     evt.preventDefault();
 
     const newAnnotation: IAnnotation = {
-      anchor: SerializeDocRef(this.props.docRef).split('#')[1],
-      tokens: this.tokenize(this.state.text)
+      anchor: SerializeDocRef(this.props.docRef).split("#")[1],
+      tokens: this.tokenize(this.state.text),
     };
 
     await api.setAnnotation(this.props.docRef.docId, newAnnotation);
@@ -97,13 +104,22 @@ class Editor extends React.Component<IProps, IState> {
   }
 
   public render() {
-    return <div className={css.editor}>
+    return (
+      <div className={css.editor}>
         <form onSubmit={(evt) => this.onSubmit(evt)}>
-          <p>Use #type.name syntax to refer to other documents, and [text](www.url.com) format for external links</p>
-          <textarea className={css.editortextarea} value={this.state.text} onChange={(evt) => this.onChange(evt)} />
+          <p>
+            Use #type.name syntax to refer to other documents, and
+            [text](www.url.com) format for external links
+          </p>
+          <textarea
+            className={css.editortextarea}
+            value={this.state.text}
+            onChange={(evt) => this.onChange(evt)}
+          />
           <input className={css.editorsubmit} type="submit" value="Submit" />
         </form>
-      </div>;
+      </div>
+    );
   }
 }
 

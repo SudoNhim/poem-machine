@@ -1,5 +1,5 @@
-import * as React from 'react';
+import * as React from "react";
 
 export const About: React.FunctionComponent = () => (
-    <p>This is the about component</p>
-)
+  <p>This is the about component</p>
+);

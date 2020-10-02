@@ -13,27 +13,28 @@ interface IProps {
 }
 
 class ContentView extends React.Component<IProps> {
-  public componentDidMount() {
-  }
+  public componentDidMount() {}
 
   public render() {
     if (Array.isArray(this.props.content.content)) {
-      const parts = this.props.content.content.map((part, i) =>
-        <ContentPartView section={i + 1} key={i} part={part} />);
+      const parts = this.props.content.content.map((part, i) => (
+        <ContentPartView section={i + 1} key={i} part={part} />
+      ));
       let withDividers: JSX.Element[] = [];
       parts.forEach((part, i) => {
         withDividers.push(part);
         if (i < parts.length - 1)
-          withDividers.push(<Divider key={i + parts.length}/>);
+          withDividers.push(<Divider key={i + parts.length} />);
       });
       return withDividers;
-    } else return <CanonTextView prefix={''} text={this.props.content.content} />;
+    } else
+      return <CanonTextView prefix={""} text={this.props.content.content} />;
   }
 }
 
 // currently not using redux connection
 const mapStateToProps = (state: IAppState, ownProps: IProps) => ({
-  content: ownProps.content
+  content: ownProps.content,
 });
 
 export default connect(mapStateToProps)(ContentView);

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import ScrollMemory from 'react-router-scroll-memory';
+import ScrollMemory from "react-router-scroll-memory";
 import { getGraph, getSearchResults } from "../api";
 import { setGraph, setFocus, setSearch, setNavPaneOpen } from "../actions";
 import FocusContent from "./FocusContent";
@@ -40,17 +40,16 @@ class PoemMachine extends React.Component<IProps> {
 
   public async componentDidUpdate(prevProps: IProps) {
     if (prevProps.match !== this.props.match) {
-      return this.handleRoute(this.props.history.action === 'PUSH');
+      return this.handleRoute(this.props.history.action === "PUSH");
     }
   }
 
   private async handleRoute(isPush: boolean) {
-
     const { docId, searchTerm } = this.props.match.params;
     const part = this.props.location.hash;
     const docRef: IDocReference = DeserializeDocRef(`${docId}${part}`);
     const newFocus: IFocusState = {
-      docRef
+      docRef,
     };
 
     // If the new route includes a hash fragment, we need to scroll it into view after render
@@ -63,9 +62,10 @@ class PoemMachine extends React.Component<IProps> {
       const searchResults = await getSearchResults(searchTerm);
       this.props.setSearch(searchResults);
       this.props.setFocus({
-        search: true
+        search: true,
       });
-    } else { // otherwise go home
+    } else {
+      // otherwise go home
       this.props.setFocus({});
     }
   }
@@ -82,11 +82,11 @@ class PoemMachine extends React.Component<IProps> {
           </div>
         </div>
         <div
-          id='viewpane'
+          id="viewpane"
           className={css.viewpane}
           onClick={() => this.props.setNavPaneOpen(false)}
         >
-          <ScrollMemory elementID='viewpane' />
+          <ScrollMemory elementID="viewpane" />
           <FocusContent />
         </div>
         <Annotator />
@@ -97,7 +97,12 @@ class PoemMachine extends React.Component<IProps> {
 
 const mapStateToProps = (state: IAppState) => ({
   focus: state.focus,
-  navactive: !!state.ui.navPaneOpen
+  navactive: !!state.ui.navPaneOpen,
 });
 
-export default connect(mapStateToProps, { setGraph, setFocus, setSearch, setNavPaneOpen })(PoemMachine);
+export default connect(mapStateToProps, {
+  setGraph,
+  setFocus,
+  setSearch,
+  setNavPaneOpen,
+})(PoemMachine);

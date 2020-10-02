@@ -11,7 +11,6 @@ interface IProps {
 
 class MetadataView extends React.Component<IProps> {
   public render() {
-
     const rows: string[] = [];
     if (this.props.metadata.date)
       rows.push(`Date: ${this.props.metadata.date}`);
@@ -27,9 +26,7 @@ class MetadataView extends React.Component<IProps> {
     return (
       <div>
         {rows.map((row, i) => (
-          <div key={i}>
-            {row}
-          </div>
+          <div key={i}>{row}</div>
         ))}
       </div>
     );
@@ -38,7 +35,7 @@ class MetadataView extends React.Component<IProps> {
 
 // currently not using redux connection
 const mapStateToProps = (state: IAppState, ownProps: IProps) => ({
-  metadata: ownProps.metadata
+  metadata: ownProps.metadata,
 });
 
 export default connect(mapStateToProps)(MetadataView);

@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { AnnotationsController } from '../controllers/annotations';
-import { GraphController } from '../controllers/graph';
-import { SearchController } from '../controllers/search';
-import CanonData from 'cohen-db';
-import { IDoc, IAnnotation } from '../../shared/IApiTypes';
-import { GeneratePreview } from '../lib/generate-preview';
-import * as bodyParser from 'body-parser';
+import { AnnotationsController } from "../controllers/annotations";
+import { GraphController } from "../controllers/graph";
+import { SearchController } from "../controllers/search";
+import CanonData from "cohen-db";
+import { IDoc, IAnnotation } from "../../shared/IApiTypes";
+import { GeneratePreview } from "../lib/generate-preview";
+import * as bodyParser from "body-parser";
 
 const jsonParser = bodyParser.json();
 
@@ -25,14 +25,14 @@ export function apiRouter() {
 
     const out: IDoc = {
       file: doc,
-      annotations
+      annotations,
     };
 
     if (doc.children)
-      out.children = doc.children.map(id => GeneratePreview({docId: id}));
+      out.children = doc.children.map((id) => GeneratePreview({ docId: id }));
 
     if (referrers.length > 0)
-      out.referrers = referrers.map(ref => GeneratePreview(ref));
+      out.referrers = referrers.map((ref) => GeneratePreview(ref));
 
     res.json(out);
   });

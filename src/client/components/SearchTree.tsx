@@ -21,21 +21,23 @@ class SearchTree extends React.Component<IProps, IState> {
   constructor(props) {
     super(props);
     this.state = {
-      expanded: false
+      expanded: false,
     };
   }
 
   private toggleExpand() {
     this.setState({
-      expanded: !this.state.expanded
+      expanded: !this.state.expanded,
     });
   }
 
   public render() {
-    var ids = this.props.search.previews ?
-        this.props.search.previews.map(p => p.docRef.docId)
-        : [];
-    ids = ids.filter((id, i) => (ids.find((id2, i2) => id === id2 && i2 < i) === undefined));
+    var ids = this.props.search.previews
+      ? this.props.search.previews.map((p) => p.docRef.docId)
+      : [];
+    ids = ids.filter(
+      (id, i) => ids.find((id2, i2) => id === id2 && i2 < i) === undefined
+    );
 
     const children = this.state.expanded ? ids : [];
 
@@ -74,7 +76,7 @@ class SearchTree extends React.Component<IProps, IState> {
 
 const mapStateToProps = (state: IAppState) => ({
   search: state.search,
-  hasFocus: state.focus.search
+  hasFocus: state.focus.search,
 });
 
 export default connect(mapStateToProps, {})(SearchTree);

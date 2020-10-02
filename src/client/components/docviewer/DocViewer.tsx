@@ -1,11 +1,11 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { withRouter } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 import { getDoc } from "../../api";
 import { setDoc, setScrolled } from "../../actions";
 import { IDoc, IDocMeta } from "../../../shared/IApiTypes";
 import { IAppState, IFocusState } from "../../model";
-import AnnotationsView from './AnnotationsView';
+import AnnotationsView from "./AnnotationsView";
 import ContentView from "./ContentView";
 import MetadataView from "./MetadataView";
 import DocReferencePreviewList from "./DocReferencePreviewList";
@@ -31,7 +31,7 @@ class DocViewer extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      hasContentDom: false
+      hasContentDom: false,
     };
   }
 
@@ -42,45 +42,54 @@ class DocViewer extends React.Component<IProps, IState> {
 
   public componentDidUpdate() {
     if (this.props.doc && this.props.focus.waitingToScroll) {
-      const elId = SerializeDocRef(this.props.focus.docRef).split('#')[1];
-      document.getElementById(elId).scrollIntoView({ behavior: 'smooth' });
+      const elId = SerializeDocRef(this.props.focus.docRef).split("#")[1];
+      document.getElementById(elId).scrollIntoView({ behavior: "smooth" });
       this.props.setScrolled();
     }
 
-    if (!this.state.hasContentDom)
-      this.setState({ hasContentDom: true });
+    if (!this.state.hasContentDom) this.setState({ hasContentDom: true });
   }
 
   public render() {
     if (!this.props.docMeta) return <div>Document does not exist.</div>;
     else if (!this.props.doc)
-      return <div>
-        <div className={css.section + ' ' + css.heading}>{this.props.docMeta.title}</div>
-        Loading...
-      </div>;
-      else 
-        return (
+      return (
+        <div>
+          <div className={css.section + " " + css.heading}>
+            {this.props.docMeta.title}
+          </div>
+          Loading...
+        </div>
+      );
+    else
+      return (
         <div>
           <Paper className={css.section}>
             <Typography variant="h6" component="h2">
-                {this.props.docMeta.title}
+              {this.props.docMeta.title}
             </Typography>
-            {this.props.doc.file.metadata &&
-                <MetadataView metadata={this.props.doc.file.metadata} />}
-            {this.props.doc.file.content &&
-                <ContentView content={this.props.doc.file.content} />}
+            {this.props.doc.file.metadata && (
+              <MetadataView metadata={this.props.doc.file.metadata} />
+            )}
+            {this.props.doc.file.content && (
+              <ContentView content={this.props.doc.file.content} />
+            )}
           </Paper>
-          {this.state.hasContentDom && <AnnotationsView annotations={this.props.doc.annotations} />}
-          {this.props.doc.children &&
+          {this.state.hasContentDom && (
+            <AnnotationsView annotations={this.props.doc.annotations} />
+          )}
+          {this.props.doc.children && (
             <div className={css.section}>
               <div className={css.sectiontitle}>Children</div>
               <DocReferencePreviewList previews={this.props.doc.children} />
-            </div>}
-          {this.props.doc.referrers && 
+            </div>
+          )}
+          {this.props.doc.referrers && (
             <div className={css.section}>
               <div className={css.sectiontitle}>References</div>
               <DocReferencePreviewList previews={this.props.doc.referrers} />
-            </div>}
+            </div>
+          )}
         </div>
       );
   }
@@ -90,7 +99,7 @@ const mapStateToProps = (state: IAppState, ownProps) => ({
   id: ownProps.id,
   doc: state.docs.cache[ownProps.id],
   docMeta: state.docs.graph[ownProps.id],
-  focus: state.focus
+  focus: state.focus,
 });
 
 export default connect(mapStateToProps, { setDoc, setScrolled })(DocViewer);
