@@ -71,7 +71,7 @@
     "react-redux": "^7.1.3",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
-    "react-router-scroll-memory": "github:SudoNhim/react-router-scroll-memory#7f8377e",
+    "react-router-scroll-memory": "github:SudoNhim/react-router-scroll-memory#9fea4fc",
     "redux": "^4.0.4",
     "request": "^2.88.0",
     "rimraf": "^2.7.1",
