@@ -1,12 +1,14 @@
 import * as bodyParser from "body-parser";
 import CanonData from "cohen-db";
 import { Router } from "express";
+import * as passport from "passport";
 
 import { IAnnotation, IDoc } from "../../shared/IApiTypes";
 import { AnnotationsController } from "../controllers/annotations";
 import { GraphController } from "../controllers/graph";
 import { SearchController } from "../controllers/search";
 import { GeneratePreview } from "../lib/generate-preview";
+import Account from "../models/Account";
 
 const jsonParser = bodyParser.json();
 
@@ -55,6 +57,23 @@ export function apiRouter() {
 
   router.get("/updates", async (req, res) => {
     res.json(annotationsProvider.getUpdates());
+  });
+
+  router.post("/login", passport.authenticate("local"));
+  router.post("/register", async (req, res) => {
+    Account.register(
+      new Account({ username: req.body.username }),
+      req.body.password,
+      function (error, account) {
+        if (error) {
+          return res.json({ error, account });
+        }
+
+        passport.authenticate("local")(req, res, function () {
+          res.redirect("/");
+        });
+      }
+    );
   });
 
   return router;
