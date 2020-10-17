@@ -59,7 +59,15 @@ export function apiRouter() {
     res.json(annotationsProvider.getUpdates());
   });
 
-  router.post("/login", passport.authenticate("local"));
+  router.get("/user", async (req, res) => {
+    res.json({ user: req.user });
+  });
+
+  router.post("/login", passport.authenticate("local"), (req, res) => {
+    if (!req.user) res.status(401);
+    else res.status(200);
+  });
+
   router.post("/register", async (req, res) => {
     Account.register(
       new Account({ username: req.body.username }),

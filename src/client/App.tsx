@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import { About } from "./components/About";
 import AppBar from "./components/AppBar";
+import LoginForm from "./components/LoginForm";
 import PoemMachine from "./components/PoemMachine";
 
 const AppImpl = () => (
@@ -15,6 +16,7 @@ const AppImpl = () => (
         <Route path="/doc/:docId" component={PoemMachine} />
         <Route path="/search/:searchTerm" component={PoemMachine} />
         <Route exact path="/about" component={About} />
+        <Route exact path="/login" component={LoginForm} />
       </Switch>
     </div>
   </BrowserRouter>

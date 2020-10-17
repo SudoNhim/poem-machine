@@ -8,6 +8,7 @@ import { Strategy as LocalStrategy } from "passport-local";
 
 import { MONGODB_STR, SERVER_PORT } from "./config";
 import Account from "./models/Account";
+import { createTestDatabase } from "./mongotest";
 import { apiRouter } from "./routes/api-router";
 import { pagesRouter } from "./routes/pages-router";
 import { staticsRouter } from "./routes/statics-router";
@@ -18,9 +19,12 @@ app.set("view engine", "ejs");
 // Auth
 app.use(
   expressSession({
-    secret: "keyboard cat",
+    secret: "mysecret",
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      maxAge: 10000000000, // ~3mo max cookie age
+    },
   })
 );
 app.use(passport.initialize());
@@ -31,7 +35,8 @@ passport.use(new LocalStrategy(Account.authenticate()));
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
-mongoose.connect(MONGODB_STR);
+if (MONGODB_STR) mongoose.connect(MONGODB_STR);
+else createTestDatabase("test");
 
 // Routing
 app.use("/assets", express.static(path.join(process.cwd(), "assets")));

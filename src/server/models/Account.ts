@@ -2,12 +2,13 @@ import * as mongoose from "mongoose";
 import * as passportLocal from "passport-local";
 import * as passportLocalMongoose from "passport-local-mongoose";
 
+// Typings are declared here as the @typings package for passport-local-mongoose doesn't work
+
 interface AuthenticationResult {
   user: any;
   error: any;
 }
 
-// methods
 interface PassportLocalDocument extends mongoose.Document {
   setPassword(password: string): Promise<PassportLocalDocument>;
   setPassword(password: string, cb: (err: any, res: any) => void): void;
