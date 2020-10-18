@@ -4,9 +4,8 @@ import * as express from "express";
 import * as expressSession from "express-session";
 import * as mongoose from "mongoose";
 import * as passport from "passport";
-import { Strategy as LocalStrategy } from "passport-local";
 
-import { MONGODB_STR, SERVER_PORT } from "./config";
+import { COOKIE_SECRET, MONGODB_STR, SERVER_PORT } from "./config";
 import Account from "./models/Account";
 import { createTestDatabase } from "./mongotest";
 import { apiRouter } from "./routes/api-router";
@@ -19,7 +18,7 @@ app.set("view engine", "ejs");
 // Auth
 app.use(
   expressSession({
-    secret: "mysecret",
+    secret: COOKIE_SECRET || "testsecret",
     resave: false,
     saveUninitialized: false,
     cookie: {
