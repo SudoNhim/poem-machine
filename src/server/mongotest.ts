@@ -8,5 +8,5 @@ export async function createTestDatabase(dbName: string): Promise<void> {
   mongoose.connect(await mongod.getUri());
 
   // register test user
-  Account.register(new Account({ username: "augustine" }), "confessions");
+  Account.register(new Account({ username: "augustine@hippo" }), "confessions");
 }

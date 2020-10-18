@@ -1,20 +1,28 @@
 import { Button, Grid, Paper, TextField, Typography } from "@material-ui/core";
-import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import * as React from "react";
 import { connect } from "react-redux";
 
 import { ISearchResults } from "../../shared/IApiTypes";
+import { login } from "../api";
 import { IAppState } from "../model";
 
-// const useStyles = makeStyles((theme: Theme) => createStyles({}));
+const styles = {
+  main: {
+    width: "20em",
+    margin: "3em",
+  },
+};
 
 interface IProps {
   searchResults: ISearchResults;
+  classes: any;
 }
 
 interface IState {
   username: string;
   password: string;
+  failed: boolean;
 }
 
 class LoginForm extends React.Component<IProps, IState> {
@@ -23,17 +31,26 @@ class LoginForm extends React.Component<IProps, IState> {
     this.state = {
       username: "",
       password: "",
+      failed: false,
     };
   }
 
-  private handleSubmit(evt: React.FormEvent<HTMLFormElement>) {
+  private async handleSubmit(evt: React.FormEvent<HTMLFormElement>) {
     evt.preventDefault();
-    console.log(this.state);
+    const suceeded = await login(this.state.username, this.state.password);
+    if (suceeded) {
+    } else {
+      this.setState({
+        failed: true,
+        username: this.state.username,
+        password: "",
+      });
+    }
   }
 
   public render(): JSX.Element {
     return (
-      <Paper variant="elevation">
+      <Paper className={this.props.classes.main} variant="elevation">
         <Grid item>
           <Typography component="h1" variant="h5">
             Sign in
@@ -77,6 +94,11 @@ class LoginForm extends React.Component<IProps, IState> {
                   required
                 />
               </Grid>
+              {this.state.failed && (
+                <Grid item>
+                  <Typography>Login failed</Typography>
+                </Grid>
+              )}
               <Grid item>
                 <Button
                   variant="contained"
@@ -99,4 +121,4 @@ const mapStateToProps = (state: IAppState) => ({
   searchResults: state.search,
 });
 
-export default connect(mapStateToProps, null)(LoginForm);
+export default connect(mapStateToProps, null)(withStyles(styles)(LoginForm));

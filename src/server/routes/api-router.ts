@@ -64,8 +64,8 @@ export function apiRouter() {
   });
 
   router.post("/login", passport.authenticate("local"), (req, res) => {
-    if (!req.user) res.status(401);
-    else res.status(200);
+    res.status(200);
+    res.end();
   });
 
   router.post("/register", async (req, res) => {

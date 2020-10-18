@@ -30,3 +30,17 @@ export async function setAnnotation(
 ): Promise<void> {
   await axios.post(`/api/docs/set/${docId}/annotations`, { annotation });
 }
+
+export async function login(
+  username: string,
+  password: string
+): Promise<boolean> {
+  try {
+    await axios.post(`/api/login`, null, {
+      params: { username, password },
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
