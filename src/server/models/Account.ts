@@ -71,10 +71,11 @@ interface PassportLocalModel<T extends mongoose.Document>
 
 var Account = new mongoose.Schema({
   username: String,
-  password: String,
+  email: String,
+  password: String, // salted password
 });
 
-Account.plugin(passportLocalMongoose);
+Account.plugin(passportLocalMongoose, { usernameQueryFields: ["email"] });
 
 export default mongoose.model("Account", Account) as PassportLocalModel<
   PassportLocalDocument

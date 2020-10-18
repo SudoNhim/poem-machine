@@ -68,8 +68,7 @@ class LoginForm extends React.Component<IProps, IState> {
             <Grid container direction="column" spacing={2}>
               <Grid item>
                 <TextField
-                  type="email"
-                  placeholder="Email"
+                  placeholder="Email or username"
                   fullWidth
                   name="username"
                   variant="outlined"
