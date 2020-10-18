@@ -8,6 +8,7 @@ import {
   SET_NAV_PANE_OPEN,
   SET_SCROLLED,
   SET_SEARCH,
+  SET_USER,
 } from "./actions";
 import { IAppState } from "./model";
 
@@ -32,9 +33,13 @@ const initialState: IAppState = {
   ui: {
     navPaneOpen: false,
   },
+  user: {
+    username: null,
+  },
 };
 
 function rootReducer(state = initialState, action: ActionTypes): IAppState {
+  console.log(action);
   switch (action.type) {
     case SET_DOC:
       return {
@@ -101,6 +106,11 @@ function rootReducer(state = initialState, action: ActionTypes): IAppState {
         ui: {
           navPaneOpen: action.payload,
         },
+      };
+    case SET_USER:
+      return {
+        ...state,
+        user: action.payload,
       };
     default:
       return state;

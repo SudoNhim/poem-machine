@@ -4,7 +4,7 @@ import {
   IDocGraph,
   ISearchResults,
 } from "../shared/IApiTypes";
-import { IFocusState, IHoverState } from "./model";
+import { IFocusState, IHoverState, IUserState } from "./model";
 
 export const SET_GRAPH = "SET_GRAPH";
 export const SET_DOC = "SET_DOC";
@@ -14,6 +14,7 @@ export const SET_FOCUS = "SET_FOCUS";
 export const SET_HOVER = "SET_HOVER";
 export const SET_SCROLLED = "SET_SCROLLED";
 export const SET_NAV_PANE_OPEN = "SET_NAV_PANE_OPEN";
+export const SET_USER = "SET_USER";
 
 interface SetGraphAction {
   type: typeof SET_GRAPH;
@@ -54,6 +55,11 @@ interface SetNavPaneOpenAction {
   payload: boolean;
 }
 
+interface SetUserAction {
+  type: typeof SET_USER;
+  payload: IUserState;
+}
+
 export type ActionTypes =
   | SetGraphAction
   | SetDocAction
@@ -62,7 +68,8 @@ export type ActionTypes =
   | SetFocusAction
   | SetHoverAction
   | SetScrolledAction
-  | SetNavPaneOpenAction;
+  | SetNavPaneOpenAction
+  | SetUserAction;
 
 export function setGraph(graph: IDocGraph): SetGraphAction {
   return {
@@ -119,5 +126,12 @@ export function setNavPaneOpen(isOpen: boolean): SetNavPaneOpenAction {
 export function setScrolled(): SetScrolledAction {
   return {
     type: SET_SCROLLED,
+  };
+}
+
+export function setUser(user: IUserState): SetUserAction {
+  return {
+    type: SET_USER,
+    payload: user,
   };
 }

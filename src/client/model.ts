@@ -29,10 +29,15 @@ export interface IUiState {
   navPaneOpen: boolean;
 }
 
+export interface IUserState {
+  username?: string;
+}
+
 export interface IAppState {
   docs: IDocState;
   focus: IFocusState;
   hover: IHoverState;
   search: ISearchResults;
   ui: IUiState;
+  user: IUserState;
 }

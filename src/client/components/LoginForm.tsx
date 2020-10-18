@@ -4,7 +4,8 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import { ISearchResults } from "../../shared/IApiTypes";
-import { login } from "../api";
+import { setUser } from "../actions";
+import { getUser, login } from "../api";
 import { IAppState } from "../model";
 
 const styles = {
@@ -17,6 +18,7 @@ const styles = {
 interface IProps {
   searchResults: ISearchResults;
   classes: any;
+  setUser: typeof setUser;
 }
 
 interface IState {
@@ -39,6 +41,11 @@ class LoginForm extends React.Component<IProps, IState> {
     evt.preventDefault();
     const suceeded = await login(this.state.username, this.state.password);
     if (suceeded) {
+      const user = await getUser();
+      console.log(user);
+      this.props.setUser({
+        username: user.username,
+      });
     } else {
       this.setState({
         failed: true,
@@ -121,4 +128,6 @@ const mapStateToProps = (state: IAppState) => ({
   searchResults: state.search,
 });
 
-export default connect(mapStateToProps, null)(withStyles(styles)(LoginForm));
+export default connect(mapStateToProps, { setUser })(
+  withStyles(styles)(LoginForm)
+);

@@ -44,3 +44,8 @@ export async function login(
     return false;
   }
 }
+
+export async function getUser(): Promise<{ username: string }> {
+  const response = await axios.get(`/api/user`);
+  return response.data.user;
+}

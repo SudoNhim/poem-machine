@@ -1,8 +1,7 @@
+import { Button } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import IconButton from "@material-ui/core/IconButton";
 import InputBase from "@material-ui/core/InputBase";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
 import {
   Theme,
   createStyles,
@@ -11,7 +10,6 @@ import {
 } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import React from "react";
@@ -86,12 +84,17 @@ const useStyles = makeStyles((theme: Theme) =>
     sectionRight: {
       display: "flex",
     },
+    loginButton: {
+      color: "inherit",
+      backgroundColor: fade(theme.palette.common.black, 0.15),
+    },
   })
 );
 
 interface IProps extends RouteComponentProps {
   navPaneOpen: boolean;
   setNavPaneOpen: typeof setNavPaneOpen;
+  username: string;
 }
 
 const PrimarySearchAppBar = withRouter((props: IProps) => {
@@ -101,9 +104,6 @@ const PrimarySearchAppBar = withRouter((props: IProps) => {
     mobileMoreAnchorEl,
     setMobileMoreAnchorEl,
   ] = React.useState<null | HTMLElement>(null);
-
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -130,49 +130,13 @@ const PrimarySearchAppBar = withRouter((props: IProps) => {
     props.history.push("/");
   };
 
+  const logIn = () => {
+    props.history.push("/login");
+  };
+
   const toggleNavPane = () => {
     props.setNavPaneOpen(!props.navPaneOpen);
   };
-
-  const menuId = "primary-search-account-menu";
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Not Implemented</MenuItem>
-    </Menu>
-  );
-
-  const mobileMenuId = "primary-search-account-menu-mobile";
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
 
   return (
     <div className={classes.grow}>
@@ -211,27 +175,23 @@ const PrimarySearchAppBar = withRouter((props: IProps) => {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionRight}>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+            {props.username ? (
+              <Typography>{props.username}</Typography>
+            ) : (
+              <Button className={classes.loginButton} onClick={logIn}>
+                Log&nbsp;in
+              </Button>
+            )}
           </div>
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
     </div>
   );
 });
 
 const mapStateToProps = (state: IAppState) => ({
   navPaneOpen: !!state.ui.navPaneOpen,
+  username: state.user.username,
 });
 
 export default connect(mapStateToProps, { setNavPaneOpen })(
