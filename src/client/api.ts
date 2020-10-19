@@ -45,6 +45,19 @@ export async function login(
   }
 }
 
+export async function register(
+  username: string,
+  email: string,
+  password: string
+): Promise<boolean> {
+  try {
+    await axios.post(`/api/register`, { username, email, password });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export async function getUser(): Promise<{ username: string }> {
   const response = await axios.get(`/api/user`);
   return response.data.user;

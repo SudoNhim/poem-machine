@@ -68,9 +68,9 @@ export function apiRouter() {
     res.end();
   });
 
-  router.post("/register", async (req, res) => {
+  router.post("/register", bodyParser.json(), async (req, res) => {
     Account.register(
-      new Account({ username: req.body.username }),
+      new Account({ username: req.body.username, email: req.body.email }),
       req.body.password,
       function (error, account) {
         if (error) {
