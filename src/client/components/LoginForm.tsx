@@ -179,7 +179,6 @@ class LoginForm extends React.Component<IProps, IState> {
                     })
                   }
                   required
-                  autoFocus
                 />
               </Grid>
               <Grid item>
@@ -197,7 +196,6 @@ class LoginForm extends React.Component<IProps, IState> {
                     })
                   }
                   required
-                  autoFocus
                 />
               </Grid>
               <Grid item>
