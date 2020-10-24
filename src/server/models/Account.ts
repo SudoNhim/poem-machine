@@ -69,14 +69,20 @@ interface PassportLocalModel<T extends mongoose.Document>
   createStrategy(): passportLocal.Strategy;
 }
 
-var Account = new mongoose.Schema({
+export interface IAccount extends PassportLocalDocument {
+  username: string;
+  email: string;
+}
+
+const AccountSchema = new mongoose.Schema<IAccount>({
   username: String,
   email: String,
   password: String, // salted password
 });
 
-Account.plugin(passportLocalMongoose, { usernameQueryFields: ["email"] });
+AccountSchema.plugin(passportLocalMongoose, { usernameQueryFields: ["email"] });
 
-export default mongoose.model("Account", Account) as PassportLocalModel<
-  PassportLocalDocument
->;
+export const Account = mongoose.model(
+  "Account",
+  AccountSchema
+) as PassportLocalModel<IAccount>;

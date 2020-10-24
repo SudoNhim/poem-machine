@@ -1,7 +1,7 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import * as mongoose from "mongoose";
 
-import Account from "./models/Account";
+import { Account } from "./models/Account";
 
 export async function createTestDatabase(dbName: string): Promise<void> {
   const mongod = new MongoMemoryServer({ instance: { dbName } });

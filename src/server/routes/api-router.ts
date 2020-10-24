@@ -8,7 +8,8 @@ import { AnnotationsController } from "../controllers/annotations";
 import { GraphController } from "../controllers/graph";
 import { SearchController } from "../controllers/search";
 import { GeneratePreview } from "../lib/generate-preview";
-import Account from "../models/Account";
+import { Account, IAccount } from "../models/Account";
+import { createRememberMeToken } from "../models/RememberMeToken";
 
 const jsonParser = bodyParser.json();
 
@@ -63,7 +64,19 @@ export function apiRouter() {
     res.json({ user: req.user });
   });
 
-  router.post("/login", passport.authenticate("local"), (req, res) => {
+  router.post("/login", passport.authenticate("local"), async (req, res) => {
+    try {
+      console.log("attempting initial cookie issue");
+      const token = await createRememberMeToken(req.user as IAccount);
+      res.cookie("remember_me", token, {
+        path: "/",
+        httpOnly: true,
+        maxAge: 6048000000, // 70 days
+      });
+    } catch (err) {
+      console.log("failed to issue initial cookie in login", err);
+    }
+
     res.status(200);
     res.end();
   });
@@ -94,7 +107,17 @@ export function apiRouter() {
           return res.json({ error });
         }
 
-        passport.authenticate("local")(req, res, function () {
+        passport.authenticate("local")(req, res, async function () {
+          try {
+            const token = await createRememberMeToken(req.user as IAccount);
+            res.cookie("remember_me", token, {
+              path: "/",
+              httpOnly: true,
+              maxAge: 6048000000, // 70 days
+            });
+          } catch (err) {
+            console.log("failed to issue initial cookie in registration", err);
+          }
           res.redirect("/");
         });
       }
