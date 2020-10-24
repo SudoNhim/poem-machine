@@ -69,15 +69,26 @@ export function apiRouter() {
   });
 
   router.post("/register", bodyParser.json(), async (req, res) => {
-    if (await Account.exists({ username: req.body.username }))
+    const data: { username: string; email: string; password: string } =
+      req.body;
+
+    if (!data.username || data.username.length < 3)
+      return res.json({ error: "Username must be at least three characters" });
+
+    if (!data.email) return res.json({ error: "Email required" });
+
+    if (!data.password || data.password.length < 6)
+      return res.json({ error: "Password must be at least six characters" });
+
+    if (await Account.exists({ username: data.username }))
       return res.json({ error: "Username taken" });
 
-    if (await Account.exists({ email: req.body.email }))
+    if (await Account.exists({ email: data.email }))
       return res.json({ error: "An account already exists for this email" });
 
     Account.register(
-      new Account({ username: req.body.username, email: req.body.email }),
-      req.body.password,
+      new Account({ username: data.username, email: data.email }),
+      data.password,
       function (error) {
         if (error) {
           return res.json({ error });
