@@ -49,13 +49,13 @@ export async function register(
   username: string,
   email: string,
   password: string
-): Promise<boolean> {
-  try {
-    await axios.post(`/api/register`, { username, email, password });
-    return true;
-  } catch {
-    return false;
-  }
+): Promise<void> {
+  const response = await axios.post(`/api/register`, {
+    username,
+    email,
+    password,
+  });
+  if (response.data.error) throw response.data.error;
 }
 
 export async function getUser(): Promise<{ username: string }> {

@@ -69,12 +69,18 @@ export function apiRouter() {
   });
 
   router.post("/register", bodyParser.json(), async (req, res) => {
+    if (await Account.exists({ username: req.body.username }))
+      return res.json({ error: "Username taken" });
+
+    if (await Account.exists({ email: req.body.email }))
+      return res.json({ error: "An account already exists for this email" });
+
     Account.register(
       new Account({ username: req.body.username, email: req.body.email }),
       req.body.password,
-      function (error, account) {
+      function (error) {
         if (error) {
-          return res.json({ error, account });
+          return res.json({ error });
         }
 
         passport.authenticate("local")(req, res, function () {

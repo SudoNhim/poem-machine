@@ -29,12 +29,12 @@ interface IProps extends RouteComponentProps {
 interface IState {
   username: string;
   password: string;
-  failed: boolean;
+  failed: string;
 
   newUsername: string;
   newEmail: string;
   newPassword: string;
-  registerFailed: boolean;
+  registerFailed: string;
 }
 
 class LoginForm extends React.Component<IProps, IState> {
@@ -43,11 +43,11 @@ class LoginForm extends React.Component<IProps, IState> {
     this.state = {
       username: "",
       password: "",
-      failed: false,
+      failed: null,
       newUsername: "",
       newEmail: "",
       newPassword: "",
-      registerFailed: false,
+      registerFailed: null,
     };
   }
 
@@ -62,7 +62,7 @@ class LoginForm extends React.Component<IProps, IState> {
       this.props.history.push(`/`);
     } else {
       this.setState({
-        failed: true,
+        failed: "Login failed",
         username: this.state.username,
         password: "",
       });
@@ -71,21 +71,21 @@ class LoginForm extends React.Component<IProps, IState> {
 
   private async handleRegisterSubmit(evt: React.FormEvent<HTMLFormElement>) {
     evt.preventDefault();
-    const suceeded = await register(
-      this.state.newUsername,
-      this.state.newEmail,
-      this.state.newPassword
-    );
-    if (suceeded) {
+    try {
+      await register(
+        this.state.newUsername,
+        this.state.newEmail,
+        this.state.newPassword
+      );
       const user = await getUser();
       this.props.setUser({
         username: user.username,
       });
       this.props.history.push(`/`);
-    } else {
+    } catch (err) {
       this.setState({
         ...this.state,
-        registerFailed: true,
+        registerFailed: err,
         newPassword: "",
       });
     }
@@ -139,7 +139,7 @@ class LoginForm extends React.Component<IProps, IState> {
               {this.state.failed && (
                 <Grid item>
                   <Typography className={this.props.classes.error}>
-                    Login failed
+                    {this.state.failed}
                   </Typography>
                 </Grid>
               )}
@@ -215,10 +215,10 @@ class LoginForm extends React.Component<IProps, IState> {
                   required
                 />
               </Grid>
-              {this.state.failed && (
+              {this.state.registerFailed && (
                 <Grid item>
                   <Typography className={this.props.classes.error}>
-                    Register failed
+                    {this.state.registerFailed}
                   </Typography>
                 </Grid>
               )}
