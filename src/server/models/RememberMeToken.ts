@@ -35,5 +35,10 @@ export async function createRememberMeToken(user: IAccount): Promise<string> {
 
 export async function consumeRememberMeToken(token: string): Promise<IAccount> {
   const retrieved = await RememberMeToken.findOneAndDelete({ token });
+
+  // Token wasn't found. Don't throw here - we drop the database for any reason
+  // users will just need to log in again, they should not see an error.
+  if (!retrieved) return null;
+
   return Account.findById(retrieved.account);
 }
