@@ -5,12 +5,11 @@ import ScrollMemory from "react-router-scroll-memory";
 
 import { IDocReference } from "../../shared/IApiTypes";
 import { DeserializeDocRef } from "../../shared/util";
-import { setFocus, setGraph, setNavPaneOpen, setSearch } from "../actions";
+import { setFocus, setGraph, setSearch, setSideBarOpen } from "../actions";
 import { getGraph, getSearchResults } from "../api";
 import { IAppState, IFocusState } from "../model";
 import Annotator from "./annotator/Annotator";
 import FocusContent from "./FocusContent";
-import NavTree from "./NavTree";
 
 const css = require("./all.css");
 
@@ -25,7 +24,7 @@ interface IProps extends RouteComponentProps<IMatchParams> {
   setGraph: typeof setGraph;
   setFocus: typeof setFocus;
   setSearch: typeof setSearch;
-  setNavPaneOpen: typeof setNavPaneOpen;
+  setSideBarOpen: typeof setSideBarOpen;
 }
 
 class PoemMachine extends React.Component<IProps> {
@@ -77,15 +76,10 @@ class PoemMachine extends React.Component<IProps> {
 
     return (
       <div className={css.poemmachine}>
-        <div className={navpaneClasses.join(" ")}>
-          <div className={css.navsection}>
-            <NavTree />
-          </div>
-        </div>
         <div
           id="viewpane"
           className={css.viewpane}
-          onClick={() => this.props.setNavPaneOpen(false)}
+          onClick={() => this.props.setSideBarOpen(false)}
         >
           <ScrollMemory elementID="viewpane" />
           <FocusContent />
@@ -105,5 +99,5 @@ export default connect(mapStateToProps, {
   setGraph,
   setFocus,
   setSearch,
-  setNavPaneOpen,
+  setSideBarOpen,
 })(PoemMachine);

@@ -94,14 +94,6 @@ a {
   .viewpane {
     left: 1.5em;
   }
-
-  .navinactive {
-    left: -20em;
-  }
-
-  .navtogglebar {
-    visibility: visible;
-  }
 }
 
 .navsection {

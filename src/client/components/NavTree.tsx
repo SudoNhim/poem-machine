@@ -13,6 +13,7 @@ import { IAppState, IFocusState } from "../model";
 
 const useStyles = makeStyles({
   root: {
+    marginTop: 14,
     height: 240,
     flexGrow: 1,
     maxWidth: 400,

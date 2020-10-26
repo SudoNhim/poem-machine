@@ -1,3 +1,4 @@
+import CssBaseline from "@material-ui/core/CssBaseline";
 import * as React from "react";
 import { hot } from "react-hot-loader";
 import { connect } from "react-redux";
@@ -9,6 +10,7 @@ import { About } from "./components/About";
 import AppBar from "./components/AppBar";
 import LoginForm from "./components/LoginForm";
 import PoemMachine from "./components/PoemMachine";
+import SideBar from "./components/SideBar";
 
 interface IProps {
   setUser: typeof setUser;
@@ -24,7 +26,9 @@ class AppImpl extends React.Component<IProps> {
     return (
       <BrowserRouter>
         <div>
+          <CssBaseline />
           <AppBar />
+          <SideBar />
           <Switch>
             <Route exact path="/" component={PoemMachine} />
             <Route path="/doc/:docId" component={PoemMachine} />

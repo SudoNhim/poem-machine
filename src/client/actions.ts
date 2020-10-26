@@ -50,7 +50,7 @@ interface SetScrolledAction {
   type: typeof SET_SCROLLED;
 }
 
-interface SetNavPaneOpenAction {
+interface SetSideBarOpenAction {
   type: typeof SET_NAV_PANE_OPEN;
   payload: boolean;
 }
@@ -68,7 +68,7 @@ export type ActionTypes =
   | SetFocusAction
   | SetHoverAction
   | SetScrolledAction
-  | SetNavPaneOpenAction
+  | SetSideBarOpenAction
   | SetUserAction;
 
 export function setGraph(graph: IDocGraph): SetGraphAction {
@@ -116,7 +116,7 @@ export function setHover(hover: IHoverState): SetHoverAction {
   };
 }
 
-export function setNavPaneOpen(isOpen: boolean): SetNavPaneOpenAction {
+export function setSideBarOpen(isOpen: boolean): SetSideBarOpenAction {
   return {
     type: SET_NAV_PANE_OPEN,
     payload: isOpen,

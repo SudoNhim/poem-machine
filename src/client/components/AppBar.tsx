@@ -17,12 +17,13 @@ import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
 
-import { setNavPaneOpen } from "../actions";
+import { setSideBarOpen } from "../actions";
 import { IAppState } from "../model";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     AppBarOverrides: {
+      position: "fixed",
       backgroundColor: "#713033",
       margin: theme.spacing(0, 0, 0, 0),
     },
@@ -93,7 +94,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface IProps extends RouteComponentProps {
   navPaneOpen: boolean;
-  setNavPaneOpen: typeof setNavPaneOpen;
+  setSideBarOpen: typeof setSideBarOpen;
   username: string;
 }
 
@@ -135,7 +136,7 @@ const PrimarySearchAppBar = withRouter((props: IProps) => {
   };
 
   const toggleNavPane = () => {
-    props.setNavPaneOpen(!props.navPaneOpen);
+    props.setSideBarOpen(!props.navPaneOpen);
   };
 
   return (
@@ -194,6 +195,6 @@ const mapStateToProps = (state: IAppState) => ({
   username: state.user.username,
 });
 
-export default connect(mapStateToProps, { setNavPaneOpen })(
+export default connect(mapStateToProps, { setSideBarOpen })(
   PrimarySearchAppBar
 );
