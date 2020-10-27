@@ -17,8 +17,8 @@ import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
 
-import { setSideBarOpen } from "../actions";
-import { IAppState } from "../model";
+import { setSideBarOpen } from "../../actions";
+import { IAppState } from "../../model";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

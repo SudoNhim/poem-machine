@@ -2,10 +2,10 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { IDocMeta } from "../../shared/IApiTypes";
-import { IAppState } from "../model";
+import { IDocMeta } from "../../../shared/IApiTypes";
+import { IAppState } from "../../model";
 
-const css = require("./all.css");
+const css = require("../all.css");
 
 interface IProps {
   id: string;

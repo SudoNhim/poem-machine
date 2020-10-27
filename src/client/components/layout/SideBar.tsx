@@ -16,8 +16,8 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import React from "react";
 import { connect } from "react-redux";
 
-import { setSideBarOpen } from "../actions";
-import { IAppState } from "../model";
+import { setSideBarOpen } from "../../actions";
+import { IAppState } from "../../model";
 import NavTree from "./NavTree";
 
 const drawerWidth = "20em";

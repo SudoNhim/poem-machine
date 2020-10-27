@@ -7,10 +7,10 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { setUser } from "./actions";
 import { getUser } from "./api";
 import { About } from "./components/About";
-import AppBar from "./components/AppBar";
+import AppBar from "./components/layout/AppBar";
+import SideBar from "./components/layout/SideBar";
 import LoginForm from "./components/LoginForm";
 import PoemMachine from "./components/PoemMachine";
-import SideBar from "./components/SideBar";
 
 interface IProps {
   setUser: typeof setUser;

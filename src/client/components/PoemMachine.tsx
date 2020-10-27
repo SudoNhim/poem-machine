@@ -9,7 +9,7 @@ import { setFocus, setGraph, setSearch, setSideBarOpen } from "../actions";
 import { getGraph, getSearchResults } from "../api";
 import { IAppState, IFocusState } from "../model";
 import Annotator from "./annotator/Annotator";
-import FocusContent from "./FocusContent";
+import FocusContent from "./shared/FocusContent";
 
 const css = require("./all.css");
 
