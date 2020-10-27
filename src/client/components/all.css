@@ -39,7 +39,7 @@ a {
 .poemmachine {
   display: flex;
   position: fixed;
-  top: 5em;
+  top: 0em;
   bottom: -0em;
   left: 0em;
   right: -0em;
@@ -85,7 +85,7 @@ a {
   position: absolute;
   left: 20em;
   right: -0;
-  top: 0;
+  top: 5em;
   bottom: 0;
   z-index: 1;
 }

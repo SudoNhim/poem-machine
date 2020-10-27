@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { IAppState, IFocusState } from "../../model";
 import DocViewer from "../docviewer/DocViewer";
-import SearchResultsViewer from "../SearchResultsViewer";
+import SearchResultsViewer from "../SearchResults";
 
 const css = require("../all.css");
 

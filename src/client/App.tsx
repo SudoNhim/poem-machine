@@ -6,11 +6,13 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import { setUser } from "./actions";
 import { getUser } from "./api";
-import { About } from "./components/About";
+import About from "./components/About";
 import AppBar from "./components/layout/AppBar";
+import ContentContainer from "./components/layout/ContentContainer";
 import SideBar from "./components/layout/SideBar";
-import LoginForm from "./components/LoginForm";
+import Login from "./components/Login";
 import PoemMachine from "./components/PoemMachine";
+import SearchResults from "./components/SearchResults";
 
 interface IProps {
   setUser: typeof setUser;
@@ -19,7 +21,7 @@ interface IProps {
 class AppImpl extends React.Component<IProps> {
   public async componentDidMount() {
     const user = await getUser();
-    this.props.setUser({ username: user.username });
+    if (user) this.props.setUser({ username: user.username });
   }
 
   public render(): JSX.Element {
@@ -29,13 +31,15 @@ class AppImpl extends React.Component<IProps> {
           <CssBaseline />
           <AppBar />
           <SideBar />
-          <Switch>
-            <Route exact path="/" component={PoemMachine} />
-            <Route path="/doc/:docId" component={PoemMachine} />
-            <Route path="/search/:searchTerm" component={PoemMachine} />
-            <Route exact path="/about" component={About} />
-            <Route exact path="/login" component={LoginForm} />
-          </Switch>
+          <ContentContainer>
+            <Switch>
+              <Route exact path="/" component={PoemMachine} />
+              <Route path="/doc/:docId" component={PoemMachine} />
+              <Route path="/search/:searchTerm" component={SearchResults} />
+              <Route exact path="/about" component={About} />
+              <Route exact path="/login" component={Login} />
+            </Switch>
+          </ContentContainer>
         </div>
       </BrowserRouter>
     );
