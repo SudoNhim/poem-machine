@@ -1,10 +1,7 @@
 import { Paper, Typography } from "@material-ui/core";
 import * as React from "react";
-import { connect } from "react-redux";
 
 import { IDoc, IDocMeta } from "../../../shared/IApiTypes";
-import { setScrolled } from "../../actions";
-import { IAppState } from "../../model";
 import AnnotationsView from "./AnnotationsView";
 import ContentView from "./ContentView";
 import DocReferencePreview from "./DocReferencePreview";
@@ -17,7 +14,6 @@ interface IProps {
   doc: IDoc;
   docMeta: IDocMeta;
   focusPart: string;
-  setScrolled: typeof setScrolled;
 }
 
 interface IState {
@@ -33,13 +29,6 @@ class DocViewer extends React.Component<IProps, IState> {
   }
 
   public componentDidMount() {
-    /*
-    if (this.props.doc && this.props.focus.waitingToScroll) {
-      const elId = SerializeDocRef(this.props.focus.docRef).split("#")[1];
-      document.getElementById(elId).scrollIntoView({ behavior: "smooth" });
-      this.props.setScrolled();
-    } */
-
     if (!this.state.hasContentDom) this.setState({ hasContentDom: true });
   }
 
@@ -97,11 +86,4 @@ class DocViewer extends React.Component<IProps, IState> {
   }
 }
 
-const mapStateToProps = (state: IAppState, ownProps) => ({
-  id: ownProps.id,
-  doc: ownProps.doc,
-  docMeta: ownProps.docMeta,
-  focusPart: ownProps.focusPart,
-});
-
-export default connect(mapStateToProps, { setScrolled })(DocViewer);
+export default DocViewer;

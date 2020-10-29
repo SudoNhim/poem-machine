@@ -22,7 +22,7 @@ const Document: React.FunctionComponent<IProps> = (props) => {
   if (!props.docMeta) return <p>Document does not exist</p>;
 
   // Load the document
-  const docId = props.match.params.docId;
+  const docId = props.match.params.docId || "db";
   const [, setLoadDoc] = React.useState<IDoc>(null);
   const doc = docCache[docId];
   React.useEffect(() => {
@@ -63,7 +63,7 @@ const mapStateToProps = (
   state: IAppState,
   ownProps: RouteComponentProps<IMatchParams>
 ) => ({
-  docMeta: state.docs.graph[ownProps.match.params.docId],
+  docMeta: state.docs.graph[ownProps.match.params.docId || "db"],
 });
 
 export default connect(mapStateToProps, null)(Document);
