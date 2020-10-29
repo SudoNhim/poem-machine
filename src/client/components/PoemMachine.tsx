@@ -1,12 +1,11 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import ScrollMemory from "react-router-scroll-memory";
 
 import { IDocReference } from "../../shared/IApiTypes";
 import { DeserializeDocRef } from "../../shared/util";
-import { setFocus, setGraph, setSearch, setSideBarOpen } from "../actions";
-import { getGraph, getSearchResults } from "../api";
+import { setFocus, setGraph, setSideBarOpen } from "../actions";
+import { getGraph } from "../api";
 import { IAppState, IFocusState } from "../model";
 import Annotator from "./annotator/Annotator";
 import FocusContent from "./shared/FocusContent";
@@ -15,7 +14,6 @@ const css = require("./all.css");
 
 interface IMatchParams {
   docId?: string;
-  searchTerm?: string;
 }
 
 interface IProps extends RouteComponentProps<IMatchParams> {
@@ -23,7 +21,6 @@ interface IProps extends RouteComponentProps<IMatchParams> {
   navactive: boolean;
   setGraph: typeof setGraph;
   setFocus: typeof setFocus;
-  setSearch: typeof setSearch;
   setSideBarOpen: typeof setSideBarOpen;
 }
 
@@ -45,7 +42,7 @@ class PoemMachine extends React.Component<IProps> {
   }
 
   private async handleRoute(isPush: boolean) {
-    const { docId, searchTerm } = this.props.match.params;
+    const { docId } = this.props.match.params;
     const part = this.props.location.hash;
     const docRef: IDocReference = DeserializeDocRef(`${docId}${part}`);
     const newFocus: IFocusState = {
@@ -56,18 +53,6 @@ class PoemMachine extends React.Component<IProps> {
     // (but only if navigating to a new document)
     const curDocId = this.props.focus.docRef && this.props.focus.docRef.docId;
     if (part && isPush && docId !== curDocId) newFocus.waitingToScroll = true;
-
-    if (docId) this.props.setFocus(newFocus);
-    else if (searchTerm) {
-      const searchResults = await getSearchResults(searchTerm);
-      this.props.setSearch(searchResults);
-      this.props.setFocus({
-        search: true,
-      });
-    } else {
-      // otherwise go home
-      this.props.setFocus({});
-    }
   }
 
   public render() {
@@ -75,15 +60,8 @@ class PoemMachine extends React.Component<IProps> {
     if (!this.props.navactive) navpaneClasses.push(css.navinactive);
 
     return (
-      <div className={css.poemmachine}>
-        <div
-          id="viewpane"
-          className={css.viewpane}
-          onClick={() => this.props.setSideBarOpen(false)}
-        >
-          <ScrollMemory elementID="viewpane" />
-          <FocusContent />
-        </div>
+      <div>
+        <FocusContent />
         <Annotator />
       </div>
     );
@@ -98,6 +76,5 @@ const mapStateToProps = (state: IAppState) => ({
 export default connect(mapStateToProps, {
   setGraph,
   setFocus,
-  setSearch,
   setSideBarOpen,
 })(PoemMachine);

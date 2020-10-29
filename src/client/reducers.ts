@@ -1,13 +1,11 @@
 import {
   ActionTypes,
   SET_ANNOTATION,
-  SET_DOC,
   SET_FOCUS,
   SET_GRAPH,
   SET_HOVER,
   SET_NAV_PANE_OPEN,
   SET_SCROLLED,
-  SET_SEARCH,
   SET_USER,
 } from "./actions";
 import { IAppState } from "./model";
@@ -21,15 +19,9 @@ const initialState: IAppState = {
         children: [],
       },
     },
-    cache: {},
   },
   focus: {},
   hover: {},
-  search: {
-    term: null,
-    hits: [],
-    previews: [],
-  },
   ui: {
     navPaneOpen: false,
   },
@@ -41,17 +33,6 @@ const initialState: IAppState = {
 function rootReducer(state = initialState, action: ActionTypes): IAppState {
   console.log(action);
   switch (action.type) {
-    case SET_DOC:
-      return {
-        ...state,
-        docs: {
-          ...state.docs,
-          cache: {
-            ...state.docs.cache,
-            [action.payload.id]: action.payload.doc,
-          },
-        },
-      };
     case SET_ANNOTATION:
       return {
         ...state,
@@ -76,11 +57,6 @@ function rootReducer(state = initialState, action: ActionTypes): IAppState {
           ...state.docs,
           graph: action.payload,
         },
-      };
-    case SET_SEARCH:
-      return {
-        ...state,
-        search: action.payload,
       };
     case SET_FOCUS:
       return {

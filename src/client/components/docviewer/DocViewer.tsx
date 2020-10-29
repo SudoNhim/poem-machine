@@ -3,10 +3,8 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import { IDoc, IDocMeta } from "../../../shared/IApiTypes";
-import { SerializeDocRef } from "../../../shared/util";
-import { setDoc, setScrolled } from "../../actions";
-import { getDoc } from "../../api";
-import { IAppState, IFocusState } from "../../model";
+import { setScrolled } from "../../actions";
+import { IAppState } from "../../model";
 import AnnotationsView from "./AnnotationsView";
 import ContentView from "./ContentView";
 import DocReferencePreview from "./DocReferencePreview";
@@ -18,9 +16,8 @@ interface IProps {
   id: string;
   doc: IDoc;
   docMeta: IDocMeta;
-  focus: IFocusState;
+  focusPart: string;
   setScrolled: typeof setScrolled;
-  setDoc: typeof setDoc;
 }
 
 interface IState {
@@ -35,17 +32,13 @@ class DocViewer extends React.Component<IProps, IState> {
     };
   }
 
-  public async componentDidMount() {
-    const doc = await getDoc(this.props.id);
-    this.props.setDoc(this.props.id, doc);
-  }
-
-  public componentDidUpdate() {
+  public componentDidMount() {
+    /*
     if (this.props.doc && this.props.focus.waitingToScroll) {
       const elId = SerializeDocRef(this.props.focus.docRef).split("#")[1];
       document.getElementById(elId).scrollIntoView({ behavior: "smooth" });
       this.props.setScrolled();
-    }
+    } */
 
     if (!this.state.hasContentDom) this.setState({ hasContentDom: true });
   }
@@ -72,7 +65,12 @@ class DocViewer extends React.Component<IProps, IState> {
               <MetadataView metadata={this.props.doc.file.metadata} />
             )}
             {this.props.doc.file.content && (
-              <ContentView content={this.props.doc.file.content} />
+              <ContentView
+                docId={this.props.id}
+                content={this.props.doc.file.content}
+                annotations={this.props.doc.annotations}
+                focusPart={this.props.focusPart}
+              />
             )}
           </Paper>
           {this.state.hasContentDom && (
@@ -81,16 +79,16 @@ class DocViewer extends React.Component<IProps, IState> {
           {this.props.doc.children && (
             <div className={css.section}>
               <div className={css.sectiontitle}>Children</div>
-              {this.props.doc.children.map((child) => (
-                <DocReferencePreview preview={child} />
+              {this.props.doc.children.map((child, i) => (
+                <DocReferencePreview preview={child} key={i} />
               ))}
             </div>
           )}
           {this.props.doc.referrers && (
             <div className={css.section}>
               <div className={css.sectiontitle}>References</div>
-              {this.props.doc.referrers.map((referrer) => (
-                <DocReferencePreview preview={referrer} />
+              {this.props.doc.referrers.map((referrer, i) => (
+                <DocReferencePreview preview={referrer} key={i} />
               ))}
             </div>
           )}
@@ -101,9 +99,9 @@ class DocViewer extends React.Component<IProps, IState> {
 
 const mapStateToProps = (state: IAppState, ownProps) => ({
   id: ownProps.id,
-  doc: state.docs.cache[ownProps.id],
-  docMeta: state.docs.graph[ownProps.id],
-  focus: state.focus,
+  doc: ownProps.doc,
+  docMeta: ownProps.docMeta,
+  focusPart: ownProps.focusPart,
 });
 
-export default connect(mapStateToProps, { setDoc, setScrolled })(DocViewer);
+export default connect(mapStateToProps, { setScrolled })(DocViewer);

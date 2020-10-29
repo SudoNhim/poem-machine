@@ -247,10 +247,4 @@ class LoginForm extends React.Component<IProps, IState> {
   }
 }
 
-const mapStateToProps = (state: IAppState) => ({
-  searchResults: state.search,
-});
-
-export default connect(mapStateToProps, { setUser })(
-  withStyles(styles)(LoginForm)
-);
+export default connect(null, { setUser })(withStyles(styles)(LoginForm));

@@ -5,17 +5,18 @@ import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
 
 import { IAnnotation } from "../../../shared/IApiTypes";
-import { SerializeDocRef } from "../../../shared/util";
 import { setHover } from "../../actions";
 import { IAppState, IFocusState, IHoverState } from "../../model";
 
 const css = require("./docviewer.css");
 
 interface IProps extends RouteComponentProps {
+  docId: string;
   text: Text;
   prefix: string;
   hover: IHoverState;
   focus: IFocusState;
+  focusPart: string;
   annotations: IAnnotation[];
   setHover: typeof setHover;
 }
@@ -32,10 +33,9 @@ class CanonTextView extends React.Component<IProps> {
   private renderParagraph(pi: number, text: string | string[]): JSX.Element {
     const id = `${this.props.prefix}p${pi}`;
     const classNames: string[] = [css.canonparagraph];
-    if (this.props.hover.docParts && this.props.hover.docParts.indexOf(id) >= 0)
-      classNames.push(css.canonhover);
-    if (SerializeDocRef(this.props.focus.docRef).split("#")[1] === id)
-      classNames.push(css.canonfocus);
+    // if (this.props.hover.docParts && this.props.hover.docParts.indexOf(id) >= 0)
+    //  classNames.push(css.canonhover);
+    if (this.props.focusPart === id) classNames.push(css.canonfocus);
 
     return (
       <div
@@ -62,8 +62,7 @@ class CanonTextView extends React.Component<IProps> {
 
     if (this.props.hover.docParts && this.props.hover.docParts.indexOf(id) >= 0)
       classNames.push(css.canonhover);
-    else if (SerializeDocRef(this.props.focus.docRef).split("#")[1] === id)
-      classNames.push(css.canonfocus);
+    else if (this.props.focusPart === id) classNames.push(css.canonfocus);
     else if (this.props.annotations.find((anno) => anno.anchor === id))
       classNames.push(css.annotationmarker);
 
@@ -94,18 +93,20 @@ class CanonTextView extends React.Component<IProps> {
 
   private onMouseUp(evt: React.MouseEvent, id: string) {
     evt.stopPropagation();
-    const base = `/doc/${this.props.focus.docRef.docId}`;
+    const base = `/doc/${this.props.docId}`;
     if (this.props.location.hash === `#${id}`) this.props.history.push(base);
     else this.props.history.push(`${base}#${id}`);
   }
 }
 
 const mapStateToProps = (state: IAppState, ownProps) => ({
+  docId: ownProps.docId,
   text: ownProps.text,
   prefix: ownProps.prefix,
   hover: state.hover,
   focus: state.focus,
-  annotations: state.docs.cache[state.focus.docRef.docId].annotations,
+  focusPart: ownProps.focusPart,
+  annotations: ownProps.annotations,
 });
 
 export default connect(mapStateToProps, { setHover })(

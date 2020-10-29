@@ -4,48 +4,59 @@ import { hot } from "react-hot-loader";
 import { connect } from "react-redux";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import { setUser } from "./actions";
-import { getUser } from "./api";
+import { setGraph, setUser } from "./actions";
+import { getGraph, getUser } from "./api";
 import About from "./components/About";
+import Document from "./components/Document";
 import AppBar from "./components/layout/AppBar";
 import ContentContainer from "./components/layout/ContentContainer";
 import SideBar from "./components/layout/SideBar";
 import Login from "./components/Login";
-import PoemMachine from "./components/PoemMachine";
 import SearchResults from "./components/SearchResults";
 
 interface IProps {
+  isReady: boolean;
+  setGraph: typeof setGraph;
   setUser: typeof setUser;
 }
 
-class AppImpl extends React.Component<IProps> {
-  public async componentDidMount() {
-    const user = await getUser();
-    if (user) this.props.setUser({ username: user.username });
-  }
+const AppImpl: React.FunctionComponent<IProps> = (props: IProps) => {
+  const [ready, setReady] = React.useState(false);
 
-  public render(): JSX.Element {
-    return (
-      <BrowserRouter>
-        <div>
-          <CssBaseline />
-          <AppBar />
-          <SideBar />
-          <ContentContainer>
+  React.useEffect(() => {
+    (async () => {
+      const graph = await getGraph();
+      props.setGraph(graph);
+      setReady(true);
+      const user = await getUser();
+      if (user) props.setUser({ username: user.username });
+    })();
+  }, []);
+
+  return (
+    <BrowserRouter>
+      <div>
+        <CssBaseline />
+        <AppBar />
+        <SideBar />
+        <ContentContainer>
+          {ready ? (
             <Switch>
-              <Route exact path="/" component={PoemMachine} />
-              <Route path="/doc/:docId" component={PoemMachine} />
+              <Route exact path="/" component={Document} />
+              <Route path="/doc/:docId" component={Document} />
               <Route path="/search/:searchTerm" component={SearchResults} />
               <Route exact path="/about" component={About} />
               <Route exact path="/login" component={Login} />
             </Switch>
-          </ContentContainer>
-        </div>
-      </BrowserRouter>
-    );
-  }
-}
+          ) : (
+            <p>Loading...</p>
+          )}
+        </ContentContainer>
+      </div>
+    </BrowserRouter>
+  );
+};
 
 const App = hot(module)(AppImpl);
 
-export default connect(null, { setUser })(App);
+export default connect(null, { setGraph, setUser })(App);

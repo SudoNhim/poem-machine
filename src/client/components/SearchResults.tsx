@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router";
 
 import { ISearchResults } from "../../shared/IApiTypes";
@@ -15,9 +15,9 @@ const emptySearchResults: ISearchResults = {
 
 const SearchResults: React.FunctionComponent = () => {
   const { searchTerm }: { searchTerm: string } = useParams();
-  const [results, setResults] = useState(emptySearchResults);
+  const [results, setResults] = React.useState(emptySearchResults);
 
-  useEffect(() => {
+  React.useEffect(() => {
     (async () => setResults(await getSearchResults(searchTerm)))();
   }, [searchTerm]);
 
