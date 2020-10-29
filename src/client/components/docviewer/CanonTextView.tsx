@@ -12,12 +12,12 @@ const css = require("./docviewer.css");
 
 interface IProps extends RouteComponentProps {
   docId: string;
+  annotations: IAnnotation[];
+  focusPart: string;
   text: Text;
   prefix: string;
   hover: IHoverState;
   focus: IFocusState;
-  focusPart: string;
-  annotations: IAnnotation[];
   setHover: typeof setHover;
 }
 

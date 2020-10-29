@@ -29,6 +29,12 @@ const Document: React.FunctionComponent<IProps> = (props) => {
   // Take focus from the hash fragment of the url, e.g. #s1.p1.l3
   const focusPart = props.location.hash.substr(1);
 
+  // Scroll to the hash fragment, if applicable
+  React.useEffect(() => {
+    if (doc && focusPart && props.history.action === "PUSH")
+      document.getElementById(focusPart).scrollIntoView({ behavior: "smooth" });
+  }, [doc]);
+
   if (!doc) return <p>Loading...</p>;
   else
     return (

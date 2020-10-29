@@ -3,7 +3,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { IDocMeta } from "../../../shared/IApiTypes";
+import { IAnnotation, IDocMeta } from "../../../shared/IApiTypes";
 import { IAppState } from "../../model";
 import CanonTextView from "./CanonTextView";
 
@@ -13,6 +13,9 @@ interface IProps {
   part: Prologue | Variation | Note;
   section: number;
   target: IDocMeta;
+  docId: string;
+  annotations: IAnnotation[];
+  focusPart: string;
 }
 
 class ContentPartView extends React.Component<IProps> {
@@ -35,6 +38,9 @@ class ContentPartView extends React.Component<IProps> {
           <CanonTextView
             prefix={`s${this.props.section}.`}
             text={this.props.part.content}
+            docId={this.props.docId}
+            focusPart={this.props.focusPart}
+            annotations={this.props.annotations}
           />
         )}
       </div>
@@ -47,6 +53,9 @@ const mapStateToProps = (state: IAppState, ownProps) => ({
   part: ownProps.part,
   section: ownProps.section,
   target: state.docs.graph[ownProps.part.reference],
+  docId: ownProps.docId,
+  annotations: ownProps.annotations,
+  focusPart: ownProps.focusPart,
 });
 
 export default connect(mapStateToProps)(ContentPartView);
