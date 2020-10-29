@@ -16,14 +16,23 @@ interface IProps extends RouteComponentProps<IMatchParams> {
   docMeta: IDocMeta;
 }
 
+const docCache: { [id: string]: IDoc } = {};
+
 const Document: React.FunctionComponent<IProps> = (props) => {
   if (!props.docMeta) return <p>Document does not exist</p>;
 
   // Load the document
   const docId = props.match.params.docId;
-  const [doc, setDoc] = React.useState<IDoc>(null);
+  const [, setLoadDoc] = React.useState<IDoc>(null);
+  const doc = docCache[docId];
   React.useEffect(() => {
-    (async () => setDoc(await getDoc(docId)))();
+    if (!doc) {
+      (async () => {
+        const loaded = await getDoc(docId);
+        docCache[docId] = loaded;
+        setLoadDoc(loaded);
+      })();
+    }
   }, [docId]);
 
   // Take focus from the hash fragment of the url, e.g. #s1.p1.l3
