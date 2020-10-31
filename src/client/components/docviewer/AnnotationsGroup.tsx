@@ -22,10 +22,10 @@ class AnnotationsGroup extends React.Component<IProps> {
     const anchor = document.getElementById(this.props.anchor);
     if (!anchor) return null;
     const style: React.CSSProperties = {
-      top: anchor.offsetTop,
+      // top: anchor.offsetTop,
     };
 
-    const classNames = [css.annotationsgroup];
+    const classNames = []; // [css.annotationsgroup];
     if (
       this.props.hover.docParts &&
       this.props.hover.docParts.indexOf(this.props.anchor) >= 0

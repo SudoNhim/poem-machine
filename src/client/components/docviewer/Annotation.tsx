@@ -81,8 +81,8 @@ class Annotation extends React.Component<IProps> {
   }
 
   public render(): JSX.Element {
-    const classNames: string[] = [css.annotation];
-    const containerClassNames: string[] = [css.annotationcontainer];
+    const classNames: string[] = []; //[css.annotation];
+    const containerClassNames: string[] = []; //[css.annotationcontainer];
     if (this.props.hover.docParts) {
       if (
         this.props.hover.docParts.indexOf(this.props.annotation.anchor) >= 0

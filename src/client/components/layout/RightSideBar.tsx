@@ -1,3 +1,4 @@
+import { useMediaQuery } from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
     },
     drawer: {
-      [theme.breakpoints.up("md")]: {
+      [theme.breakpoints.up("sm")]: {
         width: drawerWidth,
         flexShrink: 0,
         zIndex: 1099, // under appbar when persistent
@@ -50,19 +51,22 @@ function RightSideBar(props: IProps) {
     <div>
       <div className={classes.toolbar} />
       <Divider />
+      Right annos Drawer {JSON.stringify(props)}
       <AnnotationsView annotations={props.annotations} />
     </div>
   );
+
+  const isSmall = useMediaQuery(theme.breakpoints.down("xs"));
 
   return (
     <div className={classes.root}>
       <nav className={classes.drawer} aria-label="mailbox folders">
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden mdUp implementation="css">
+        <Hidden smUp implementation="css">
           <Drawer
             variant="temporary"
             anchor="right"
-            open={props.sideBarOpen === SideBarOpen.right}
+            open={props.sideBarOpen === SideBarOpen.right && isSmall}
             onClose={() => props.setSideBarOpen(SideBarOpen.none)}
             classes={{
               paper: classes.drawerPaper,
@@ -74,7 +78,7 @@ function RightSideBar(props: IProps) {
             {drawer}
           </Drawer>
         </Hidden>
-        <Hidden smDown implementation="css">
+        <Hidden xsDown implementation="css">
           <Drawer
             classes={{
               paper: classes.drawerPaper,
