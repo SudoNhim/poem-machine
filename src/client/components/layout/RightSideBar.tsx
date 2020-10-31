@@ -16,8 +16,6 @@ import { setSideBarOpen } from "../../actions";
 import { IAppState, SideBarOpen } from "../../model";
 import AnnotationsView from "../docviewer/AnnotationsView";
 
-const drawerWidth = "20em";
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -25,16 +23,13 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     drawer: {
       [theme.breakpoints.up("sm")]: {
-        width: drawerWidth,
         flexShrink: 0,
         zIndex: 1099, // under appbar when persistent
       },
     },
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
-    drawerPaper: {
-      width: drawerWidth,
-    },
+    drawerPaper: {},
   })
 );
 
