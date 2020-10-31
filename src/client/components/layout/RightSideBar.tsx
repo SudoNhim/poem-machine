@@ -1,18 +1,12 @@
 import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
 import {
   Theme,
   createStyles,
   makeStyles,
   useTheme,
 } from "@material-ui/core/styles";
-import MailIcon from "@material-ui/icons/Mail";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
 import React from "react";
 import { connect } from "react-redux";
 
@@ -47,7 +41,7 @@ interface IProps {
   setSideBarOpen: typeof setSideBarOpen;
 }
 
-function SideBar(props: IProps) {
+function RightSideBar(props: IProps) {
   const classes = useStyles();
   const theme = useTheme();
   const drawer = (
@@ -98,4 +92,4 @@ const mapStateToProps = (state: IAppState) => ({
   isSideBarOpen: state.ui.navPaneOpen,
 });
 
-export default connect(mapStateToProps, { setSideBarOpen })(SideBar);
+export default connect(mapStateToProps, { setSideBarOpen })(RightSideBar);

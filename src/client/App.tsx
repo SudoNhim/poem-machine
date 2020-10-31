@@ -11,7 +11,7 @@ import Document from "./components/Document";
 import Home from "./components/Home";
 import AppBar from "./components/layout/AppBar";
 import ContentContainer from "./components/layout/ContentContainer";
-import SideBar from "./components/layout/SideBar";
+import LeftSideBar from "./components/layout/LeftSideBar";
 import Login from "./components/Login";
 import SearchResults from "./components/SearchResults";
 
@@ -39,7 +39,7 @@ const AppImpl: React.FunctionComponent<IProps> = (props: IProps) => {
       <div>
         <CssBaseline />
         <AppBar />
-        <SideBar />
+        <LeftSideBar />
         <ContentContainer>
           {ready ? (
             <Switch>
