@@ -18,7 +18,7 @@ import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
 
 import { setSideBarOpen } from "../../actions";
-import { IAppState } from "../../model";
+import { IAppState, SideBarOpen } from "../../model";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -93,7 +93,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IProps extends RouteComponentProps {
-  navPaneOpen: boolean;
+  sideBarOpen: boolean;
   setSideBarOpen: typeof setSideBarOpen;
   username: string;
 }
@@ -136,7 +136,7 @@ const PrimarySearchAppBar = withRouter((props: IProps) => {
   };
 
   const toggleNavPane = () => {
-    props.setSideBarOpen(!props.navPaneOpen);
+    props.setSideBarOpen(SideBarOpen.left);
   };
 
   return (
@@ -191,7 +191,7 @@ const PrimarySearchAppBar = withRouter((props: IProps) => {
 });
 
 const mapStateToProps = (state: IAppState) => ({
-  navPaneOpen: !!state.ui.navPaneOpen,
+  sideBarOpen: !!state.ui.sideBarOpen,
   username: state.user.username,
 });
 

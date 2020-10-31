@@ -16,10 +16,16 @@ export interface IHoverState {
   docParts?: string[];
 }
 
+export enum SideBarOpen {
+  left = "LEFT",
+  right = "RIGHT",
+  none = "NONE",
+}
+
 export interface IUiState {
   // Always open on large screens, on smaller screens this toggles
   // the navigation pane
-  navPaneOpen: boolean;
+  sideBarOpen: SideBarOpen;
 }
 
 export interface IUserState {
