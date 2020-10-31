@@ -10,9 +10,10 @@ import {
 import React from "react";
 import { connect } from "react-redux";
 
+import { IAnnotation } from "../../../shared/IApiTypes";
 import { setSideBarOpen } from "../../actions";
 import { IAppState, SideBarOpen } from "../../model";
-import NavTree from "./NavTree";
+import AnnotationsView from "../docviewer/AnnotationsView";
 
 const drawerWidth = "20em";
 
@@ -37,6 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IProps {
+  annotations: IAnnotation[];
   sideBarOpen: SideBarOpen;
   setSideBarOpen: typeof setSideBarOpen;
 }
@@ -48,7 +50,7 @@ function RightSideBar(props: IProps) {
     <div>
       <div className={classes.toolbar} />
       <Divider />
-      <NavTree />
+      <AnnotationsView annotations={props.annotations} />
     </div>
   );
 
@@ -78,6 +80,7 @@ function RightSideBar(props: IProps) {
               paper: classes.drawerPaper,
             }}
             variant="permanent"
+            anchor="right"
             open
           >
             {drawer}
@@ -89,6 +92,7 @@ function RightSideBar(props: IProps) {
 }
 
 const mapStateToProps = (state: IAppState) => ({
+  annotations: state.focus.annotations,
   sideBarOpen: state.ui.sideBarOpen,
 });
 

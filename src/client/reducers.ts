@@ -20,7 +20,7 @@ const initialState: IAppState = {
       },
     },
   },
-  focus: {},
+  focus: { annotations: [] },
   hover: {},
   ui: {
     sideBarOpen: SideBarOpen.none,

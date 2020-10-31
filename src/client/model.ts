@@ -1,4 +1,4 @@
-import { IDocGraph, IDocReference } from "../shared/IApiTypes";
+import { IAnnotation, IDocGraph, IDocReference } from "../shared/IApiTypes";
 
 export interface IDocState {
   graph: IDocGraph;
@@ -10,6 +10,8 @@ export interface IFocusState {
   // Set to true when navigating to a new url using #fragment
   // Unset when render is finished and scrollIntoView is called
   waitingToScroll?: boolean;
+
+  annotations: IAnnotation[];
 }
 
 export interface IHoverState {
