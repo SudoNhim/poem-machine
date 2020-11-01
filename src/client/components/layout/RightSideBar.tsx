@@ -18,11 +18,10 @@ import AnnotationsView from "../docviewer/AnnotationsView";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    drawerWidthSmall: {
+      width: "70%",
+    },
     drawerWidth: {
-      [theme.breakpoints.down("sm")]: {
-        // both collapsed
-        width: "70%",
-      },
       [theme.breakpoints.between("sm", "md")]: {
         // left collapsed
         width: "calc(70% - 200px)",
@@ -76,7 +75,7 @@ function RightSideBar(props: IProps) {
           open={props.sideBarOpen === SideBarOpen.right && isSmall}
           onClose={() => props.setSideBarOpen(SideBarOpen.none)}
           classes={{
-            paper: classes.drawerWidth,
+            paper: classes.drawerWidthSmall,
           }}
           ModalProps={{
             keepMounted: true, // Better open performance on mobile.

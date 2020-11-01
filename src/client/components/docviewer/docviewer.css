@@ -19,7 +19,6 @@
 .section {
   margin: 0.2cm;
   padding: 0.2cm;
-  width: 60%;
 }
 
 .sectiontitle {
@@ -70,7 +69,6 @@
 .annotations {
   position: absolute;
   top: 0em;
-  width: 38%;
   right: -0em;
 }
 

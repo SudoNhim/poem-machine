@@ -14,7 +14,14 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     content: {
       flexGrow: 1,
-      padding: theme.spacing(3),
+      padding: theme.spacing(2),
+      [theme.breakpoints.down("sm")]: {
+        // appbar offset
+        marginTop: 40,
+      },
+      [theme.breakpoints.up("sm")]: {
+        marginTop: 60,
+      },
     },
   })
 );
