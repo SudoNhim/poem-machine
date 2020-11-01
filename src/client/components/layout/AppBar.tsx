@@ -98,7 +98,7 @@ interface IProps extends RouteComponentProps {
   username: string;
 }
 
-const PrimarySearchAppBar = withRouter((props: IProps) => {
+const TopAppBar = withRouter((props: IProps) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [
@@ -195,6 +195,4 @@ const mapStateToProps = (state: IAppState) => ({
   username: state.user.username,
 });
 
-export default connect(mapStateToProps, { setSideBarOpen })(
-  PrimarySearchAppBar
-);
+export default connect(mapStateToProps, { setSideBarOpen })(TopAppBar);

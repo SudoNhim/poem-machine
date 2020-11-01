@@ -14,13 +14,10 @@ import { setSideBarOpen } from "../../actions";
 import { IAppState, SideBarOpen } from "../../model";
 import NavTree from "./NavTree";
 
-const drawerWidth = "20em";
+const drawerWidth = 280;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      display: "flex",
-    },
     drawer: {
       [theme.breakpoints.up("md")]: {
         width: drawerWidth,
@@ -53,38 +50,36 @@ function LeftSideBar(props: IProps) {
   );
 
   return (
-    <div className={classes.root}>
-      <nav className={classes.drawer} aria-label="mailbox folders">
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden mdUp implementation="css">
-          <Drawer
-            variant="temporary"
-            anchor="left"
-            open={props.sideBarOpen === SideBarOpen.left}
-            onClose={() => props.setSideBarOpen(SideBarOpen.none)}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <Hidden smDown implementation="css">
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            variant="permanent"
-            open
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-      </nav>
-    </div>
+    <nav className={classes.drawer} aria-label="mailbox folders">
+      {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+      <Hidden mdUp implementation="css">
+        <Drawer
+          variant="temporary"
+          anchor="left"
+          open={props.sideBarOpen === SideBarOpen.left}
+          onClose={() => props.setSideBarOpen(SideBarOpen.none)}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+        >
+          {drawer}
+        </Drawer>
+      </Hidden>
+      <Hidden smDown implementation="css">
+        <Drawer
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          variant="permanent"
+          open
+        >
+          {drawer}
+        </Drawer>
+      </Hidden>
+    </nav>
   );
 }
 

@@ -18,8 +18,19 @@ import AnnotationsView from "../docviewer/AnnotationsView";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      display: "flex",
+    drawerWidth: {
+      [theme.breakpoints.down("sm")]: {
+        // both collapsed
+        width: "70%",
+      },
+      [theme.breakpoints.between("sm", "md")]: {
+        // left collapsed
+        width: "calc(70% - 200px)",
+      },
+      [theme.breakpoints.up("md")]: {
+        // neither collapsed
+        width: "calc(70% - 400px)",
+      },
     },
     drawer: {
       [theme.breakpoints.up("sm")]: {
@@ -29,7 +40,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
-    drawerPaper: {},
   })
 );
 
@@ -54,39 +64,40 @@ function RightSideBar(props: IProps) {
   const isSmall = useMediaQuery(theme.breakpoints.down("xs"));
 
   return (
-    <div className={classes.root}>
-      <nav className={classes.drawer} aria-label="mailbox folders">
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden smUp implementation="css">
-          <Drawer
-            variant="temporary"
-            anchor="right"
-            open={props.sideBarOpen === SideBarOpen.right && isSmall}
-            onClose={() => props.setSideBarOpen(SideBarOpen.none)}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <Hidden xsDown implementation="css">
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            variant="permanent"
-            anchor="right"
-            open
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-      </nav>
-    </div>
+    <nav
+      className={`${classes.drawer} ${classes.drawerWidth}`}
+      aria-label="mailbox folders"
+    >
+      {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+      <Hidden smUp implementation="css">
+        <Drawer
+          variant="temporary"
+          anchor="right"
+          open={props.sideBarOpen === SideBarOpen.right && isSmall}
+          onClose={() => props.setSideBarOpen(SideBarOpen.none)}
+          classes={{
+            paper: classes.drawerWidth,
+          }}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+        >
+          {drawer}
+        </Drawer>
+      </Hidden>
+      <Hidden xsDown implementation="css">
+        <Drawer
+          classes={{
+            paper: classes.drawerWidth,
+          }}
+          variant="permanent"
+          anchor="right"
+          open
+        >
+          {drawer}
+        </Drawer>
+      </Hidden>
+    </nav>
   );
 }
 
