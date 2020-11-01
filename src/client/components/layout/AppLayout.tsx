@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
         marginTop: 50,
       },
       [theme.breakpoints.up("sm")]: {
-        marginTop: 70,
+        marginTop: 61,
       },
     },
   })
