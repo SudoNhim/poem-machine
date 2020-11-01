@@ -9,9 +9,7 @@ import { getGraph, getUser } from "./api";
 import About from "./components/About";
 import Document from "./components/Document";
 import Home from "./components/Home";
-import AppBar from "./components/layout/AppBar";
-import ContentContainer from "./components/layout/ContentContainer";
-import SideBar from "./components/layout/SideBar";
+import AppLayout from "./components/layout/AppLayout";
 import Login from "./components/Login";
 import SearchResults from "./components/SearchResults";
 
@@ -38,12 +36,11 @@ const AppImpl: React.FunctionComponent<IProps> = (props: IProps) => {
     <BrowserRouter>
       <div>
         <CssBaseline />
-        <AppBar />
-        <SideBar />
-        <ContentContainer>
+        <AppLayout>
           {ready ? (
             <Switch>
               <Route exact path="/" component={Document} />
+              <Route exact path="/home" component={Home} />
               <Route path="/doc/:docId" component={Document} />
               <Route path="/search/:searchTerm" component={SearchResults} />
               <Route exact path="/about" component={About} />
@@ -52,7 +49,7 @@ const AppImpl: React.FunctionComponent<IProps> = (props: IProps) => {
           ) : (
             <p>Loading...</p>
           )}
-        </ContentContainer>
+        </AppLayout>
       </div>
     </BrowserRouter>
   );

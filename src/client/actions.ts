@@ -1,12 +1,12 @@
 import { IAnnotation, IDocGraph } from "../shared/IApiTypes";
-import { IFocusState, IHoverState, IUserState } from "./model";
+import { IFocusState, IHoverState, IUserState, SideBarOpen } from "./model";
 
 export const SET_GRAPH = "SET_GRAPH";
 export const SET_ANNOTATION = "SET_ANNOTATION";
 export const SET_FOCUS = "SET_FOCUS";
 export const SET_HOVER = "SET_HOVER";
 export const SET_SCROLLED = "SET_SCROLLED";
-export const SET_NAV_PANE_OPEN = "SET_NAV_PANE_OPEN";
+export const SET_SIDEBAR_OPEN = "SET_SIDEBAR_OPEN";
 export const SET_USER = "SET_USER";
 
 interface SetGraphAction {
@@ -34,8 +34,8 @@ interface SetScrolledAction {
 }
 
 interface SetSideBarOpenAction {
-  type: typeof SET_NAV_PANE_OPEN;
-  payload: boolean;
+  type: typeof SET_SIDEBAR_OPEN;
+  payload: SideBarOpen;
 }
 
 interface SetUserAction {
@@ -83,10 +83,10 @@ export function setHover(hover: IHoverState): SetHoverAction {
   };
 }
 
-export function setSideBarOpen(isOpen: boolean): SetSideBarOpenAction {
+export function setSideBarOpen(state: SideBarOpen): SetSideBarOpenAction {
   return {
-    type: SET_NAV_PANE_OPEN,
-    payload: isOpen,
+    type: SET_SIDEBAR_OPEN,
+    payload: state,
   };
 }
 

@@ -25,7 +25,7 @@ class AnnotationsGroup extends React.Component<IProps> {
       top: anchor.offsetTop,
     };
 
-    const classNames = [css.annotationsgroup];
+    const classNames = []; // [css.annotationsgroup];
     if (
       this.props.hover.docParts &&
       this.props.hover.docParts.indexOf(this.props.anchor) >= 0

@@ -79,17 +79,6 @@ a {
   transform-origin: 5% 50%;
 }
 
-.viewpane {
-  overflow-y: scroll;
-  flex-grow: 1;
-  position: absolute;
-  left: 20em;
-  right: -0;
-  top: 5em;
-  bottom: 0;
-  z-index: 1;
-}
-
 @media only screen and (max-width: 960px) {
   .viewpane {
     left: 1.5em;

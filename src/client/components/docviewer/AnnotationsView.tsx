@@ -55,7 +55,7 @@ class AnnotationsView extends React.Component<IProps, IState> {
       }));
 
     return (
-      <div className={css.annotations}>
+      <div>
         {groups.map((grp) => (
           <AnnotationsGroup
             anchor={grp.anchor}

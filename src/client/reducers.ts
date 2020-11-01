@@ -4,11 +4,11 @@ import {
   SET_FOCUS,
   SET_GRAPH,
   SET_HOVER,
-  SET_NAV_PANE_OPEN,
   SET_SCROLLED,
+  SET_SIDEBAR_OPEN,
   SET_USER,
 } from "./actions";
-import { IAppState } from "./model";
+import { IAppState, SideBarOpen } from "./model";
 
 const initialState: IAppState = {
   docs: {
@@ -20,10 +20,10 @@ const initialState: IAppState = {
       },
     },
   },
-  focus: {},
+  focus: { annotations: [] },
   hover: {},
   ui: {
-    navPaneOpen: false,
+    sideBarOpen: SideBarOpen.none,
   },
   user: {
     username: null,
@@ -38,16 +38,6 @@ function rootReducer(state = initialState, action: ActionTypes): IAppState {
         ...state,
         docs: {
           ...state.docs,
-          cache: {
-            ...state.docs.cache,
-            [action.payload.docId]: {
-              ...state.docs.cache[action.payload.docId],
-              annotations: [
-                ...(state.docs.cache[action.payload.docId].annotations || []),
-                action.payload.annotation,
-              ],
-            },
-          },
         },
       };
     case SET_GRAPH:
@@ -76,11 +66,11 @@ function rootReducer(state = initialState, action: ActionTypes): IAppState {
           waitingToScroll: false,
         },
       };
-    case SET_NAV_PANE_OPEN:
+    case SET_SIDEBAR_OPEN:
       return {
         ...state,
         ui: {
-          navPaneOpen: action.payload,
+          sideBarOpen: action.payload,
         },
       };
     case SET_USER:

@@ -1,4 +1,4 @@
-import { IDocGraph, IDocReference } from "../shared/IApiTypes";
+import { IAnnotation, IDocGraph, IDocReference } from "../shared/IApiTypes";
 
 export interface IDocState {
   graph: IDocGraph;
@@ -10,16 +10,24 @@ export interface IFocusState {
   // Set to true when navigating to a new url using #fragment
   // Unset when render is finished and scrollIntoView is called
   waitingToScroll?: boolean;
+
+  annotations: IAnnotation[];
 }
 
 export interface IHoverState {
   docParts?: string[];
 }
 
+export enum SideBarOpen {
+  left = "LEFT",
+  right = "RIGHT",
+  none = "NONE",
+}
+
 export interface IUiState {
   // Always open on large screens, on smaller screens this toggles
   // the navigation pane
-  navPaneOpen: boolean;
+  sideBarOpen: SideBarOpen;
 }
 
 export interface IUserState {

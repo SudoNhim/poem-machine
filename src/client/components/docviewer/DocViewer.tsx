@@ -62,9 +62,6 @@ class DocViewer extends React.Component<IProps, IState> {
               />
             )}
           </Paper>
-          {this.state.hasContentDom && (
-            <AnnotationsView annotations={this.props.doc.annotations} />
-          )}
           {this.props.doc.children && (
             <div className={css.section}>
               <div className={css.sectiontitle}>Children</div>

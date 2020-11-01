@@ -3,8 +3,9 @@ import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 
 import { IDoc, IDocMeta } from "../../shared/IApiTypes";
+import { setFocus, setSideBarOpen } from "../actions";
 import { getDoc } from "../api";
-import { IAppState } from "../model";
+import { IAppState, SideBarOpen } from "../model";
 import Annotator from "./annotator/Annotator";
 import DocViewer from "./docviewer/DocViewer";
 
@@ -14,6 +15,8 @@ interface IMatchParams {
 
 interface IProps extends RouteComponentProps<IMatchParams> {
   docMeta: IDocMeta;
+  setFocus: typeof setFocus;
+  setSideBarOpen: typeof setSideBarOpen;
 }
 
 const docCache: { [id: string]: IDoc } = {};
@@ -44,6 +47,23 @@ const Document: React.FunctionComponent<IProps> = (props) => {
       document.getElementById(focusPart).scrollIntoView({ behavior: "smooth" });
   }, [doc]);
 
+  // Set any loaded annotations
+  React.useEffect(() => {
+    if (doc) {
+      const annos = doc.annotations || [];
+      if (!!focusPart) {
+        props.setFocus({
+          annotations: annos.filter((anno) => anno.anchor === focusPart),
+        });
+        props.setSideBarOpen(SideBarOpen.right);
+      } else {
+        props.setFocus({
+          annotations: annos,
+        });
+      }
+    }
+  }, [doc, focusPart]);
+
   if (!doc) return <p>Loading...</p>;
   else
     return (
@@ -66,4 +86,4 @@ const mapStateToProps = (
   docMeta: state.docs.graph[ownProps.match.params.docId || "db"],
 });
 
-export default connect(mapStateToProps, null)(Document);
+export default connect(mapStateToProps, { setFocus, setSideBarOpen })(Document);
