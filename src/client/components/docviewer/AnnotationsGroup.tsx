@@ -24,10 +24,8 @@ const useStyles = makeStyles({
     marginRight: 16,
     marginBottom: 16,
   },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
+  content: {
+    fontSize: 14,
   },
   title: {
     fontSize: 14,
@@ -91,7 +89,7 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
   const renderAnnoContent = (anno: IAnnotation, key: number): JSX.Element => (
     <React.Fragment>
       <Divider key={-1 - key} />
-      <Typography key={key}>
+      <Typography className={classes.content} key={key}>
         {anno.tokens.map((tok, i) => renderToken(tok, i))}
       </Typography>
     </React.Fragment>
