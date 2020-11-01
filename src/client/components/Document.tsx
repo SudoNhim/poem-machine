@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 
 import { IDoc, IDocMeta } from "../../shared/IApiTypes";
-import { setFocus, setSideBarOpen } from "../actions";
+import { setFocus } from "../actions";
 import { getDoc } from "../api";
-import { IAppState, SideBarOpen } from "../model";
+import { IAppState } from "../model";
 import Annotator from "./annotator/Annotator";
 import DocViewer from "./docviewer/DocViewer";
 
@@ -16,7 +16,6 @@ interface IMatchParams {
 interface IProps extends RouteComponentProps<IMatchParams> {
   docMeta: IDocMeta;
   setFocus: typeof setFocus;
-  setSideBarOpen: typeof setSideBarOpen;
 }
 
 const docCache: { [id: string]: IDoc } = {};
@@ -52,10 +51,16 @@ const Document: React.FunctionComponent<IProps> = (props) => {
     if (doc) {
       const annos = doc.annotations || [];
       if (!!focusPart) {
+        const focusAnnos = annos.filter((anno) => anno.anchor === focusPart);
+        if (focusAnnos.length === 0)
+          focusAnnos.push({
+            anchor: focusPart,
+            tokens: [{ kind: "text", text: "No annotation..." }],
+            snippet: focusPart,
+          });
         props.setFocus({
-          annotations: annos.filter((anno) => anno.anchor === focusPart),
+          annotations: focusAnnos,
         });
-        props.setSideBarOpen(SideBarOpen.right);
       } else {
         props.setFocus({
           annotations: annos,
@@ -86,4 +91,4 @@ const mapStateToProps = (
   docMeta: state.docs.graph[ownProps.match.params.docId || "db"],
 });
 
-export default connect(mapStateToProps, { setFocus, setSideBarOpen })(Document);
+export default connect(mapStateToProps, { setFocus })(Document);

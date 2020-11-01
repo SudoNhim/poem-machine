@@ -5,8 +5,8 @@ import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
 
 import { IAnnotation } from "../../../shared/IApiTypes";
-import { setHover } from "../../actions";
-import { IAppState, IFocusState, IHoverState } from "../../model";
+import { setHover, setSideBarOpen } from "../../actions";
+import { IAppState, IFocusState, IHoverState, SideBarOpen } from "../../model";
 
 const css = require("./docviewer.css");
 
@@ -19,6 +19,7 @@ interface IProps extends RouteComponentProps {
   hover: IHoverState;
   focus: IFocusState;
   setHover: typeof setHover;
+  setSideBarOpen: typeof setSideBarOpen;
 }
 
 class CanonTextView extends React.Component<IProps> {
@@ -33,19 +34,9 @@ class CanonTextView extends React.Component<IProps> {
   private renderParagraph(pi: number, text: string | string[]): JSX.Element {
     const id = `${this.props.prefix}p${pi}`;
     const classNames: string[] = [css.canonparagraph];
-    // if (this.props.hover.docParts && this.props.hover.docParts.indexOf(id) >= 0)
-    //  classNames.push(css.canonhover);
-    if (this.props.focusPart === id) classNames.push(css.canonfocus);
 
     return (
-      <div
-        id={id}
-        className={classNames.join(" ")}
-        key={pi}
-        onMouseOver={(evt) => this.onMouseOver(evt, id)}
-        onMouseOut={(evt) => this.onMouseOut(evt, id)}
-        onMouseUp={(evt) => this.onMouseUp(evt, id)}
-      >
+      <div id={id} className={classNames.join(" ")} key={pi}>
         {Array.isArray(text)
           ? text.map((line, i) => [
               this.renderLine(pi, i + 1, line),
@@ -96,6 +87,7 @@ class CanonTextView extends React.Component<IProps> {
     const base = `/doc/${this.props.docId}`;
     if (this.props.location.hash === `#${id}`) this.props.history.push(base);
     else this.props.history.push(`${base}#${id}`);
+    this.props.setSideBarOpen(SideBarOpen.right);
   }
 }
 
@@ -109,6 +101,6 @@ const mapStateToProps = (state: IAppState, ownProps) => ({
   annotations: ownProps.annotations,
 });
 
-export default connect(mapStateToProps, { setHover })(
+export default connect(mapStateToProps, { setHover, setSideBarOpen })(
   withRouter(CanonTextView)
 );

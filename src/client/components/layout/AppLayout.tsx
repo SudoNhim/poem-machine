@@ -19,10 +19,10 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(2),
       [theme.breakpoints.down("sm")]: {
         // appbar offset
-        marginTop: 40,
+        marginTop: 50,
       },
       [theme.breakpoints.up("sm")]: {
-        marginTop: 60,
+        marginTop: 70,
       },
     },
   })

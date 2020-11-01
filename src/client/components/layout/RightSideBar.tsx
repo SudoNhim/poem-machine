@@ -20,8 +20,8 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     drawerWidthSmall: {
       width: "70%",
-      border: "none",
-      backgroundColor: "transparent",
+      backgroundColor: "#f5f5f5",
+      paddingLeft: theme.spacing(2),
     },
     drawerWidth: {
       border: "none",

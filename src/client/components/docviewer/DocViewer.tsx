@@ -1,15 +1,15 @@
 import { Paper, Typography } from "@material-ui/core";
 import * as React from "react";
+import { RouteComponentProps, withRouter } from "react-router";
 
 import { IDoc, IDocMeta } from "../../../shared/IApiTypes";
-import AnnotationsView from "./AnnotationsView";
 import ContentView from "./ContentView";
 import DocReferencePreview from "./DocReferencePreview";
 import MetadataView from "./MetadataView";
 
 const css = require("./docviewer.css");
 
-interface IProps {
+interface IProps extends RouteComponentProps {
   id: string;
   doc: IDoc;
   docMeta: IDocMeta;
@@ -32,6 +32,12 @@ class DocViewer extends React.Component<IProps, IState> {
     if (!this.state.hasContentDom) this.setState({ hasContentDom: true });
   }
 
+  private onMouseUp(evt: React.MouseEvent) {
+    evt.stopPropagation();
+    const base = `/doc/${this.props.id}`;
+    if (this.props.location.hash) this.props.history.push(base);
+  }
+
   public render() {
     if (!this.props.docMeta) return <div>Document does not exist.</div>;
     else if (!this.props.doc)
@@ -46,7 +52,10 @@ class DocViewer extends React.Component<IProps, IState> {
     else
       return (
         <div>
-          <Paper className={css.section}>
+          <Paper
+            className={css.section}
+            onMouseUp={(evt) => this.onMouseUp(evt)}
+          >
             <Typography variant="h6" component="h2">
               {this.props.docMeta.title}
             </Typography>
@@ -83,4 +92,4 @@ class DocViewer extends React.Component<IProps, IState> {
   }
 }
 
-export default DocViewer;
+export default withRouter(DocViewer);

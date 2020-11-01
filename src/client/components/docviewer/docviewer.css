@@ -101,17 +101,6 @@
   cursor: pointer;
 }
 
-@media only screen and (max-width: 44em) {
-  .section {
-    width: auto;
-    right: -0;
-  }
-
-  .annotations {
-    visibility: hidden;
-  }
-
-  .annotationmarker {
-    background-color: rgb(240, 240, 240);
-  }
+.annotationmarker {
+  background-color: rgb(240, 240, 240);
 }
