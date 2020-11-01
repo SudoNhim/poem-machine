@@ -55,7 +55,6 @@ function RightSideBar(props: IProps) {
     <div>
       <div className={classes.toolbar} />
       <Divider />
-      Right annos Drawer {JSON.stringify(props)}
       <AnnotationsView annotations={props.annotations} />
     </div>
   );

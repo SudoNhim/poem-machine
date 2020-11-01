@@ -51,12 +51,18 @@ const Document: React.FunctionComponent<IProps> = (props) => {
   React.useEffect(() => {
     if (doc) {
       const annos = doc.annotations || [];
-      props.setFocus({
-        annotations: annos.filter((anno) => anno.anchor === focusPart),
-      });
-      if (!!focusPart && annos) props.setSideBarOpen(SideBarOpen.right);
+      if (!!focusPart) {
+        props.setFocus({
+          annotations: annos.filter((anno) => anno.anchor === focusPart),
+        });
+        props.setSideBarOpen(SideBarOpen.right);
+      } else {
+        props.setFocus({
+          annotations: annos,
+        });
+      }
     }
-  }, [doc, props.history.location.hash]);
+  }, [doc, focusPart]);
 
   if (!doc) return <p>Loading...</p>;
   else
