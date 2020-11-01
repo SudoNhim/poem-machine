@@ -8,7 +8,9 @@ import RightSideBar from "./RightSideBar";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {},
+    root: {
+      backgroundColor: "#f5f5f5",
+    },
     horizontal: {
       display: "flex",
     },

@@ -5,6 +5,27 @@ import { Text } from "cohen-db/schema";
 
 import { IDocReference, IDocReferencePreview } from "../../shared/IApiTypes";
 
+export function GenerateSnippet(docRef: IDocReference): string {
+  const doc = CanonData[docRef.docId];
+
+  if (!doc.content) {
+    return "";
+  }
+
+  // Build a preview around the first match position
+  const activeText: Text = Array.isArray(doc.content.content)
+    ? doc.content.content[docRef.section - 1 || 0].content
+    : doc.content.content;
+
+  const activeParagraph =
+    activeText.text[docRef.paragraph ? docRef.paragraph - 1 : 0];
+  const activeLine = Array.isArray(activeParagraph)
+    ? activeParagraph[docRef.line ? docRef.line - 1 : 0]
+    : activeParagraph;
+
+  return TrimString(activeLine, 64);
+}
+
 export function GeneratePreview(docRef: IDocReference): IDocReferencePreview {
   const doc = CanonData[docRef.docId];
 

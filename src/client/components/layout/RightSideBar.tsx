@@ -20,8 +20,12 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     drawerWidthSmall: {
       width: "70%",
+      border: "none",
+      backgroundColor: "transparent",
     },
     drawerWidth: {
+      border: "none",
+      backgroundColor: "transparent",
       [theme.breakpoints.between("sm", "md")]: {
         // left collapsed
         width: "calc(70% - 200px)",
@@ -71,6 +75,7 @@ function RightSideBar(props: IProps) {
         <Drawer
           variant="temporary"
           anchor="right"
+          elevation={0}
           open={props.sideBarOpen === SideBarOpen.right && isSmall}
           onClose={() => props.setSideBarOpen(SideBarOpen.none)}
           classes={{

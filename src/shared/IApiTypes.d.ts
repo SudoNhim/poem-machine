@@ -66,6 +66,7 @@ export type IAnnotationToken =
 
 export interface IAnnotation {
   anchor: string;
+  snippet: string;
   tokens: IAnnotationToken[];
 }
 
