@@ -28,7 +28,7 @@ export interface IDoc {
   // List of previews of docs that have links to this one
   referrers?: IDocReferencePreview[];
 
-  annotations?: IAnnotation[];
+  annotations: IAnnotationsGroup[];
 
   // Annotations, discussion thread....
 }
@@ -65,9 +65,14 @@ export type IAnnotationToken =
   | IAnnotationTokenDocRef;
 
 export interface IAnnotation {
-  anchor: string;
+  user: string;
+  content: IAnnotationToken[];
+}
+
+export interface IAnnotationsGroup {
   snippet: string;
-  tokens: IAnnotationToken[];
+  anchor: string;
+  annotations: IAnnotation[];
 }
 
 export interface ISearchResults {

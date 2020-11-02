@@ -1,8 +1,7 @@
-import { IAnnotation, IDocGraph } from "../shared/IApiTypes";
+import { IDocGraph } from "../shared/IApiTypes";
 import { IFocusState, IHoverState, IUserState, SideBarOpen } from "./model";
 
 export const SET_GRAPH = "SET_GRAPH";
-export const SET_ANNOTATION = "SET_ANNOTATION";
 export const SET_FOCUS = "SET_FOCUS";
 export const SET_HOVER = "SET_HOVER";
 export const SET_SCROLLED = "SET_SCROLLED";
@@ -12,11 +11,6 @@ export const SET_USER = "SET_USER";
 interface SetGraphAction {
   type: typeof SET_GRAPH;
   payload: IDocGraph;
-}
-
-interface SetAnnotationAction {
-  type: typeof SET_ANNOTATION;
-  payload: { docId: string; annotation: IAnnotation };
 }
 
 interface SetFocusAction {
@@ -45,7 +39,6 @@ interface SetUserAction {
 
 export type ActionTypes =
   | SetGraphAction
-  | SetAnnotationAction
   | SetFocusAction
   | SetHoverAction
   | SetScrolledAction
@@ -56,16 +49,6 @@ export function setGraph(graph: IDocGraph): SetGraphAction {
   return {
     type: SET_GRAPH,
     payload: graph,
-  };
-}
-
-export function setAnnotation(
-  docId: string,
-  annotation: IAnnotation
-): SetAnnotationAction {
-  return {
-    type: SET_ANNOTATION,
-    payload: { docId, annotation },
   };
 }
 

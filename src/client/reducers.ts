@@ -1,6 +1,5 @@
 import {
   ActionTypes,
-  SET_ANNOTATION,
   SET_FOCUS,
   SET_GRAPH,
   SET_HOVER,
@@ -33,13 +32,6 @@ const initialState: IAppState = {
 function rootReducer(state = initialState, action: ActionTypes): IAppState {
   console.log(action);
   switch (action.type) {
-    case SET_ANNOTATION:
-      return {
-        ...state,
-        docs: {
-          ...state.docs,
-        },
-      };
     case SET_GRAPH:
       return {
         ...state,
