@@ -25,11 +25,19 @@ const useStyles = makeStyles({
     marginRight: 16,
     marginBottom: 16,
   },
+  contentContainer: {
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
   content: {
     fontSize: 14,
   },
-  title: {
+  userTag: {
+    color: "grey",
     fontSize: 14,
+  },
+  title: {
+    fontSize: 16,
   },
   link: {
     textDecoration: "underline",
@@ -89,9 +97,18 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
   const renderAnnoContent = (anno: IAnnotation, key: number): JSX.Element => (
     <React.Fragment>
       <Divider key={-1 - key} />
-      <Typography className={classes.content} key={key}>
-        {anno.content.map((tok, i) => renderToken(tok, i))}
-      </Typography>
+      <div className={classes.contentContainer}>
+        <Typography
+          className={classes.userTag}
+          color="textSecondary"
+          component="span"
+        >
+          {anno.user}:&nbsp;
+        </Typography>
+        <Typography className={classes.content} key={key} component="span">
+          {anno.content.map((tok, i) => renderToken(tok, i))}
+        </Typography>
+      </div>
     </React.Fragment>
   );
 
