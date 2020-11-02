@@ -49,15 +49,19 @@ export function apiRouter() {
     res.json(searchController.search(req.params.term));
   });
 
-  router.post("/docs/set/:docId/annotations", jsonParser, async (req, res) => {
-    const docId: string = req.params.docId;
-    const annotation: IAnnotation = req.body.annotation;
-    annotationsProvider.addAnnotation(docId, annotation);
-    res.end();
-  });
+  router.post(
+    "/docs/set/:docId/annotations/:anchor",
+    jsonParser,
+    async (req, res) => {
+      const docId: string = req.params.docId;
+      const anchor: string = req.params.anchor;
+      const annotation: IAnnotation = req.body.annotation;
+      res.end();
+    }
+  );
 
   router.get("/updates", async (req, res) => {
-    res.json(annotationsProvider.getUpdates());
+    res.json({});
   });
 
   router.get("/user", async (req, res) => {
