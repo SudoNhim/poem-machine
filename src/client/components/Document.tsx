@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 
 import { IDoc, IDocMeta } from "../../shared/IApiTypes";
-import { setFocus } from "../actions";
+import { setDoc, setFocus } from "../actions";
 import { getDoc } from "../api";
 import { IAppState } from "../model";
 import Annotator from "./annotator/Annotator";
@@ -15,61 +15,59 @@ interface IMatchParams {
 
 interface IProps extends RouteComponentProps<IMatchParams> {
   docMeta: IDocMeta;
+  doc: IDoc;
+  setDoc: typeof setDoc;
   setFocus: typeof setFocus;
 }
-
-const docCache: { [id: string]: IDoc } = {};
 
 const Document: React.FunctionComponent<IProps> = (props) => {
   if (!props.docMeta) return <p>Document does not exist</p>;
 
   // Load the document
   const docId = props.match.params.docId || "db";
-  const [, setLoadDoc] = React.useState<IDoc>(null);
-  const doc = docCache[docId];
+  const doc = props.doc;
   React.useEffect(() => {
     if (!doc) {
       (async () => {
         const loaded = await getDoc(docId);
-        docCache[docId] = loaded;
-        setLoadDoc(loaded);
+        props.setDoc(docId, loaded);
       })();
     }
   }, [docId]);
 
   // Take focus from the hash fragment of the url, e.g. #s1.p1.l3
-  const focusPart = props.location.hash.substr(1);
+  const docPart = props.location.hash.substr(1);
 
   // Scroll to the hash fragment, if applicable
   React.useEffect(() => {
-    if (doc && focusPart && props.history.action === "PUSH")
-      document.getElementById(focusPart).scrollIntoView({ behavior: "smooth" });
+    if (doc && docPart && props.history.action === "PUSH")
+      document.getElementById(docPart).scrollIntoView({ behavior: "smooth" });
   }, [doc]);
 
   // Set any loaded annotations
   React.useEffect(() => {
     if (doc) {
       const annos = doc.annotations || [];
-      if (!!focusPart) {
-        const focusAnnos = annos.filter((anno) => anno.anchor === focusPart);
+      if (!!docPart) {
+        const focusAnnos = annos.filter((anno) => anno.anchor === docPart);
         if (focusAnnos.length === 0)
           focusAnnos.push({
-            anchor: focusPart,
-            snippet: `No annotations on ${focusPart} yet`,
+            anchor: docPart,
+            snippet: `No annotations on ${docPart} yet`,
             annotations: [],
           });
         props.setFocus({
-          docRef: { docId },
-          annotations: focusAnnos,
+          docId,
+          docPart,
         });
       } else {
         props.setFocus({
-          docRef: { docId },
-          annotations: annos,
+          docId,
+          docPart: null,
         });
       }
     }
-  }, [doc, focusPart]);
+  }, [doc, docPart]);
 
   if (!doc) return <p>Loading...</p>;
   else
@@ -79,7 +77,7 @@ const Document: React.FunctionComponent<IProps> = (props) => {
           id={docId}
           docMeta={props.docMeta}
           doc={doc}
-          focusPart={focusPart}
+          focusPart={docPart}
         />
         <Annotator />
       </div>
@@ -91,6 +89,7 @@ const mapStateToProps = (
   ownProps: RouteComponentProps<IMatchParams>
 ) => ({
   docMeta: state.docs.graph[ownProps.match.params.docId || "db"],
+  doc: state.docs.cache[ownProps.match.params.docId] || null,
 });
 
-export default connect(mapStateToProps, { setFocus })(Document);
+export default connect(mapStateToProps, { setDoc, setFocus })(Document);

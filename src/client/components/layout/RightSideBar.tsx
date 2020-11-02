@@ -116,7 +116,7 @@ function RightSideBar(props: IProps) {
 }
 
 const mapStateToProps = (state: IAppState) => ({
-  annotations: state.focus.annotations,
+  annotations: state.docs.cache[state.focus.docId]?.annotations || [],
   sideBarOpen: state.ui.sideBarOpen,
 });
 

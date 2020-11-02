@@ -179,7 +179,7 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
 
 const mapStateToProps = (state: IAppState, ownProps) => ({
   annotationGroup: ownProps.annotationGroup,
-  docId: state.focus.docRef?.docId,
+  docId: state.focus.docId,
   hover: state.hover,
   graph: state.docs.graph,
   allowEdit: ownProps.allowEdit,

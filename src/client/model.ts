@@ -1,26 +1,21 @@
-import {
-  IAnnotation,
-  IAnnotationsGroup,
-  IDocGraph,
-  IDocReference,
-} from "../shared/IApiTypes";
+import { IDoc, IDocGraph } from "../shared/IApiTypes";
+
+export interface IDocCache {
+  [docId: string]: IDoc;
+}
 
 export interface IDocState {
   graph: IDocGraph;
+  cache: IDocCache;
 }
 
 export interface IFocusState {
-  docRef?: IDocReference;
-
-  // Set to true when navigating to a new url using #fragment
-  // Unset when render is finished and scrollIntoView is called
-  waitingToScroll?: boolean;
-
-  annotations: IAnnotationsGroup[];
+  docId: string;
+  docPart: string;
 }
 
 export interface IHoverState {
-  docParts?: string[];
+  docPart: string;
 }
 
 export enum SideBarOpen {

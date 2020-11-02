@@ -1,9 +1,9 @@
 import {
   ActionTypes,
+  SET_DOC,
   SET_FOCUS,
   SET_GRAPH,
   SET_HOVER,
-  SET_SCROLLED,
   SET_SIDEBAR_OPEN,
   SET_USER,
 } from "./actions";
@@ -11,6 +11,7 @@ import { IAppState, SideBarOpen } from "./model";
 
 const initialState: IAppState = {
   docs: {
+    cache: {},
     graph: {
       db: {
         title: "Database Root",
@@ -19,8 +20,8 @@ const initialState: IAppState = {
       },
     },
   },
-  focus: { annotations: [] },
-  hover: {},
+  focus: { docId: "db", docPart: null },
+  hover: { docPart: null },
   ui: {
     sideBarOpen: SideBarOpen.none,
   },
@@ -32,6 +33,17 @@ const initialState: IAppState = {
 function rootReducer(state = initialState, action: ActionTypes): IAppState {
   console.log(action);
   switch (action.type) {
+    case SET_DOC:
+      return {
+        ...state,
+        docs: {
+          ...state.docs,
+          cache: {
+            ...state.docs.cache,
+            [action.payload.docId]: action.payload.doc,
+          },
+        },
+      };
     case SET_GRAPH:
       return {
         ...state,
@@ -49,14 +61,6 @@ function rootReducer(state = initialState, action: ActionTypes): IAppState {
       return {
         ...state,
         hover: action.payload,
-      };
-    case SET_SCROLLED:
-      return {
-        ...state,
-        focus: {
-          ...state.focus,
-          waitingToScroll: false,
-        },
       };
     case SET_SIDEBAR_OPEN:
       return {
