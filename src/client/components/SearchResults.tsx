@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 
 import { ISearchResults } from "../../shared/IApiTypes";
 import { getSearchResults } from "../api";
-import DocReferencePreveiw from "./docviewer/DocReferencePreview";
+import DocReferencePreveiw from "./document/DocReferencePreview";
 
 const css = require("./all.css");
 

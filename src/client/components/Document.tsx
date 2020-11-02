@@ -6,8 +6,7 @@ import { IDoc, IDocMeta } from "../../shared/IApiTypes";
 import { setDoc, setFocus } from "../actions";
 import { getDoc } from "../api";
 import { IAppState } from "../model";
-import Annotator from "./annotator/Annotator";
-import DocViewer from "./docviewer/DocViewer";
+import DocViewer from "./document/DocViewer";
 
 interface IMatchParams {
   docId?: string;
@@ -79,7 +78,6 @@ const Document: React.FunctionComponent<IProps> = (props) => {
           doc={doc}
           focusPart={docPart}
         />
-        <Annotator />
       </div>
     );
 };

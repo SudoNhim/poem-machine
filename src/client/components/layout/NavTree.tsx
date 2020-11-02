@@ -47,7 +47,7 @@ const NavTree = withRouter((props: IProps) => {
   }
 
   const selected = [];
-  if (props.focus.docRef) selected.push(props.focus.docRef.docId);
+  if (props.focus.docId) selected.push(props.focus.docId);
 
   return (
     <TreeView

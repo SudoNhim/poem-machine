@@ -14,7 +14,7 @@ import { connect } from "react-redux";
 import { IAnnotationsGroup } from "../../../shared/IApiTypes";
 import { setSideBarOpen } from "../../actions";
 import { IAppState, SideBarOpen } from "../../model";
-import AnnotationsGroup from "../docviewer/AnnotationsGroup";
+import AnnotationsGroup from "../annotations/AnnotationsGroup";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
