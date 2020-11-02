@@ -11,10 +11,10 @@ import {
 import React from "react";
 import { connect } from "react-redux";
 
-import { IAnnotation } from "../../../shared/IApiTypes";
+import { IAnnotationsGroup } from "../../../shared/IApiTypes";
 import { setSideBarOpen } from "../../actions";
 import { IAppState, SideBarOpen } from "../../model";
-import AnnotationsView from "../docviewer/AnnotationsView";
+import AnnotationsGroup from "../docviewer/AnnotationsGroup";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IProps {
-  annotations: IAnnotation[];
+  annotations: IAnnotationsGroup[];
   sideBarOpen: SideBarOpen;
   setSideBarOpen: typeof setSideBarOpen;
 }
@@ -59,7 +59,9 @@ function RightSideBar(props: IProps) {
     <div>
       <div className={classes.toolbar} />
       <Divider />
-      <AnnotationsView annotations={props.annotations} />
+      {props.annotations.map((grp) => (
+        <AnnotationsGroup annotationsGroup={grp} key={grp.anchor} />
+      ))}
     </div>
   );
 

@@ -14,6 +14,7 @@ import {
   IAnnotationTokenDocRef,
   IAnnotationTokenLink,
   IAnnotationTokenText,
+  IAnnotationsGroup,
   IDocGraph,
 } from "../../../shared/IApiTypes";
 import { IAppState, IHoverState } from "../../model";
@@ -40,8 +41,7 @@ const useStyles = makeStyles({
 });
 
 interface IProps {
-  annotations: IAnnotation[];
-  anchor: string;
+  annotationsGroup: IAnnotationsGroup;
   hover: IHoverState;
   graph: IDocGraph;
 }
@@ -90,7 +90,7 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
     <React.Fragment>
       <Divider key={-1 - key} />
       <Typography className={classes.content} key={key}>
-        {anno.tokens.map((tok, i) => renderToken(tok, i))}
+        {anno.content.map((tok, i) => renderToken(tok, i))}
       </Typography>
     </React.Fragment>
   );
@@ -99,17 +99,18 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
     <Card className={classes.root}>
       <CardContent>
         <Typography className={classes.title} color="textSecondary">
-          {props.annotations[0].snippet}
+          {props.annotationsGroup.snippet}
         </Typography>
-        {props.annotations.map((anno, i) => renderAnnoContent(anno, i))}
+        {props.annotationsGroup.annotations.map((anno, i) =>
+          renderAnnoContent(anno, i)
+        )}
       </CardContent>
     </Card>
   );
 };
 
 const mapStateToProps = (state: IAppState, ownProps) => ({
-  annotations: ownProps.annotations,
-  anchor: ownProps.anchor,
+  annotationGroup: ownProps.annotationGroup,
   hover: state.hover,
   graph: state.docs.graph,
 });

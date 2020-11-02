@@ -55,8 +55,8 @@ const Document: React.FunctionComponent<IProps> = (props) => {
         if (focusAnnos.length === 0)
           focusAnnos.push({
             anchor: focusPart,
-            tokens: [{ kind: "text", text: "No annotation..." }],
-            snippet: focusPart,
+            snippet: `No annotations on ${focusPart} yet`,
+            annotations: [],
           });
         props.setFocus({
           annotations: focusAnnos,

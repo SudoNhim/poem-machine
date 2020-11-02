@@ -4,6 +4,7 @@ import CanonData from "cohen-db";
 
 import {
   IAnnotationTokenDocRef,
+  IAnnotationsGroup,
   IDocGraph,
   IDocReference,
 } from "../../shared/IApiTypes";
@@ -74,14 +75,16 @@ export class GraphController {
     // Add all annotation references
     for (var key in CanonData) {
       const annotations = CanonData[key].annotations || [];
-      for (var anno of annotations) {
-        for (var tok of anno.tokens) {
-          var ref = (tok as IAnnotationTokenDocRef).docRef;
-          if (ref)
-            this.references[ref] = [
-              ...this.references[ref],
-              DeserializeDocRef(`${key}#${anno.anchor}`),
-            ];
+      for (var annoGroup of annotations as IAnnotationsGroup[]) {
+        for (var anno of annoGroup.annotations) {
+          for (var tok of anno.content) {
+            var ref = (tok as IAnnotationTokenDocRef).docRef;
+            if (ref)
+              this.references[ref] = [
+                ...this.references[ref],
+                DeserializeDocRef(`${key}#${annoGroup.anchor}`),
+              ];
+          }
         }
       }
     }

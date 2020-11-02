@@ -1,4 +1,9 @@
-import { IAnnotation, IDocGraph, IDocReference } from "../shared/IApiTypes";
+import {
+  IAnnotation,
+  IAnnotationsGroup,
+  IDocGraph,
+  IDocReference,
+} from "../shared/IApiTypes";
 
 export interface IDocState {
   graph: IDocGraph;
@@ -11,7 +16,7 @@ export interface IFocusState {
   // Unset when render is finished and scrollIntoView is called
   waitingToScroll?: boolean;
 
-  annotations: IAnnotation[];
+  annotations: IAnnotationsGroup[];
 }
 
 export interface IHoverState {
