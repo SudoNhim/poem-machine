@@ -26,9 +26,11 @@ const Document: React.FunctionComponent<IProps> = (props) => {
   const docId = props.match.params.docId || "db";
   const doc = props.doc;
   React.useEffect(() => {
+    console.log("doc", doc);
     if (!doc) {
       (async () => {
         const loaded = await getDoc(docId);
+        console.log("set", loaded);
         props.setDoc(docId, loaded);
       })();
     }
@@ -87,7 +89,7 @@ const mapStateToProps = (
   ownProps: RouteComponentProps<IMatchParams>
 ) => ({
   docMeta: state.docs.graph[ownProps.match.params.docId || "db"],
-  doc: state.docs.cache[ownProps.match.params.docId] || null,
+  doc: state.docs.cache[ownProps.match.params.docId || "db"] || null,
 });
 
 export default connect(mapStateToProps, { setDoc, setFocus })(Document);
