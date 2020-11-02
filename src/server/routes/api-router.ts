@@ -8,7 +8,9 @@ import { AnnotationsController } from "../controllers/annotations";
 import { GraphController } from "../controllers/graph";
 import { SearchController } from "../controllers/search";
 import { GeneratePreview } from "../lib/generate-preview";
+import { compareAnchors } from "../lib/load-doc-updates";
 import { Account, IAccount } from "../models/Account";
+import { DocUpdate, IDocUpdate } from "../models/DocUpdate";
 import { createRememberMeToken } from "../models/RememberMeToken";
 
 const jsonParser = bodyParser.json();
@@ -50,18 +52,44 @@ export function apiRouter() {
   });
 
   router.post(
-    "/docs/set/:docId/annotations/:anchor",
+    "/docs/:docId/annotations/:anchor/add",
     jsonParser,
     async (req, res) => {
       const docId: string = req.params.docId;
       const anchor: string = req.params.anchor;
       const annotation: IAnnotation = req.body.annotation;
+      const doc = CanonData[docId];
+      const username = req.user ? (req.user as IAccount).username : "anonymous";
+
+      // If no annotations group exists for this anchor, make a new one
+      if (!doc.annotations.find((grp) => grp.anchor === anchor)) {
+        doc.annotations.push({ anchor, annotations: [] });
+        doc.annotations.sort((a, b) => compareAnchors(a.anchor, b.anchor));
+      }
+
+      const group = doc.annotations.find((grp) => grp.anchor === anchor);
+      group.annotations.push({
+        user: username,
+        content: annotation.content,
+      });
+
+      await DocUpdate.findOneAndUpdate(
+        { docId },
+        { docId, file: doc },
+        { upsert: true }
+      );
+
       res.end();
     }
   );
 
   router.get("/updates", async (req, res) => {
-    res.json({});
+    const updates: IDocUpdate[] = [];
+    for await (const update of await DocUpdate.find()) {
+      const { _id, __v, ...file } = update.toObject();
+      updates.push(file);
+    }
+    res.json(updates);
   });
 
   router.get("/user", async (req, res) => {
@@ -89,15 +117,20 @@ export function apiRouter() {
     const data: { username: string; email: string; password: string } =
       req.body;
 
-    if (!data.username || data.username.length < 3)
-      return res.json({ error: "Username must be at least three characters" });
+    if (!data.username || data.username.length < 3 || data.username.length > 20)
+      return res.json({
+        error: "Username must be at least 3 characters and no more than 20",
+      });
 
     if (!data.email) return res.json({ error: "Email required" });
 
     if (!data.password || data.password.length < 6)
       return res.json({ error: "Password must be at least six characters" });
 
-    if (await Account.exists({ username: data.username }))
+    if (
+      (await Account.exists({ username: data.username })) ||
+      ["anonymous", "symbols bot"].includes(data.username)
+    )
       return res.json({ error: "Username taken" });
 
     if (await Account.exists({ email: data.email }))

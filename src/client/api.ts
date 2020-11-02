@@ -24,11 +24,14 @@ export async function getSearchResults(term: string): Promise<ISearchResults> {
   return response.data as ISearchResults;
 }
 
-export async function setAnnotation(
+export async function addAnnotation(
   docId: string,
+  anchor: string,
   annotation: IAnnotation
 ): Promise<void> {
-  await axios.post(`/api/docs/set/${docId}/annotations`, { annotation });
+  await axios.post(`/api/docs/${docId}/annotations/${anchor}/add`, {
+    annotation,
+  });
 }
 
 export async function login(

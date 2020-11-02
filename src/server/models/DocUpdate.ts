@@ -3,7 +3,7 @@ import * as mongoose from "mongoose";
 
 // When a document has outstanding changes the latest version is stored in
 // the mongodb updates table
-interface IDocUpdate extends mongoose.Document {
+export interface IDocUpdate extends mongoose.Document {
   docId: string;
   file: CanonFile;
 }

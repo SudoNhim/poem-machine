@@ -59,10 +59,12 @@ const Document: React.FunctionComponent<IProps> = (props) => {
             annotations: [],
           });
         props.setFocus({
+          docRef: { docId },
           annotations: focusAnnos,
         });
       } else {
         props.setFocus({
+          docRef: { docId },
           annotations: annos,
         });
       }

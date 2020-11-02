@@ -1,7 +1,9 @@
 import {
+  Button,
   Card,
   CardContent,
   Divider,
+  TextField,
   Typography,
   makeStyles,
 } from "@material-ui/core";
@@ -17,6 +19,7 @@ import {
   IAnnotationsGroup,
   IDocGraph,
 } from "../../../shared/IApiTypes";
+import { addAnnotation } from "../../api";
 import { IAppState, IHoverState } from "../../model";
 
 const useStyles = makeStyles({
@@ -46,16 +49,63 @@ const useStyles = makeStyles({
     textDecoration: "underline",
     color: "darkblue",
   },
+  editorInput: {
+    marginTop: 10,
+    marginBottom: 10,
+  },
 });
 
 interface IProps {
+  docId: string;
   annotationsGroup: IAnnotationsGroup;
   hover: IHoverState;
   graph: IDocGraph;
+  allowEdit: boolean;
 }
 
 const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
   const classes = useStyles();
+
+  const [newAnnotationText, setNewAnnotationText] = React.useState<string>();
+
+  const renderEditor = () => {
+    if (!props.allowEdit) return null;
+
+    const handleSubmit = () => {
+      const anno: IAnnotation = {
+        user: null,
+        content: [{ kind: "text", text: newAnnotationText }],
+      };
+      addAnnotation(props.docId, props.annotationsGroup.anchor, anno);
+    };
+
+    return (
+      <React.Fragment>
+        <Divider key="editor" />
+        <div className={classes.contentContainer}>
+          <form onSubmit={() => handleSubmit()}>
+            <TextField
+              className={classes.editorInput}
+              size="small"
+              fullWidth={true}
+              label="New annotation"
+              variant="outlined"
+              value={newAnnotationText}
+              onChange={(e) => setNewAnnotationText(e.target.value)}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              disabled={!newAnnotationText}
+            >
+              Post
+            </Button>
+          </form>
+        </div>
+      </React.Fragment>
+    );
+  };
 
   const renderToken = (
     tok: IAnnotationTokenText | IAnnotationTokenLink | IAnnotationTokenDocRef,
@@ -121,6 +171,7 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
         {props.annotationsGroup.annotations.map((anno, i) =>
           renderAnnoContent(anno, i)
         )}
+        {renderEditor()}
       </CardContent>
     </Card>
   );
@@ -128,8 +179,10 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
 
 const mapStateToProps = (state: IAppState, ownProps) => ({
   annotationGroup: ownProps.annotationGroup,
+  docId: state.focus.docRef?.docId,
   hover: state.hover,
   graph: state.docs.graph,
+  allowEdit: ownProps.allowEdit,
 });
 
 export default connect(mapStateToProps)(AnnotationsGroup);

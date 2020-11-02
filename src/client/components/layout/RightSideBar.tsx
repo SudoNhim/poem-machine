@@ -55,12 +55,21 @@ interface IProps {
 function RightSideBar(props: IProps) {
   const classes = useStyles();
   const theme = useTheme();
+
+  // annotations view needs to be updated
+  // for now assume if we see only one, we are focused
+  const allowEdit = props.annotations.length === 1;
+
   const drawer = (
     <div>
       <div className={classes.toolbar} />
       <Divider />
       {props.annotations.map((grp) => (
-        <AnnotationsGroup annotationsGroup={grp} key={grp.anchor} />
+        <AnnotationsGroup
+          annotationsGroup={grp}
+          key={grp.anchor}
+          allowEdit={allowEdit}
+        />
       ))}
     </div>
   );
