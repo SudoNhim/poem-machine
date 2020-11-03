@@ -11,21 +11,33 @@ interface IProps {
   annotations: IAnnotationsGroup[];
 }
 
-const AnnotationsView: React.FunctionComponent<IProps> = (props) => (
-  <React.Fragment>
-    {props.annotations
-      .filter((grp) =>
-        props.focus.docPart ? grp.anchor === props.focus.docPart : true
-      )
-      .map((grp, i) => (
+const AnnotationsView: React.FunctionComponent<IProps> = (props) => {
+  let annotations: IAnnotationsGroup[] = props.annotations;
+  if (!!props.focus.docPart) {
+    annotations = annotations.filter(
+      (grp) => grp.anchor === props.focus.docPart
+    );
+    if (annotations.length > 1)
+      throw new Error("Expected only one annotation group per docpart");
+    if (annotations.length === 0)
+      annotations.push({
+        anchor: props.focus.docPart,
+        annotations: [],
+      });
+  }
+
+  return (
+    <React.Fragment>
+      {annotations.map((grp, i) => (
         <AnnotationsGroup
           annotationsGroup={grp}
           allowEdit={!!props.focus.docPart}
           key={i}
         />
       ))}
-  </React.Fragment>
-);
+    </React.Fragment>
+  );
+};
 
 const mapStateToProps = (state: IAppState) => ({
   annotations: state.docs.cache[state.focus.docId]?.annotations || [],
