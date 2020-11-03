@@ -26,11 +26,9 @@ const Document: React.FunctionComponent<IProps> = (props) => {
   const docId = props.match.params.docId || "db";
   const doc = props.doc;
   React.useEffect(() => {
-    console.log("doc", doc);
     if (!doc) {
       (async () => {
         const loaded = await getDoc(docId);
-        console.log("set", loaded);
         props.setDoc(docId, loaded);
       })();
     }

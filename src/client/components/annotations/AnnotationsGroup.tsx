@@ -19,7 +19,8 @@ import {
   IAnnotationsGroup,
   IDocGraph,
 } from "../../../shared/IApiTypes";
-import { addAnnotation } from "../../api";
+import { setDoc } from "../../actions";
+import { addAnnotation, getDoc } from "../../api";
 import { IAppState, IHoverState } from "../../model";
 
 const useStyles = makeStyles({
@@ -61,29 +62,34 @@ interface IProps {
   hover: IHoverState;
   graph: IDocGraph;
   allowEdit: boolean;
+  setDoc: typeof setDoc;
 }
 
 const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
   const classes = useStyles();
 
-  const [newAnnotationText, setNewAnnotationText] = React.useState<string>();
+  const [newAnnotationText, setNewAnnotationText] = React.useState("");
 
   const renderEditor = () => {
     if (!props.allowEdit) return null;
 
-    const handleSubmit = () => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
       const anno: IAnnotation = {
         user: null,
         content: [{ kind: "text", text: newAnnotationText }],
       };
-      addAnnotation(props.docId, props.annotationsGroup.anchor, anno);
+      await addAnnotation(props.docId, props.annotationsGroup.anchor, anno);
+      const loaded = await getDoc(props.docId);
+      props.setDoc(props.docId, loaded);
+      setNewAnnotationText("");
     };
 
     return (
       <React.Fragment>
-        <Divider key="editor" />
+        <Divider />
         <div className={classes.contentContainer}>
-          <form onSubmit={() => handleSubmit()}>
+          <form onSubmit={(evt) => handleSubmit(evt)}>
             <TextField
               className={classes.editorInput}
               size="small"
@@ -145,8 +151,8 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
   };
 
   const renderAnnoContent = (anno: IAnnotation, key: number): JSX.Element => (
-    <React.Fragment>
-      <Divider key={-1 - key} />
+    <React.Fragment key={key}>
+      <Divider />
       <div className={classes.contentContainer}>
         <Typography
           className={classes.userTag}
@@ -155,7 +161,7 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
         >
           {anno.user}:&nbsp;
         </Typography>
-        <Typography className={classes.content} key={key} component="span">
+        <Typography className={classes.content} component="span">
           {anno.content.map((tok, i) => renderToken(tok, i))}
         </Typography>
       </div>
@@ -178,11 +184,11 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
 };
 
 const mapStateToProps = (state: IAppState, ownProps) => ({
-  annotationGroup: ownProps.annotationGroup,
+  annotationsGroup: ownProps.annotationsGroup,
   docId: state.focus.docId,
   hover: state.hover,
   graph: state.docs.graph,
   allowEdit: ownProps.allowEdit,
 });
 
-export default connect(mapStateToProps)(AnnotationsGroup);
+export default connect(mapStateToProps, { setDoc })(AnnotationsGroup);

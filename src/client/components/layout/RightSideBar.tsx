@@ -14,7 +14,7 @@ import { connect } from "react-redux";
 import { IAnnotationsGroup } from "../../../shared/IApiTypes";
 import { setSideBarOpen } from "../../actions";
 import { IAppState, SideBarOpen } from "../../model";
-import AnnotationsGroup from "../annotations/AnnotationsGroup";
+import AnnotationsView from "../annotations/AnnotationsView";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -64,13 +64,7 @@ function RightSideBar(props: IProps) {
     <div>
       <div className={classes.toolbar} />
       <Divider />
-      {props.annotations.map((grp) => (
-        <AnnotationsGroup
-          annotationsGroup={grp}
-          key={grp.anchor}
-          allowEdit={allowEdit}
-        />
-      ))}
+      <AnnotationsView />
     </div>
   );
 
