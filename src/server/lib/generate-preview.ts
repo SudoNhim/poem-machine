@@ -5,6 +5,7 @@ import { Text } from "cohen-db/schema";
 
 import { IDocReference, IDocReferencePreview } from "../../shared/IApiTypes";
 
+/*
 export function GenerateSnippet(docRef: IDocReference): string {
   const doc = CanonData[docRef.docId];
 
@@ -24,7 +25,7 @@ export function GenerateSnippet(docRef: IDocReference): string {
     : activeParagraph;
 
   return TrimString(activeLine, 64);
-}
+} */
 
 export function GeneratePreview(docRef: IDocReference): IDocReferencePreview {
   const doc = CanonData[docRef.docId];

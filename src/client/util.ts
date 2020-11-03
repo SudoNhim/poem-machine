@@ -1,5 +1,12 @@
 import { IDoc } from "../shared/IApiTypes";
 
+function trimString(str: string, len: number): string {
+  if (str.length < len) return str;
+
+  const lastSpace = str.substr(0, len).lastIndexOf(" ");
+  return str.substr(0, lastSpace) + "...";
+}
+
 export function snippetFromDoc(doc: IDoc, docPart: string): string {
   const parts = {
     s: 1,
@@ -20,5 +27,7 @@ export function snippetFromDoc(doc: IDoc, docPart: string): string {
     : content.text;
 
   const paragraph = text[parts.p - 1];
-  return Array.isArray(paragraph) ? paragraph[parts.l - 1] : paragraph;
+  const str = Array.isArray(paragraph) ? paragraph[parts.l - 1] : paragraph;
+
+  return trimString(str, 64);
 }
