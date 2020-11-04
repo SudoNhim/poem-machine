@@ -17,11 +17,13 @@ import {
   IAnnotationTokenLink,
   IAnnotationTokenText,
   IAnnotationsGroup,
+  IDoc,
   IDocGraph,
 } from "../../../shared/IApiTypes";
 import { setDoc } from "../../actions";
 import { addAnnotation, getDoc } from "../../api";
 import { IAppState, IHoverState } from "../../model";
+import { snippetFromDoc } from "../../util";
 import AddLinkDialog from "./AddLinkDialog";
 
 const useStyles = makeStyles({
@@ -62,6 +64,7 @@ const useStyles = makeStyles({
 
 interface IProps {
   docId: string;
+  doc: IDoc;
   annotationsGroup: IAnnotationsGroup;
   hover: IHoverState;
   graph: IDocGraph;
@@ -196,7 +199,7 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
     <Card className={classes.root}>
       <CardContent>
         <Typography className={classes.title} color="textSecondary">
-          {props.annotationsGroup.snippet}
+          {snippetFromDoc(props.doc, props.annotationsGroup.anchor)}
         </Typography>
         {props.annotationsGroup.annotations.map((anno, i) =>
           renderAnnoContent(anno, i)
@@ -209,6 +212,7 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
 
 const mapStateToProps = (state: IAppState, ownProps) => ({
   annotationsGroup: ownProps.annotationsGroup,
+  doc: state.docs.cache[state.focus.docId],
   docId: state.focus.docId,
   hover: state.hover,
   graph: state.docs.graph,

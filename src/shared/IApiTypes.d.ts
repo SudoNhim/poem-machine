@@ -70,7 +70,6 @@ export interface IAnnotation {
 }
 
 export interface IAnnotationsGroup {
-  snippet: string;
   anchor: string;
   annotations: IAnnotation[];
 }
