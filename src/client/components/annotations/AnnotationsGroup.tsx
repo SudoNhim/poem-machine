@@ -22,6 +22,7 @@ import {
 import { setDoc } from "../../actions";
 import { addAnnotation, getDoc } from "../../api";
 import { IAppState, IHoverState } from "../../model";
+import AddLinkDialog from "./AddLinkDialog";
 
 const useStyles = makeStyles({
   root: {
@@ -54,6 +55,9 @@ const useStyles = makeStyles({
     marginTop: 10,
     marginBottom: 10,
   },
+  button: {
+    marginRight: 10,
+  },
 });
 
 interface IProps {
@@ -85,11 +89,18 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
       setNewAnnotationText("");
     };
 
+    const [addLinkDialogOpen, setAddLinkDialogOpen] = React.useState(false);
+    const handleAddLink = (text: string) => {
+      const sep = newAnnotationText.endsWith(" ") ? "" : " ";
+      setNewAnnotationText(newAnnotationText + sep + text);
+      setAddLinkDialogOpen(false);
+    };
+
     return (
       <React.Fragment>
         <Divider />
         <div className={classes.contentContainer}>
-          <form onSubmit={(evt) => handleSubmit(evt)}>
+          <form onSubmit={handleSubmit}>
             <TextField
               className={classes.editorInput}
               size="small"
@@ -101,14 +112,26 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
               onChange={(e) => setNewAnnotationText(e.target.value)}
             />
             <Button
+              className={classes.button}
+              variant="contained"
+              onClick={() => setAddLinkDialogOpen(true)}
+            >
+              add link
+            </Button>
+            <Button
+              className={classes.button}
               variant="contained"
               color="primary"
               type="submit"
               disabled={!newAnnotationText}
             >
-              Post
+              submit
             </Button>
           </form>
+          <AddLinkDialog
+            isOpen={addLinkDialogOpen}
+            handleSubmit={handleAddLink}
+          />
         </div>
       </React.Fragment>
     );
