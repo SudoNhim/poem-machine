@@ -76,6 +76,7 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
   const classes = useStyles();
 
   const [newAnnotationText, setNewAnnotationText] = React.useState("");
+  const [addLinkDialogOpen, setAddLinkDialogOpen] = React.useState(false);
 
   const renderEditor = () => {
     if (!props.allowEdit) return null;
@@ -92,7 +93,6 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
       setNewAnnotationText("");
     };
 
-    const [addLinkDialogOpen, setAddLinkDialogOpen] = React.useState(false);
     const handleAddLink = (text: string) => {
       const sep = newAnnotationText.endsWith(" ") ? "" : " ";
       setNewAnnotationText(newAnnotationText + sep + text);
