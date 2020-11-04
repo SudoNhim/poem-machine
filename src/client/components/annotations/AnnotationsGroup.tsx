@@ -96,6 +96,7 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
               fullWidth={true}
               label="New annotation"
               variant="outlined"
+              multiline={true}
               value={newAnnotationText}
               onChange={(e) => setNewAnnotationText(e.target.value)}
             />
