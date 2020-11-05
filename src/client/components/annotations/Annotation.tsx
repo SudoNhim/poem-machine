@@ -23,6 +23,12 @@ const useStyles = makeStyles({
   highlight: {
     backgroundColor: "lightyellow",
   },
+  previewTag: {
+    color: "darkblue",
+    fontSize: 14,
+    textAlign: "center",
+    marginBottom: 5,
+  },
   userTag: {
     color: "grey",
     fontSize: 14,
@@ -39,7 +45,7 @@ const useStyles = makeStyles({
 interface IProps {
   annotation: IAnnotation;
   graph: IDocGraph;
-  highlight: boolean;
+  isPreview: boolean;
 }
 
 const Annotation: React.FunctionComponent<IProps> = (props) => {
@@ -82,7 +88,7 @@ const Annotation: React.FunctionComponent<IProps> = (props) => {
     else return <span key={key}>{text}</span>;
   };
 
-  const containerClasses = props.highlight
+  const containerClasses = props.isPreview
     ? [classes.contentContainer, classes.highlight]
     : [classes.contentContainer];
 
@@ -90,6 +96,9 @@ const Annotation: React.FunctionComponent<IProps> = (props) => {
     <React.Fragment>
       <Divider />
       <div className={containerClasses.join(" ")}>
+        {props.isPreview && (
+          <Typography className={classes.previewTag}>preview</Typography>
+        )}
         <Typography
           className={classes.userTag}
           color="textSecondary"
@@ -107,7 +116,7 @@ const Annotation: React.FunctionComponent<IProps> = (props) => {
 
 const mapStateToProps = (state: IAppState, ownProps) => ({
   annotation: ownProps.annotation,
-  highlight: ownProps.highlight || false,
+  isPreview: ownProps.isPreview || false,
   graph: state.docs.graph,
 });
 

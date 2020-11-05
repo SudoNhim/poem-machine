@@ -48,7 +48,7 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
           <Annotation annotation={anno} key={i} />
         ))}
         {editingAnnotation && (
-          <Annotation annotation={editingAnnotation} highlight={true} />
+          <Annotation annotation={editingAnnotation} isPreview={true} />
         )}
         {props.allowEdit && (
           <AnnotationEditor
