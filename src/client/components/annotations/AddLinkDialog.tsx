@@ -58,7 +58,7 @@ const AddLinkDialog: React.FunctionComponent<IProps> = (props) => {
   const handleInsert = () => {
     if (document && typeof document !== "string")
       props.handleSubmit(`#${document.docId}`);
-    else if (urlText) props.handleSubmit(`(${urlDisplayText})[${urlText}]`);
+    else if (urlText) props.handleSubmit(`[${urlDisplayText}](${urlText})`);
     else props.handleSubmit(urlDisplayText);
   };
 

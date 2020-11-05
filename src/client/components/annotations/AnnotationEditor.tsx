@@ -33,7 +33,7 @@ interface IProps {
 
 const textToTokens = (text: string): IAnnotationToken[] => {
   const extLinksRegex = /\[([^\[]+)\]\((.*)\)/;
-  const docRefsRegex = /(?<=[\s>]|^)#(\w*[A-Za-z_]\.[A-Za-z_0-9]*)/;
+  const docRefsRegex = /\B#(\w*[A-Za-z_]\.[A-Za-z_0-9]*)/;
   const tokens: IAnnotationToken[] = [];
   while (text) {
     const extLinkMatch = text.match(extLinksRegex);
