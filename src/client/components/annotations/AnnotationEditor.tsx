@@ -71,27 +71,19 @@ const AnnotationEditor: React.FunctionComponent<IProps> = (props) => {
   const [newAnnotationText, setNewAnnotationText] = React.useState("");
   const [addLinkDialogOpen, setAddLinkDialogOpen] = React.useState(false);
 
-  React.useEffect(
-    () =>
-      props.onChange(
-        newAnnotationText
-          ? {
-              ...props.annotation,
-              user: props.username,
-              content: textToTokens(newAnnotationText),
-            }
-          : null
-      ),
-    [newAnnotationText]
-  );
+  const newAnnotation = newAnnotationText
+    ? {
+        ...props.annotation,
+        user: props.username,
+        content: textToTokens(newAnnotationText),
+      }
+    : null;
+
+  React.useEffect(() => props.onChange(newAnnotation), [newAnnotationText]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const anno: IAnnotation = {
-      user: null,
-      content: [{ kind: "text", text: newAnnotationText }],
-    };
-    await addAnnotation(props.docId, props.anchor, anno);
+    await addAnnotation(props.docId, props.anchor, newAnnotation);
     const loaded = await getDoc(props.docId);
     props.setDoc(props.docId, loaded);
     setNewAnnotationText("");
