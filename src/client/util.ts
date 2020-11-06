@@ -33,7 +33,7 @@ export function snippetFromDoc(doc: IDoc, docPart: string): string {
 }
 
 export function textToTokens(text: string): IContentToken[] {
-  const extLinksRegex = /\[([^\[]+)\]\((.*)\)/;
+  const extLinksRegex = /\[([^\[]+)\]\((\S*)\)/;
   const docRefsRegex = /\B#(\w*[A-Za-z_]\.[A-Za-z_0-9]*)/;
   const tokens: IContentToken[] = [];
   while (text) {
