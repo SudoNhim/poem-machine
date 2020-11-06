@@ -1,4 +1,4 @@
-import { IDoc } from "../shared/IApiTypes";
+import { IContentToken, IDoc } from "../shared/IApiTypes";
 
 function trimString(str: string, len: number): string {
   if (str.length < len) return str;
@@ -30,4 +30,38 @@ export function snippetFromDoc(doc: IDoc, docPart: string): string {
   const str = Array.isArray(paragraph) ? paragraph[parts.l - 1] : paragraph;
 
   return trimString(str, 64);
+}
+
+export function textToTokens(text: string): IContentToken[] {
+  const extLinksRegex = /\[([^\[]+)\]\((.*)\)/;
+  const docRefsRegex = /\B#(\w*[A-Za-z_]\.[A-Za-z_0-9]*)/;
+  const tokens: IContentToken[] = [];
+  while (text) {
+    const extLinkMatch = text.match(extLinksRegex);
+    const docRefMatch = text.match(docRefsRegex);
+    const textMatchIndex = Math.min(
+      text.length,
+      extLinkMatch?.index || 9999,
+      docRefMatch?.index || 9999
+    );
+    if (extLinkMatch && extLinkMatch.index === 0) {
+      tokens.push({
+        kind: "link",
+        text: extLinkMatch[1],
+        link: extLinkMatch[2],
+      });
+      text = text.substr(extLinkMatch[0].length);
+    } else if (docRefMatch && docRefMatch.index === 0) {
+      tokens.push({
+        kind: "docref",
+        docRef: docRefMatch[1],
+      });
+      text = text.substr(docRefMatch[0].length);
+    } else {
+      tokens.push({ kind: "text", text: text.substr(0, textMatchIndex) });
+      text = text.substr(textMatchIndex);
+    }
+  }
+
+  return tokens;
 }

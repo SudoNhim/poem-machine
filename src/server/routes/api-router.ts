@@ -1,12 +1,12 @@
-import * as bodyParser from "body-parser";
-import CanonData from "cohen-db";
+import bodyParser from "body-parser";
 import { Router } from "express";
-import * as passport from "passport";
+import passport from "passport";
 
 import { IAnnotation, IDoc } from "../../shared/IApiTypes";
 import { AnnotationsController } from "../controllers/annotations";
 import { GraphController } from "../controllers/graph";
 import { SearchController } from "../controllers/search";
+import docsDb from "../database";
 import { GeneratePreview } from "../lib/generate-preview";
 import { compareAnchors } from "../lib/load-doc-updates";
 import { Account, IAccount } from "../models/Account";
@@ -22,7 +22,7 @@ export function apiRouter() {
   const searchController = new SearchController();
 
   router.get("/docs/get/:docId", async (req, res) => {
-    const doc = CanonData[req.params.docId];
+    const doc = docsDb[req.params.docId];
 
     if (doc == null) return res.sendStatus(404);
 
@@ -58,7 +58,7 @@ export function apiRouter() {
       const docId: string = req.params.docId;
       const anchor: string = req.params.anchor;
       const annotation: IAnnotation = req.body.annotation;
-      const doc = CanonData[docId];
+      const doc = docsDb[docId];
       const username = req.user ? (req.user as IAccount).username : "anonymous";
 
       // If no annotations group exists for this anchor, make a new one

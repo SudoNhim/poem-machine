@@ -16,13 +16,16 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     content: {
       flexGrow: 1,
+      display: "flex",
+      flexDirection: "row",
+      height: "100vh",
       padding: theme.spacing(2),
       [theme.breakpoints.down("sm")]: {
         // appbar offset
-        marginTop: 50,
+        paddingTop: 60,
       },
       [theme.breakpoints.up("sm")]: {
-        marginTop: 61,
+        paddingTop: 71,
       },
     },
   })

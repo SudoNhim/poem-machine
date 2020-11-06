@@ -1,5 +1,5 @@
 import { CanonFile } from "cohen-db/schema";
-import * as mongoose from "mongoose";
+import mongoose from "mongoose";
 
 // When a document has outstanding changes the latest version is stored in
 // the mongodb updates table

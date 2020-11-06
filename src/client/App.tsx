@@ -7,6 +7,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { setGraph, setUser } from "./actions";
 import { getGraph, getUser } from "./api";
 import About from "./components/About";
+import Chat from "./components/Chat";
 import Document from "./components/Document";
 import Home from "./components/Home";
 import AppLayout from "./components/layout/AppLayout";
@@ -41,6 +42,7 @@ const AppImpl: React.FunctionComponent<IProps> = (props: IProps) => {
             <Switch>
               <Route exact path="/" component={Document} />
               <Route exact path="/home" component={Home} />
+              <Route exact path="/chat" component={Chat} />
               <Route path="/doc/:docId" component={Document} />
               <Route path="/search/:searchTerm" component={SearchResults} />
               <Route exact path="/about" component={About} />

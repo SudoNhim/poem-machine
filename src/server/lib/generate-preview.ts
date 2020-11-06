@@ -1,9 +1,9 @@
 import { isNullOrUndefined } from "util";
 
-import CanonData from "cohen-db";
 import { Text } from "cohen-db/schema";
 
 import { IDocReference, IDocReferencePreview } from "../../shared/IApiTypes";
+import docsDb from "../database";
 
 /*
 export function GenerateSnippet(docRef: IDocReference): string {
@@ -28,7 +28,7 @@ export function GenerateSnippet(docRef: IDocReference): string {
 } */
 
 export function GeneratePreview(docRef: IDocReference): IDocReferencePreview {
-  const doc = CanonData[docRef.docId];
+  const doc = docsDb[docRef.docId];
 
   if (!doc.content) {
     return {

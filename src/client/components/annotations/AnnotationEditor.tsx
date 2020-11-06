@@ -2,10 +2,11 @@ import { Button, Divider, TextField, makeStyles } from "@material-ui/core";
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { IAnnotation, IAnnotationToken } from "../../../shared/IApiTypes";
+import { IAnnotation, IContentToken } from "../../../shared/IApiTypes";
 import { setDoc } from "../../actions";
 import { addAnnotation, getDoc } from "../../api";
 import { IAppState } from "../../model";
+import { textToTokens } from "../../util";
 import AddLinkDialog from "./AddLinkDialog";
 
 const useStyles = makeStyles({
@@ -30,40 +31,6 @@ interface IProps {
   setDoc: typeof setDoc;
   onChange: (anno: IAnnotation) => void;
 }
-
-const textToTokens = (text: string): IAnnotationToken[] => {
-  const extLinksRegex = /\[([^\[]+)\]\((.*)\)/;
-  const docRefsRegex = /\B#(\w*[A-Za-z_]\.[A-Za-z_0-9]*)/;
-  const tokens: IAnnotationToken[] = [];
-  while (text) {
-    const extLinkMatch = text.match(extLinksRegex);
-    const docRefMatch = text.match(docRefsRegex);
-    const textMatchIndex = Math.min(
-      text.length,
-      extLinkMatch?.index || 9999,
-      docRefMatch?.index || 9999
-    );
-    if (extLinkMatch && extLinkMatch.index === 0) {
-      tokens.push({
-        kind: "link",
-        text: extLinkMatch[1],
-        link: extLinkMatch[2],
-      });
-      text = text.substr(extLinkMatch[0].length);
-    } else if (docRefMatch && docRefMatch.index === 0) {
-      tokens.push({
-        kind: "docref",
-        docRef: docRefMatch[1],
-      });
-      text = text.substr(docRefMatch[0].length);
-    } else {
-      tokens.push({ kind: "text", text: text.substr(0, textMatchIndex) });
-      text = text.substr(textMatchIndex);
-    }
-  }
-
-  return tokens;
-};
 
 const AnnotationEditor: React.FunctionComponent<IProps> = (props) => {
   const classes = useStyles();
