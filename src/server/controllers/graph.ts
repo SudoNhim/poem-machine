@@ -1,7 +1,5 @@
 import { isArray } from "util";
 
-import CanonData from "cohen-db";
-
 import {
   IAnnotationTokenDocRef,
   IAnnotationsGroup,
@@ -9,6 +7,7 @@ import {
   IDocReference,
 } from "../../shared/IApiTypes";
 import { DeserializeDocRef } from "../../shared/util";
+import docsDb from "../database";
 
 // Maintain pre-generated data about the document collection
 // e.g. map of parents to children
@@ -37,8 +36,8 @@ export class GraphController {
       },
     };
 
-    for (var key in CanonData) {
-      const doc = CanonData[key];
+    for (var key in docsDb) {
+      const doc = docsDb[key];
       this.graph[key] = {
         title: doc.title,
         kind: doc.kind,
@@ -52,10 +51,10 @@ export class GraphController {
     this.references = {};
 
     // Add all doc section references
-    for (var key in CanonData) {
+    for (var key in docsDb) {
       const refs: IDocReference[] = [];
-      for (var otherKey in CanonData) {
-        var otherDoc = CanonData[otherKey];
+      for (var otherKey in docsDb) {
+        var otherDoc = docsDb[otherKey];
         var parts = otherDoc.content && otherDoc.content.content;
         if (isArray(parts)) {
           parts.forEach((part, i) => {
@@ -73,8 +72,8 @@ export class GraphController {
     }
 
     // Add all annotation references
-    for (var key in CanonData) {
-      const annotations = CanonData[key].annotations || [];
+    for (var key in docsDb) {
+      const annotations = docsDb[key].annotations || [];
       for (var annoGroup of annotations as IAnnotationsGroup[]) {
         for (var anno of annoGroup.annotations) {
           for (var tok of anno.content) {

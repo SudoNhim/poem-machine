@@ -1,6 +1,6 @@
-import * as mongoose from "mongoose";
-import * as passportLocal from "passport-local";
-import * as passportLocalMongoose from "passport-local-mongoose";
+import mongoose from "mongoose";
+import passportLocal from "passport-local";
+import passportLocalMongoose from "passport-local-mongoose";
 
 // Typings are declared here as the @typings package for passport-local-mongoose doesn't work
 

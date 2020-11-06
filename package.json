@@ -7,7 +7,6 @@
     "start": "node index.js",
     "start:prod": "cross-env NODE_ENV=production node index.js",
     "clean": "rimraf dist",
-    "type-check": "tsc -p ./tsconfig.json",
     "build-client": "cross-env NODE_ENV=production TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack -p",
     "dev-client": "cross-env TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack-dev-server -w --hot",
     "build-server": "tsc -p ./src/server",
@@ -44,6 +43,7 @@
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^6.0.1",
     "passport-remember-me-extended": "0.0.3",
+    "socket.io": "2.3.0",
     "tslib": "^1.14.1"
   },
   "devDependencies": {
@@ -68,6 +68,7 @@
     "@types/react": "^16.9.55",
     "@types/react-redux": "^7.1.9",
     "@types/react-router": "^5.1.8",
+    "@types/socket.io-client": "^1.4.34",
     "@types/webpack": "^4.41.24",
     "@types/webpack-dev-server": "^3.11.1",
     "@types/webpack-manifest-plugin": "^2.1.0",
@@ -92,6 +93,7 @@
     "redux": "^4.0.5",
     "request": "^2.88.2",
     "rimraf": "^2.7.1",
+    "socket.io-client": "^3.0.0",
     "style-loader": "^0.23.1",
     "ts-node": "^8.10.2",
     "tsc-watch": "^2.4.0",

@@ -1,7 +1,7 @@
-import CanonData from "cohen-db";
 import { Text } from "cohen-db/schema";
 
 import { SerializeDocRef } from "../../shared/util";
+import docsDb from "../database";
 
 export interface CanonShard {
   docref: string; // serialized docref
@@ -12,8 +12,8 @@ export interface CanonShard {
 export function ExplodeAllSearchable(): CanonShard[] {
   const out: CanonShard[] = [];
 
-  for (var key in CanonData) {
-    const doc = CanonData[key];
+  for (var key in docsDb) {
+    const doc = docsDb[key];
 
     // titles
     out.push({

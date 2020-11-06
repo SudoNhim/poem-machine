@@ -1,9 +1,10 @@
-import * as path from "path";
+import { createServer } from "http";
+import path from "path";
 
-import * as express from "express";
-import * as expressSession from "express-session";
-import * as mongoose from "mongoose";
-import * as passport from "passport";
+import express from "express";
+import expressSession from "express-session";
+import mongoose from "mongoose";
+import passport from "passport";
 import { Strategy as RememberMeStrategy } from "passport-remember-me-extended";
 
 import { COOKIE_SECRET, MONGODB_STR, SERVER_PORT } from "./config";
@@ -17,6 +18,7 @@ import { createTestDatabase } from "./mongotest";
 import { apiRouter } from "./routes/api-router";
 import { pagesRouter } from "./routes/pages-router";
 import { staticsRouter } from "./routes/statics-router";
+import { setupSocketIo } from "./socket";
 
 import cookieParser = require("cookie-parser");
 
@@ -82,7 +84,10 @@ async function main() {
     // Everything not matched by the above falls through to the app page
     app.use(pagesRouter());
 
-    app.listen(SERVER_PORT, () => {
+    const server = createServer(app);
+    //setupSocketIo(server);
+
+    server.listen(SERVER_PORT, () => {
       console.log(`App listening on port ${SERVER_PORT}!`);
     });
   } catch (err) {
