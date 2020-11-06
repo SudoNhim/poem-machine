@@ -60,18 +60,19 @@ async function main() {
     const app = express();
     app.set("view engine", "ejs");
 
+    // Session
+    const sessionMiddleware = expressSession({
+      secret: COOKIE_SECRET || "testsecret",
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        maxAge: 10000000000, // ~3mo max cookie age
+      },
+    });
+
     // Auth middleware
     app.use(cookieParser());
-    app.use(
-      expressSession({
-        secret: COOKIE_SECRET || "testsecret",
-        resave: false,
-        saveUninitialized: false,
-        cookie: {
-          maxAge: 10000000000, // ~3mo max cookie age
-        },
-      })
-    );
+    app.use(sessionMiddleware);
     app.use(passport.initialize());
     app.use(passport.session());
     app.use(passport.authenticate("remember-me"));
@@ -84,8 +85,9 @@ async function main() {
     // Everything not matched by the above falls through to the app page
     app.use(pagesRouter());
 
+    // Socket.io used for live chat feature
     const server = createServer(app);
-    setupSocketIo(server);
+    setupSocketIo(server, sessionMiddleware);
 
     server.listen(SERVER_PORT, () => {
       console.log(`App listening on port ${SERVER_PORT}!`);
