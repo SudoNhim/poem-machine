@@ -35,9 +35,7 @@ export function setupSocketIo(server: http.Server) {
       });
 
       // Save the message to the database.
-      message.save((err) => {
-        throw err;
-      });
+      message.save();
 
       // Notify all other users about a new message.
       socket.broadcast.emit("push", msg);

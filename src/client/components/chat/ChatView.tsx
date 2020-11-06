@@ -1,21 +1,16 @@
-import {
-  Button,
-  Divider,
-  Paper,
-  TextField,
-  Theme,
-  makeStyles,
-} from "@material-ui/core";
+import { Paper, TextField, Theme, makeStyles } from "@material-ui/core";
 import * as React from "react";
 import { connect } from "react-redux";
 
 import { IChatMessage } from "../../../shared/IApiTypes";
 import { IAppState } from "../../model";
+import { textToTokens } from "../../util";
 import ChatMessage from "./ChatMessage";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     display: "flex",
+    flex: 1,
     flexDirection: "column-reverse",
     overflowY: "scroll",
   },
@@ -32,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface IProps {
   messages: IChatMessage[];
   username: string;
-  postMessage: (text: string) => void;
+  postMessage: (message: IChatMessage) => void;
 }
 
 const ChatView: React.FunctionComponent<IProps> = (props) => {
@@ -41,7 +36,11 @@ const ChatView: React.FunctionComponent<IProps> = (props) => {
   const [newMessage, setNewMessage] = React.useState("");
 
   const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
-    props.postMessage(newMessage);
+    const message: IChatMessage = {
+      user: props.username,
+      content: textToTokens(newMessage),
+    };
+    props.postMessage(message);
     setNewMessage("");
     evt.preventDefault();
   };
