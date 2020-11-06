@@ -35,7 +35,9 @@ const ChatView: React.FunctionComponent<IProps> = (props) => {
 
   const [newMessage, setNewMessage] = React.useState("");
 
-  const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (
+    evt: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLDivElement>
+  ) => {
     const message: IChatMessage = {
       user: props.username,
       content: textToTokens(newMessage),
@@ -43,6 +45,10 @@ const ChatView: React.FunctionComponent<IProps> = (props) => {
     props.postMessage(message);
     setNewMessage("");
     evt.preventDefault();
+  };
+
+  const handleKeyPress = (evt: React.KeyboardEvent<HTMLDivElement>) => {
+    if (evt.key === "Enter" && evt.shiftKey === false) handleSubmit(evt);
   };
 
   return (
@@ -56,8 +62,10 @@ const ChatView: React.FunctionComponent<IProps> = (props) => {
             className={classes.input}
             placeholder={`Comment as ${props.username}`}
             fullWidth={true}
+            multiline={true}
             value={newMessage}
             onChange={(evt) => setNewMessage(evt.target.value)}
+            onKeyPress={handleKeyPress}
           />
         </form>
       </Paper>

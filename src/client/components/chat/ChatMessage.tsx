@@ -67,7 +67,23 @@ const ChatMessage: React.FunctionComponent<IProps> = (props) => {
           {tok.text}
         </a>
       );
-    else return <span key={key}>{tok.text}</span>;
+    else {
+      const lines = tok.text.split("\n");
+      return (
+        <React.Fragment key={key}>
+          {lines.map((s, i) =>
+            i === lines.length - 1 ? (
+              <span key={i}>{s}</span>
+            ) : (
+              <React.Fragment>
+                <span key={i}>{s}</span>
+                <br />
+              </React.Fragment>
+            )
+          )}
+        </React.Fragment>
+      );
+    }
   };
 
   return (
