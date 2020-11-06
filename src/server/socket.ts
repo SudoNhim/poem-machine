@@ -20,7 +20,10 @@ export function setupSocketIo(server: http.Server) {
         if (err) return console.error(err);
 
         // Send the last messages to the user.
-        socket.emit("init", messages);
+        socket.emit(
+          "init",
+          messages.map((msg) => msg.toObject())
+        );
       });
 
     // Listen to connected users for a new message.

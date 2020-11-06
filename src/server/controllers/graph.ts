@@ -1,8 +1,8 @@
 import { isArray } from "util";
 
 import {
-  IAnnotationTokenDocRef,
   IAnnotationsGroup,
+  IContentTokenDocRef,
   IDocGraph,
   IDocReference,
 } from "../../shared/IApiTypes";
@@ -77,7 +77,7 @@ export class GraphController {
       for (var annoGroup of annotations as IAnnotationsGroup[]) {
         for (var anno of annoGroup.annotations) {
           for (var tok of anno.content) {
-            var ref = (tok as IAnnotationTokenDocRef).docRef;
+            var ref = (tok as IContentTokenDocRef).docRef;
             if (ref)
               this.references[ref] = [
                 ...this.references[ref],

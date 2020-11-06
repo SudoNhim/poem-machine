@@ -43,30 +43,35 @@ export interface IDocReferencePreview {
   preview: Text;
 }
 
-export interface IAnnotationTokenText {
+export interface IContentTokenText {
   kind: "text";
   text: string;
 }
 
-export interface IAnnotationTokenLink {
+export interface IContentTokenLink {
   kind: "link";
   text: string;
   link: string;
 }
 
-export interface IAnnotationTokenDocRef {
+export interface IContentTokenDocRef {
   kind: "docref";
   docRef: string;
 }
 
-export type IAnnotationToken =
-  | IAnnotationTokenText
-  | IAnnotationTokenLink
-  | IAnnotationTokenDocRef;
+export type IContentToken =
+  | IContentTokenText
+  | IContentTokenLink
+  | IContentTokenDocRef;
 
 export interface IAnnotation {
   user: string;
-  content: IAnnotationToken[];
+  content: IContentToken[];
+}
+
+export interface IChatMessage {
+  user: string;
+  content: IContentToken[];
 }
 
 export interface IAnnotationsGroup {

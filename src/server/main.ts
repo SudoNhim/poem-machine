@@ -85,7 +85,7 @@ async function main() {
     app.use(pagesRouter());
 
     const server = createServer(app);
-    //setupSocketIo(server);
+    setupSocketIo(server);
 
     server.listen(SERVER_PORT, () => {
       console.log(`App listening on port ${SERVER_PORT}!`);
