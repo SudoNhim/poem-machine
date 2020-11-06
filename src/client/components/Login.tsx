@@ -20,7 +20,11 @@ const styles = {
   },
 };
 
-interface IProps extends RouteComponentProps {
+interface ILocationProps {
+  prevPath: string;
+}
+
+interface IProps extends RouteComponentProps<{}, {}, ILocationProps> {
   searchResults: ISearchResults;
   classes: any;
   setUser: typeof setUser;
@@ -59,7 +63,7 @@ class LoginForm extends React.Component<IProps, IState> {
       this.props.setUser({
         username: user.username,
       });
-      this.props.history.push(`/`);
+      this.props.history.push(this.props.location.state.prevPath);
     } else {
       this.setState({
         failed: "Login failed",
@@ -81,7 +85,7 @@ class LoginForm extends React.Component<IProps, IState> {
       this.props.setUser({
         username: user.username,
       });
-      this.props.history.push(`/`);
+      this.props.history.push(this.props.location.state.prevPath);
     } catch (err) {
       this.setState({
         ...this.state,

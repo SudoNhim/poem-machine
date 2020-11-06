@@ -132,7 +132,7 @@ const TopAppBar = withRouter((props: IProps) => {
   };
 
   const logIn = () => {
-    props.history.push("/login");
+    props.history.push("/login", { prevPath: props.location.pathname });
   };
 
   const toggleNavPane = () => {
