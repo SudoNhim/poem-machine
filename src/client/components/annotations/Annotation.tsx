@@ -1,14 +1,8 @@
 import { Divider, Typography, makeStyles } from "@material-ui/core";
 import * as React from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 
-import {
-  IAnnotation,
-  IContentToken,
-  IDocGraph,
-} from "../../../shared/IApiTypes";
-import { IAppState } from "../../model";
+import { IAnnotation } from "../../../shared/IApiTypes";
+import ContentToken from "../shared/ContentToken";
 
 const useStyles = makeStyles({
   content: {
@@ -31,54 +25,15 @@ const useStyles = makeStyles({
     color: "grey",
     fontSize: 14,
   },
-  link: {
-    textDecoration: "underline",
-  },
-  externalLink: {
-    textDecoration: "underline",
-    color: "darkblue",
-  },
 });
 
 interface IProps {
   annotation: IAnnotation;
-  graph: IDocGraph;
   isPreview: boolean;
 }
 
 const Annotation: React.FunctionComponent<IProps> = (props) => {
   const classes = useStyles();
-
-  const renderToken = (tok: IContentToken, key: number) => {
-    if (tok.kind === "docref")
-      return (
-        <Link
-          to={`/doc/${tok.docRef}`}
-          key={key}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <span className={classes.link}>
-            {props.graph[tok.docRef] ? (
-              props.graph[tok.docRef].title
-            ) : (
-              <span style={{ color: "red" }}>{tok.docRef}</span>
-            )}
-          </span>
-        </Link>
-      );
-    else if (tok.kind === "link")
-      return (
-        <a
-          className={classes.externalLink}
-          href={tok.link}
-          onClick={(e) => e.stopPropagation()}
-          key={key}
-        >
-          {tok.text}
-        </a>
-      );
-    else return <span key={key}>{tok.text}</span>;
-  };
 
   const containerClasses = props.isPreview
     ? [classes.contentContainer, classes.highlight]
@@ -99,17 +54,13 @@ const Annotation: React.FunctionComponent<IProps> = (props) => {
           {props.annotation.user || "anonymous"}:&nbsp;
         </Typography>
         <Typography className={classes.content} component="span">
-          {props.annotation.content.map((tok, i) => renderToken(tok, i))}
+          {props.annotation.content.map((tok, i) => (
+            <ContentToken token={tok} key={i} />
+          ))}
         </Typography>
       </div>
     </React.Fragment>
   );
 };
 
-const mapStateToProps = (state: IAppState, ownProps) => ({
-  annotation: ownProps.annotation,
-  isPreview: ownProps.isPreview || false,
-  graph: state.docs.graph,
-});
-
-export default connect(mapStateToProps)(Annotation);
+export default Annotation;
