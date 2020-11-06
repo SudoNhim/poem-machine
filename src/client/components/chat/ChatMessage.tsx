@@ -1,10 +1,10 @@
-import { Divider, Typography, makeStyles } from "@material-ui/core";
+import { Typography, makeStyles } from "@material-ui/core";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 import {
-  IAnnotation,
+  IChatMessage,
   IContentToken,
   IDocGraph,
 } from "../../../shared/IApiTypes";
@@ -17,15 +17,6 @@ const useStyles = makeStyles({
   contentContainer: {
     paddingTop: 10,
     paddingBottom: 10,
-  },
-  highlight: {
-    backgroundColor: "lightyellow",
-  },
-  previewTag: {
-    color: "darkblue",
-    fontSize: 14,
-    textAlign: "center",
-    marginBottom: 5,
   },
   userTag: {
     color: "grey",
@@ -41,12 +32,11 @@ const useStyles = makeStyles({
 });
 
 interface IProps {
-  annotation: IAnnotation;
+  message: IChatMessage;
   graph: IDocGraph;
-  isPreview: boolean;
 }
 
-const Annotation: React.FunctionComponent<IProps> = (props) => {
+const ChatMessage: React.FunctionComponent<IProps> = (props) => {
   const classes = useStyles();
 
   const renderToken = (tok: IContentToken, key: number) => {
@@ -80,26 +70,18 @@ const Annotation: React.FunctionComponent<IProps> = (props) => {
     else return <span key={key}>{tok.text}</span>;
   };
 
-  const containerClasses = props.isPreview
-    ? [classes.contentContainer, classes.highlight]
-    : [classes.contentContainer];
-
   return (
     <React.Fragment>
-      <Divider />
-      <div className={containerClasses.join(" ")}>
-        {props.isPreview && (
-          <Typography className={classes.previewTag}>preview</Typography>
-        )}
+      <div className={classes.contentContainer}>
         <Typography
           className={classes.userTag}
           color="textSecondary"
           component="span"
         >
-          {props.annotation.user || "anonymous"}:&nbsp;
+          {props.message.user || "anonymous"}:&nbsp;
         </Typography>
         <Typography className={classes.content} component="span">
-          {props.annotation.content.map((tok, i) => renderToken(tok, i))}
+          {props.message.content.map((tok, i) => renderToken(tok, i))}
         </Typography>
       </div>
     </React.Fragment>
@@ -112,4 +94,4 @@ const mapStateToProps = (state: IAppState, ownProps) => ({
   graph: state.docs.graph,
 });
 
-export default connect(mapStateToProps)(Annotation);
+export default connect(mapStateToProps)(ChatMessage);

@@ -33,4 +33,27 @@ export async function createTestDatabase(dbName: string): Promise<void> {
       },
     ],
   }).save();
+
+  new ChatMessage({
+    user: "anselm",
+    content: [
+      {
+        kind: "text",
+        text: "Wow, have you guys seen ",
+      },
+      {
+        kind: "docref",
+        docRef: "song.master_song",
+      },
+      {
+        kind: "text",
+        text: "? I love it. I found it on ",
+      },
+      {
+        kind: "link",
+        link: "https://leonardcohennotes.com",
+        text: "Leonard Cohen Notes",
+      },
+    ],
+  }).save();
 }

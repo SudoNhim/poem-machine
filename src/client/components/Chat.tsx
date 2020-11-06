@@ -3,6 +3,7 @@ import * as React from "react";
 import io from "socket.io-client";
 
 import { IChatMessage } from "../../shared/IApiTypes";
+import ChatView from "./chat/ChatView";
 
 const Chat: React.FunctionComponent = () => {
   const [chatLog, setChatLog] = React.useState<IChatMessage[]>([]);
@@ -11,7 +12,7 @@ const Chat: React.FunctionComponent = () => {
     console.log("setting up socket connection");
     const socket = io();
     socket.on("init", (messages: IChatMessage[]) => {
-      setChatLog(messages.reverse());
+      setChatLog(messages);
     });
 
     socket.on("push", (message: IChatMessage) => {
@@ -19,14 +20,11 @@ const Chat: React.FunctionComponent = () => {
     });
   }, []);
 
-  return (
-    <Paper>
-      This is the chat page.
-      {chatLog.map((message, i) => (
-        <p key={i}>{JSON.stringify(message)}</p>
-      ))}
-    </Paper>
-  );
+  const sendMessage = (message: string) => {
+    io().emit("chat message", message);
+  };
+
+  return <ChatView messages={chatLog} postMessage={sendMessage} />;
 };
 
 export default Chat;

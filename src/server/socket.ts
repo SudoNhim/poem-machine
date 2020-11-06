@@ -27,7 +27,7 @@ export function setupSocketIo(server: http.Server) {
       });
 
     // Listen to connected users for a new message.
-    socket.on("message", (msg: IChatMessage) => {
+    socket.on("chat message", (msg: IChatMessage) => {
       // Create a message with the content and the name of the user.
       const message = new ChatMessage({
         user: msg.user,
