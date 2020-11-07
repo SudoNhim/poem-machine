@@ -29,6 +29,9 @@ const useStyles = makeStyles({
     color: "grey",
     fontSize: 14,
   },
+  buttons: {
+    display: "inline-block",
+  },
 });
 
 interface IProps {
@@ -69,7 +72,7 @@ const Annotation: React.FunctionComponent<IProps> = (props) => {
         {props.allowEdit &&
           (props.username == props.annotation.user ||
             props.annotation.user === "anonymous") && (
-            <div>
+            <div className={classes.buttons}>
               <IconButton size="small" onClick={() => props.onEdit()}>
                 <EditIcon color="primary" fontSize="small" />
               </IconButton>
