@@ -129,7 +129,7 @@ const mapStateToProps = (state: IAppState, ownProps) => ({
   onFinished: ownProps.onFinished,
   anchor: state.focus.docPart,
   docId: state.focus.docId,
-  username: state.user.username,
+  username: state.user.username || "anonymous",
 });
 
 export default connect(mapStateToProps, { setDoc })(AnnotationEditor);
