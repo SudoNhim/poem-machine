@@ -1,4 +1,5 @@
 import { Divider, IconButton, Typography, makeStyles } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -35,6 +36,7 @@ interface IProps {
   isPreview: boolean;
   allowEdit: boolean;
   onEdit: () => void;
+  onDelete: () => void;
   username: string;
 }
 
@@ -67,9 +69,14 @@ const Annotation: React.FunctionComponent<IProps> = (props) => {
         {props.allowEdit &&
           (props.username == props.annotation.user ||
             props.annotation.user === "anonymous") && (
-            <IconButton size="small" onClick={() => props.onEdit()}>
-              <EditIcon color="primary" fontSize="small" />
-            </IconButton>
+            <div>
+              <IconButton size="small" onClick={() => props.onEdit()}>
+                <EditIcon color="primary" fontSize="small" />
+              </IconButton>
+              <IconButton size="small" onClick={() => props.onDelete()}>
+                <DeleteIcon color="primary" fontSize="small" />
+              </IconButton>
+            </div>
           )}
       </div>
     </React.Fragment>
@@ -81,7 +88,8 @@ const mapStateToProps = (state: IAppState, ownProps) => ({
   isPreviw: ownProps.isPreview,
   allowEdit: ownProps.allowEdit,
   onEdit: ownProps.onEdit,
+  onDelete: ownProps.onDelete,
   username: state.user.username,
 });
 
-export default connect(mapStateToProps, {})(Annotation);
+export default connect(mapStateToProps)(Annotation);

@@ -34,6 +34,16 @@ export async function addAnnotation(
   });
 }
 
+export async function deleteAnnotation(
+  docId: string,
+  anchor: string,
+  annotation: IAnnotation
+): Promise<void> {
+  await axios.post(`/api/docs/${docId}/annotations/${anchor}/delete`, {
+    annotation,
+  });
+}
+
 export async function login(
   username: string,
   password: string

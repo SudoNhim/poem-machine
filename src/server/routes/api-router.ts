@@ -62,7 +62,9 @@ export function apiRouter() {
       const username = req.user ? (req.user as IAccount).username : "anonymous";
 
       if (username !== reqAnnotation.user && reqAnnotation.user !== "anonymous")
-        throw new Error("User not authorized to edit that annotation");
+        throw new Error(
+          `User ${username} not authorized to edit annotation by ${reqAnnotation.user}`
+        );
 
       // Copy out so if we make a new group and then crash we don't leave it there
       const docAnnotations = [...doc.annotations];
@@ -90,6 +92,42 @@ export function apiRouter() {
       }
 
       doc.annotations = docAnnotations;
+      await DocUpdate.findOneAndUpdate(
+        { docId },
+        { docId, file: doc },
+        { upsert: true }
+      );
+
+      res.end();
+    }
+  );
+
+  router.post(
+    "/docs/:docId/annotations/:anchor/delete",
+    jsonParser,
+    async (req, res) => {
+      const docId: string = req.params.docId;
+      const anchor: string = req.params.anchor;
+      const reqAnnotation: IAnnotation = req.body.annotation;
+      const doc = docsDb[docId];
+      const username = req.user ? (req.user as IAccount).username : "anonymous";
+
+      if (username !== reqAnnotation.user && reqAnnotation.user !== "anonymous")
+        throw new Error("User not authorized to edit that annotation");
+
+      const group = doc.annotations.find((grp) => grp.anchor === anchor);
+      let countByUser = 0;
+      group.annotations = group.annotations.filter((anno) => {
+        if (anno.user === reqAnnotation.user) {
+          if (countByUser === reqAnnotation.indexByUser) return false;
+          else countByUser++;
+        } else return true;
+      });
+
+      doc.annotations = doc.annotations.filter(
+        (grp) => grp.annotations.length > 0
+      );
+
       await DocUpdate.findOneAndUpdate(
         { docId },
         { docId, file: doc },

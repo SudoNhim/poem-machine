@@ -12,6 +12,7 @@ import { IAppState, IHoverState } from "../../model";
 import { snippetFromDoc } from "../../util";
 import Annotation from "./Annotation";
 import AnnotationEditor from "./AnnotationEditor";
+import DeleteDialog from "./DeleteDialog";
 
 const useStyles = makeStyles({
   root: {
@@ -39,6 +40,10 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
   const [editingAnnotation, setEditingAnnotation] = React.useState<IAnnotation>(
     null
   );
+  const [deleteAnnotation, setDeleteAnnotation] = React.useState<IAnnotation>(
+    null
+  );
+
   return (
     <Card className={classes.root}>
       <CardContent>
@@ -55,6 +60,7 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
               setEditingAnnotation(anno);
               setEditIndex(i);
             }}
+            onDelete={() => setDeleteAnnotation(anno)}
           />
         ))}
         {editingAnnotation && editIndex === -1 && (
@@ -67,6 +73,12 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
             onFinished={() => {
               setEditIndex(-1);
             }}
+          />
+        )}
+        {deleteAnnotation && (
+          <DeleteDialog
+            annotation={deleteAnnotation}
+            onFinished={() => setDeleteAnnotation(null)}
           />
         )}
       </CardContent>
