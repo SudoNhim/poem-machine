@@ -31,7 +31,6 @@ const initialState: IAppState = {
 };
 
 function rootReducer(state = initialState, action: ActionTypes): IAppState {
-  console.log(action);
   switch (action.type) {
     case SET_DOC:
       return {

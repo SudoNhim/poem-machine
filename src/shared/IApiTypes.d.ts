@@ -66,6 +66,7 @@ export type IContentToken =
 
 export interface IAnnotation {
   user: string;
+  indexByUser: number; // -1 for new, positive for existing
   content: IContentToken[];
 }
 

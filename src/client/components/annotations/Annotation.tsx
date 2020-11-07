@@ -1,7 +1,10 @@
-import { Divider, Typography, makeStyles } from "@material-ui/core";
+import { Divider, IconButton, Typography, makeStyles } from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
 import * as React from "react";
+import { connect } from "react-redux";
 
 import { IAnnotation } from "../../../shared/IApiTypes";
+import { IAppState } from "../../model";
 import ContentToken from "../shared/ContentToken";
 
 const useStyles = makeStyles({
@@ -30,6 +33,9 @@ const useStyles = makeStyles({
 interface IProps {
   annotation: IAnnotation;
   isPreview: boolean;
+  allowEdit: boolean;
+  onEdit: () => void;
+  username: string;
 }
 
 const Annotation: React.FunctionComponent<IProps> = (props) => {
@@ -58,9 +64,24 @@ const Annotation: React.FunctionComponent<IProps> = (props) => {
             <ContentToken token={tok} key={i} />
           ))}
         </Typography>
+        {props.allowEdit &&
+          (props.username == props.annotation.user ||
+            props.annotation.user === "anonymous") && (
+            <IconButton size="small" onClick={() => props.onEdit()}>
+              <EditIcon color="primary" fontSize="small" />
+            </IconButton>
+          )}
       </div>
     </React.Fragment>
   );
 };
 
-export default Annotation;
+const mapStateToProps = (state: IAppState, ownProps) => ({
+  annotation: ownProps.annotation,
+  isPreviw: ownProps.isPreview,
+  allowEdit: ownProps.allowEdit,
+  onEdit: ownProps.onEdit,
+  username: state.user.username,
+});
+
+export default connect(mapStateToProps, {})(Annotation);

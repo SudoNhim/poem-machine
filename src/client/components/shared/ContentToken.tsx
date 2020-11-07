@@ -54,8 +54,8 @@ const ContentToken: React.FunctionComponent<IProps> = (props) => {
           i === lines.length - 1 ? (
             <span key={i}>{s}</span>
           ) : (
-            <React.Fragment>
-              <span key={i}>{s}</span>
+            <React.Fragment key={i}>
+              <span>{s}</span>
               <br />
             </React.Fragment>
           )

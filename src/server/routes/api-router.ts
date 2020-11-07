@@ -57,22 +57,39 @@ export function apiRouter() {
     async (req, res) => {
       const docId: string = req.params.docId;
       const anchor: string = req.params.anchor;
-      const annotation: IAnnotation = req.body.annotation;
+      const reqAnnotation: IAnnotation = req.body.annotation;
       const doc = docsDb[docId];
       const username = req.user ? (req.user as IAccount).username : "anonymous";
 
+      if (username !== reqAnnotation.user && reqAnnotation.user !== "anonymous")
+        throw new Error("User not authorized to edit that annotation");
+
+      // Copy out so if we make a new group and then crash we don't leave it there
+      const docAnnotations = [...doc.annotations];
+
       // If no annotations group exists for this anchor, make a new one
-      if (!doc.annotations.find((grp) => grp.anchor === anchor)) {
-        doc.annotations.push({ anchor, annotations: [] });
-        doc.annotations.sort((a, b) => compareAnchors(a.anchor, b.anchor));
+      if (!docAnnotations.find((grp) => grp.anchor === anchor)) {
+        docAnnotations.push({ anchor, annotations: [] });
+        docAnnotations.sort((a, b) => compareAnchors(a.anchor, b.anchor));
       }
 
-      const group = doc.annotations.find((grp) => grp.anchor === anchor);
-      group.annotations.push({
-        user: username,
-        content: annotation.content,
-      });
+      const group = docAnnotations.find((grp) => grp.anchor === anchor);
 
+      // If this is an edit, edit in place
+      if (reqAnnotation.indexByUser >= 0) {
+        const existing = group.annotations.filter(
+          (anno) => anno.user === reqAnnotation.user
+        );
+        existing[reqAnnotation.indexByUser].content = reqAnnotation.content;
+      } else {
+        // otherwise add
+        group.annotations.push({
+          user: username,
+          content: reqAnnotation.content,
+        });
+      }
+
+      doc.annotations = docAnnotations;
       await DocUpdate.findOneAndUpdate(
         { docId },
         { docId, file: doc },

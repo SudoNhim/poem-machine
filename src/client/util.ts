@@ -65,3 +65,13 @@ export function textToTokens(text: string): IContentToken[] {
 
   return tokens;
 }
+
+export function tokensToText(tokens: IContentToken[]): string {
+  return tokens
+    .map((tok) => {
+      if (tok.kind === "text") return tok.text;
+      if (tok.kind === "docref") return `#${tok.docRef}`;
+      else return `[${tok.text}](${tok.link})`;
+    })
+    .join("");
+}

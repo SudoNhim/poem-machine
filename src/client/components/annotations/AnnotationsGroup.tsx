@@ -35,6 +35,7 @@ interface IProps {
 
 const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
   const classes = useStyles();
+  const [editIndex, setEditIndex] = React.useState(-1);
   const [editingAnnotation, setEditingAnnotation] = React.useState<IAnnotation>(
     null
   );
@@ -45,15 +46,27 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
           {snippetFromDoc(props.doc, props.annotationsGroup.anchor)}
         </Typography>
         {props.annotationsGroup.annotations.map((anno, i) => (
-          <Annotation annotation={anno} key={i} />
+          <Annotation
+            annotation={(i === editIndex ? editingAnnotation : anno) || anno}
+            key={i}
+            isPreview={i === editIndex}
+            allowEdit={props.allowEdit && i !== editIndex}
+            onEdit={() => {
+              setEditingAnnotation(anno);
+              setEditIndex(i);
+            }}
+          />
         ))}
-        {editingAnnotation && (
+        {editingAnnotation && editIndex === -1 && (
           <Annotation annotation={editingAnnotation} isPreview={true} />
         )}
         {props.allowEdit && (
           <AnnotationEditor
             annotation={editingAnnotation}
             onChange={setEditingAnnotation}
+            onFinished={() => {
+              setEditIndex(-1);
+            }}
           />
         )}
       </CardContent>

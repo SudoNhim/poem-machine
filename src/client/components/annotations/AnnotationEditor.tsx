@@ -2,11 +2,11 @@ import { Button, Divider, TextField, makeStyles } from "@material-ui/core";
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { IAnnotation, IContentToken } from "../../../shared/IApiTypes";
+import { IAnnotation } from "../../../shared/IApiTypes";
 import { setDoc } from "../../actions";
 import { addAnnotation, getDoc } from "../../api";
 import { IAppState } from "../../model";
-import { textToTokens } from "../../util";
+import { textToTokens, tokensToText } from "../../util";
 import AddLinkDialog from "./AddLinkDialog";
 
 const useStyles = makeStyles({
@@ -30,6 +30,7 @@ interface IProps {
   username: string;
   setDoc: typeof setDoc;
   onChange: (anno: IAnnotation) => void;
+  onFinished: () => void;
 }
 
 const AnnotationEditor: React.FunctionComponent<IProps> = (props) => {
@@ -38,12 +39,19 @@ const AnnotationEditor: React.FunctionComponent<IProps> = (props) => {
   const [newAnnotationText, setNewAnnotationText] = React.useState("");
   const [addLinkDialogOpen, setAddLinkDialogOpen] = React.useState(false);
 
+  React.useEffect(() => {
+    if (props.annotation)
+      setNewAnnotationText(tokensToText(props.annotation.content));
+  }, [props.annotation]);
+
   const newAnnotation = newAnnotationText
-    ? {
-        ...props.annotation,
-        user: props.username,
-        content: textToTokens(newAnnotationText),
-      }
+    ? props.annotation
+      ? { ...props.annotation, content: textToTokens(newAnnotationText) }
+      : {
+          indexByUser: -1, // -1 for new annotation
+          user: props.username,
+          content: textToTokens(newAnnotationText),
+        }
     : null;
 
   React.useEffect(() => props.onChange(newAnnotation), [newAnnotationText]);
@@ -54,6 +62,7 @@ const AnnotationEditor: React.FunctionComponent<IProps> = (props) => {
     const loaded = await getDoc(props.docId);
     props.setDoc(props.docId, loaded);
     setNewAnnotationText("");
+    props.onFinished();
   };
 
   const handleAddLink = (text: string) => {
@@ -87,6 +96,17 @@ const AnnotationEditor: React.FunctionComponent<IProps> = (props) => {
           <Button
             className={classes.button}
             variant="contained"
+            onClick={() => {
+              setNewAnnotationText("");
+              props.onFinished();
+            }}
+            disabled={!newAnnotationText}
+          >
+            cancel
+          </Button>
+          <Button
+            className={classes.button}
+            variant="contained"
             color="primary"
             type="submit"
             disabled={!newAnnotationText}
@@ -106,6 +126,7 @@ const AnnotationEditor: React.FunctionComponent<IProps> = (props) => {
 const mapStateToProps = (state: IAppState, ownProps) => ({
   annotation: ownProps.annotation,
   onChange: ownProps.onChange,
+  onFinished: ownProps.onFinished,
   anchor: state.focus.docPart,
   docId: state.focus.docId,
   username: state.user.username,
