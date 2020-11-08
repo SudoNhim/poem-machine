@@ -20,9 +20,25 @@ interface IProps extends RouteComponentProps<IMatchParams> {
 }
 
 const Document: React.FunctionComponent<IProps> = (props) => {
+  // Update focus
+  const docPart = props.location.hash.substr(1);
+  React.useEffect(() => {
+    props.setFocus({
+      docId,
+      docPart,
+    });
+
+    // Cleanup focus when unmount
+    return () =>
+      props.setFocus({
+        docId: null,
+        docPart: null,
+      });
+  }, [props.doc, docPart]);
+
   if (!props.docMeta) return <p>Document does not exist</p>;
 
-  // Load the document
+  // Load the document if its not loaded
   const docId = props.match.params.docId || "db";
   const doc = props.doc;
   React.useEffect(() => {
@@ -34,39 +50,11 @@ const Document: React.FunctionComponent<IProps> = (props) => {
     }
   }, [docId]);
 
-  // Take focus from the hash fragment of the url, e.g. #s1.p1.l3
-  const docPart = props.location.hash.substr(1);
-
   // Scroll to the hash fragment, if applicable
   React.useEffect(() => {
     if (doc && docPart && props.history.action === "PUSH")
       document.getElementById(docPart).scrollIntoView({ behavior: "smooth" });
   }, [doc]);
-
-  // Set any loaded annotations
-  React.useEffect(() => {
-    if (doc) {
-      const annos = doc.annotations || [];
-      if (!!docPart) {
-        const focusAnnos = annos.filter((anno) => anno.anchor === docPart);
-        if (focusAnnos.length === 0)
-          focusAnnos.push({
-            anchor: docPart,
-            snippet: `No annotations on ${docPart} yet`,
-            annotations: [],
-          });
-        props.setFocus({
-          docId,
-          docPart,
-        });
-      } else {
-        props.setFocus({
-          docId,
-          docPart: null,
-        });
-      }
-    }
-  }, [doc, docPart]);
 
   if (!doc) return <p>Loading...</p>;
   else
