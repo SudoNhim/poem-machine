@@ -88,6 +88,7 @@ const AnnotationEditor: React.FunctionComponent<IProps> = (props) => {
           />
           <Button
             className={classes.button}
+            size="small"
             variant="contained"
             onClick={() => setAddLinkDialogOpen(true)}
           >
@@ -95,6 +96,7 @@ const AnnotationEditor: React.FunctionComponent<IProps> = (props) => {
           </Button>
           <Button
             className={classes.button}
+            size="small"
             variant="contained"
             onClick={() => {
               setNewAnnotationText("");
@@ -106,6 +108,7 @@ const AnnotationEditor: React.FunctionComponent<IProps> = (props) => {
           </Button>
           <Button
             className={classes.button}
+            size="small"
             variant="contained"
             color="primary"
             type="submit"
