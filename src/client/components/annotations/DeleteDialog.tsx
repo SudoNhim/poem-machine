@@ -61,9 +61,7 @@ const DeleteDialog: React.FunctionComponent<IProps> = (props) => {
           <Annotation annotation={props.annotation} />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => props.onFinished()} color="secondary">
-            Cancel
-          </Button>
+          <Button onClick={() => props.onFinished()}>Cancel</Button>
           <Button onClick={() => handleDelete()} color="primary">
             Delete
           </Button>

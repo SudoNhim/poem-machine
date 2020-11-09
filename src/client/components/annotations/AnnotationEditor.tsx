@@ -1,4 +1,11 @@
-import { Button, Divider, TextField, makeStyles } from "@material-ui/core";
+import {
+  Button,
+  Divider,
+  IconButton,
+  TextField,
+  makeStyles,
+} from "@material-ui/core";
+import { Cancel, Check, Clear } from "@material-ui/icons";
 import * as React from "react";
 import { connect } from "react-redux";
 
@@ -18,8 +25,13 @@ const useStyles = makeStyles({
     marginTop: 10,
     marginBottom: 10,
   },
-  button: {
+  buttonLeft: {
     marginRight: 10,
+  },
+
+  buttonRight: {
+    marginRight: 10,
+    float: "right",
   },
 });
 
@@ -87,35 +99,33 @@ const AnnotationEditor: React.FunctionComponent<IProps> = (props) => {
             onChange={(e) => setNewAnnotationText(e.target.value)}
           />
           <Button
-            className={classes.button}
+            className={classes.buttonLeft}
             size="small"
             variant="contained"
             onClick={() => setAddLinkDialogOpen(true)}
           >
             add link
           </Button>
-          <Button
-            className={classes.button}
+          <IconButton
+            className={classes.buttonRight}
             size="small"
-            variant="contained"
+            color="primary"
+            type="submit"
+            disabled={!newAnnotationText}
+          >
+            <Check />
+          </IconButton>
+          <IconButton
+            className={classes.buttonRight}
+            size="small"
             onClick={() => {
               setNewAnnotationText("");
               props.onFinished();
             }}
             disabled={!newAnnotationText}
           >
-            cancel
-          </Button>
-          <Button
-            className={classes.button}
-            size="small"
-            variant="contained"
-            color="primary"
-            type="submit"
-            disabled={!newAnnotationText}
-          >
-            submit
-          </Button>
+            <Clear />
+          </IconButton>
         </form>
         <AddLinkDialog
           isOpen={addLinkDialogOpen}
