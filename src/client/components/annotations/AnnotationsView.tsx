@@ -9,9 +9,14 @@ import AnnotationsGroup from "./AnnotationsGroup";
 interface IProps {
   focus: IFocusState;
   annotations: IAnnotationsGroup[];
+  hasDoc: boolean;
 }
 
 const AnnotationsView: React.FunctionComponent<IProps> = (props) => {
+  if (!props.hasDoc) {
+    return null;
+  }
+
   let annotations: IAnnotationsGroup[] = props.annotations;
   if (!!props.focus.docPart) {
     annotations = annotations.filter(
@@ -42,6 +47,7 @@ const AnnotationsView: React.FunctionComponent<IProps> = (props) => {
 const mapStateToProps = (state: IAppState) => ({
   annotations: state.docs.cache[state.focus.docId]?.annotations || [],
   focus: state.focus,
+  hasDoc: !!state.docs.cache[state.focus.docId],
 });
 
 export default connect(mapStateToProps, { setDoc })(AnnotationsView);
