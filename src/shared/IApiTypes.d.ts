@@ -89,3 +89,11 @@ export interface ISearchResults {
   // A list of aggregated previews by docid/section
   previews: IDocReferencePreview[];
 }
+
+export interface IAppStatistics {
+  documentsCount: number;
+  stubsCount: number;
+  usersCount: number;
+  annotationsCount: number;
+  chatMessagesCount: number;
+}

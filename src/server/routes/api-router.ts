@@ -6,6 +6,7 @@ import { IAnnotation, IDoc } from "../../shared/IApiTypes";
 import { AnnotationsController } from "../controllers/annotations";
 import { GraphController } from "../controllers/graph";
 import { SearchController } from "../controllers/search";
+import { StatisticsController } from "../controllers/statistics";
 import docsDb from "../database";
 import { GeneratePreview } from "../lib/generate-preview";
 import { compareAnchors } from "../lib/load-doc-updates";
@@ -20,6 +21,7 @@ export function apiRouter() {
   const graphProvider = new GraphController();
   const annotationsProvider = new AnnotationsController();
   const searchController = new SearchController();
+  const statisticsController = new StatisticsController();
 
   router.get("/docs/get/:docId", async (req, res) => {
     const doc = docsDb[req.params.docId];
@@ -214,6 +216,10 @@ export function apiRouter() {
         });
       }
     );
+  });
+
+  router.get("/statistics", async (req, res) => {
+    res.json(await statisticsController.getStatistics());
   });
 
   return router;

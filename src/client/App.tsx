@@ -40,8 +40,7 @@ const AppImpl: React.FunctionComponent<IProps> = (props: IProps) => {
         <AppLayout>
           {ready ? (
             <Switch>
-              <Route exact path="/" component={Document} />
-              <Route exact path="/home" component={Home} />
+              <Route exact path="/" component={Home} />
               <Route exact path="/chat" component={Chat} />
               <Route path="/doc/:docId" component={Document} />
               <Route path="/search/:searchTerm" component={SearchResults} />
