@@ -107,6 +107,7 @@ export interface IAnnotationUpdate extends IAppUpdateBase {
   user: string;
   target: string;
   anchor: string;
+  operation: "edit" | "add" | "delete";
 }
 
 export interface IChatUpdate extends IAppUpdateBase {

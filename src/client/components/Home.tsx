@@ -1,13 +1,18 @@
 import { Paper, Theme, Typography, makeStyles } from "@material-ui/core";
 import * as React from "react";
 
-import { IAppStatistics } from "../../shared/IApiTypes";
-import { getStatistics } from "../api";
+import { IAppStatistics, IAppUpdate } from "../../shared/IApiTypes";
+import { getFeed, getStatistics } from "../api";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     flex: 1,
     padding: theme.spacing(2),
+  },
+  feedItem: {
+    padding: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+    backgroundColor: theme.palette.grey[100],
   },
 }));
 
@@ -19,6 +24,42 @@ const Home: React.FunctionComponent = () => {
     const fetchStats = async () => setStatistics(await getStatistics());
     fetchStats();
   }, []);
+
+  const [feed, setFeed] = React.useState<IAppUpdate[]>();
+  React.useEffect(() => {
+    const fetchFeed = async () => setFeed(await getFeed());
+    fetchFeed();
+  }, []);
+
+  const renderUpdate = (update: IAppUpdate) => {
+    let title: string;
+    let content: string;
+    if (update.kind === "deployment") {
+      title = "Deployment";
+      content = "The application re-deployed with updates.";
+    } else if (update.kind === "chat") {
+      title = "Chat Activity";
+      content = `${update.count} new messages`;
+    } else {
+      title = `Annotation ${update.operation.toUpperCase()}`;
+      content = `User ${update.user} ${update.operation}ed an annotation to ${update.target}#${update.anchor}`;
+    }
+
+    const datePart = update.time.split("T")[0];
+    const dt = new Date(update.time);
+    const timePart = `${dt
+      .getHours()
+      .toString()
+      .padStart(2, "0")}:${dt.getMinutes().toString().padStart(2, "0")}`;
+
+    return (
+      <Paper className={classes.feedItem}>
+        <Typography color="textSecondary">{`${datePart} ${timePart}`}</Typography>
+        <Typography variant="h6">{title}</Typography>
+        <Typography>{content}</Typography>
+      </Paper>
+    );
+  };
 
   return (
     <Paper className={classes.root}>
@@ -56,6 +97,13 @@ const Home: React.FunctionComponent = () => {
       <Typography variant="h6" gutterBottom>
         Feed
       </Typography>
+      {feed ? (
+        feed.map((update, i) => <div key={i}>{renderUpdate(update)}</div>)
+      ) : (
+        <Typography variant="body1" gutterBottom>
+          Loading...
+        </Typography>
+      )}
     </Paper>
   );
 };

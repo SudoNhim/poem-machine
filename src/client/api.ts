@@ -3,6 +3,7 @@ import axios from "axios";
 import {
   IAnnotation,
   IAppStatistics,
+  IAppUpdate,
   IDoc,
   IDocGraph,
   ISearchResults,
@@ -79,5 +80,10 @@ export async function getUser(): Promise<{ username: string }> {
 
 export async function getStatistics(): Promise<IAppStatistics> {
   const response = await axios.get(`/api/statistics`);
+  return response.data;
+}
+
+export async function getFeed(): Promise<IAppUpdate[]> {
+  const response = await axios.get(`/api/feed`);
   return response.data;
 }

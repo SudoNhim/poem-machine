@@ -49,19 +49,25 @@ export class StatisticsController {
     const messageUpdates: IChatUpdate[] = messages.map((msg) => ({
       kind: "chat",
       count: 1,
-      time: msg.time.toISOString(),
+      time: msg.time?.toISOString(),
     }));
     updates.push(...messageUpdates);
 
     const docUpdates = await DocUpdate.find();
     const annotationUpdates: IAnnotationUpdate[] = docUpdates.map((update) => ({
       kind: "annotation",
-      time: update.time.toISOString(),
+      time: update.time?.toISOString(),
       user: update.user,
       target: update.docId,
       anchor: update.anchor,
+      operation: update.operation,
     }));
     updates.push(...annotationUpdates);
+
+    // for any updates without time info, put in a time before time info was supported
+    updates.forEach((update) => {
+      if (!update.time) update.time = new Date(2020, 11, 13).toISOString();
+    });
 
     updates.sort((a, b) => (a.time < b.time ? -1 : 1));
 
@@ -73,6 +79,7 @@ export class StatisticsController {
       const prev = accum && accum[accum.length - 1];
       if (cur.kind === "chat" && prev && prev.kind === "chat") {
         prev.count++;
+        prev.time = cur.time;
         return accum;
       } else {
         return [...accum, cur];

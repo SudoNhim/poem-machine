@@ -237,5 +237,9 @@ export function apiRouter() {
     res.json(await statisticsController.getStatistics());
   });
 
+  router.get("/feed", async (req, res) => {
+    res.json(await statisticsController.getFeed());
+  });
+
   return router;
 }
