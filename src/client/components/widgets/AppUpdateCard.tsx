@@ -55,7 +55,9 @@ const AppUpdateCard: React.FunctionComponent<IProps> = (props) => {
     isExternalLink = false;
   } else {
     title = `Annotation ${props.update.operation}`;
-    content = `User ${props.update.user} ${props.update.operation}ed an annotation to ${props.update.target}#${props.update.anchor}`;
+    const docTitle = props.graph[props.update.target].title;
+    const docKind = props.graph[props.update.target].kind;
+    content = `User ${props.update.user} ${props.update.operation}ed an annotation to ${docKind} ${docTitle}`;
     destination = `/doc/${props.update.target}#${props.update.anchor}`;
     isExternalLink = false;
   }
