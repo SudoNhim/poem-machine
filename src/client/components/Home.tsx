@@ -98,7 +98,9 @@ const Home: React.FunctionComponent = () => {
         Feed
       </Typography>
       {feed ? (
-        feed.map((update, i) => <div key={i}>{renderUpdate(update)}</div>)
+        feed
+          .reverse()
+          .map((update, i) => <div key={i}>{renderUpdate(update)}</div>)
       ) : (
         <Typography variant="body1" gutterBottom>
           Loading...
