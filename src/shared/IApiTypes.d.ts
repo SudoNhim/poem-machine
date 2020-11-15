@@ -97,3 +97,25 @@ export interface IAppStatistics {
   annotationsCount: number;
   chatMessagesCount: number;
 }
+
+interface IAppUpdateBase {
+  time: string;
+}
+
+export interface IAnnotationUpdate extends IAppUpdateBase {
+  kind: "annotation";
+  user: string;
+  target: string;
+  anchor: string;
+}
+
+export interface IChatUpdate extends IAppUpdateBase {
+  kind: "chat";
+  count: number;
+}
+
+export interface IDeploymentUpdate extends IAppUpdateBase {
+  kind: "deployment";
+}
+
+export type IAppUpdate = IAnnotationUpdate | IChatUpdate | IDeploymentUpdate;

@@ -26,8 +26,8 @@ const Home: React.FunctionComponent = () => {
         Welcome to Leonard Cohen Notes
       </Typography>
       <Typography variant="body1" gutterBottom>
-        This site has a simple mission: to be the world's best resource for
-        analyzing Leonard Cohen's lyrics.
+        A simple mission: to be the world's best resource for analyzing Leonard
+        Cohen's lyrics.
       </Typography>
       <Typography variant="h6" gutterBottom>
         Statistics

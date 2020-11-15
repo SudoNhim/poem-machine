@@ -39,6 +39,7 @@ export function setupSocketIo(
       socket.on("chat message", (msg: IChatMessage) => {
         // Create a message with the content and the name of the user.
         const message = new ChatMessage({
+          time: new Date(),
           user: username,
           content: msg.content,
         });

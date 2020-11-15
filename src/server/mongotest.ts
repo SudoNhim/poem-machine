@@ -8,13 +8,23 @@ export async function createTestDatabase(dbName: string): Promise<void> {
   const mongod = new MongoMemoryServer({ instance: { dbName } });
   mongoose.connect(await mongod.getUri());
 
-  // register test user
   Account.register(
     new Account({ username: "augustine", email: "augustine@hippo" }),
     "confessions"
   );
 
+  Account.register(
+    new Account({ username: "anselm", email: "aquinas@sicily" }),
+    "summa"
+  );
+
+  Account.register(
+    new Account({ username: "aquinas", email: "aquinas@canterbury" }),
+    "ontological"
+  );
+
   new ChatMessage({
+    time: new Date(370, 9, 22, 8, 23),
     user: "augustine",
     content: [
       {
@@ -25,16 +35,7 @@ export async function createTestDatabase(dbName: string): Promise<void> {
   }).save();
 
   new ChatMessage({
-    user: "aquinas",
-    content: [
-      {
-        kind: "text",
-        text: "The things that we love tell us what we are.",
-      },
-    ],
-  }).save();
-
-  new ChatMessage({
+    time: new Date(1093, 5, 3, 10, 17),
     user: "anselm",
     content: [
       {
@@ -53,6 +54,17 @@ export async function createTestDatabase(dbName: string): Promise<void> {
         kind: "link",
         link: "https://leonardcohennotes.com",
         text: "Leonard Cohen Notes",
+      },
+    ],
+  }).save();
+
+  new ChatMessage({
+    time: new Date(1255, 1, 15, 18, 40),
+    user: "aquinas",
+    content: [
+      {
+        kind: "text",
+        text: "The things that we love tell us what we are.",
       },
     ],
   }).save();
