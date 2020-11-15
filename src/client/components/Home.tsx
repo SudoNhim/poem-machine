@@ -3,15 +3,11 @@ import * as React from "react";
 
 import { IAppStatistics, IAppUpdate } from "../../shared/IApiTypes";
 import { getFeed, getStatistics } from "../api";
+import AppUpdateCard from "./widgets/AppUpdateCard";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: theme.spacing(2),
-  },
-  feedItem: {
-    padding: theme.spacing(1),
-    marginBottom: theme.spacing(2),
-    backgroundColor: theme.palette.grey[100],
   },
 }));
 
@@ -29,36 +25,6 @@ const Home: React.FunctionComponent = () => {
     const fetchFeed = async () => setFeed(await getFeed());
     fetchFeed();
   }, []);
-
-  const renderUpdate = (update: IAppUpdate) => {
-    let title: string;
-    let content: string;
-    if (update.kind === "deployment") {
-      title = "Deployment";
-      content = "The application re-deployed with updates.";
-    } else if (update.kind === "chat") {
-      title = "Chat activity";
-      content = `${update.count} new messages`;
-    } else {
-      title = `Annotation ${update.operation}`;
-      content = `User ${update.user} ${update.operation}ed an annotation to ${update.target}#${update.anchor}`;
-    }
-
-    const datePart = update.time.split("T")[0];
-    const dt = new Date(update.time);
-    const timePart = `${dt
-      .getHours()
-      .toString()
-      .padStart(2, "0")}:${dt.getMinutes().toString().padStart(2, "0")}`;
-
-    return (
-      <Paper className={classes.feedItem}>
-        <Typography color="textSecondary">{`${datePart} ${timePart}`}</Typography>
-        <Typography variant="h6">{title}</Typography>
-        <Typography>{content}</Typography>
-      </Paper>
-    );
-  };
 
   return (
     <Paper className={classes.root}>
@@ -99,7 +65,7 @@ const Home: React.FunctionComponent = () => {
       {feed ? (
         feed
           .reverse()
-          .map((update, i) => <div key={i}>{renderUpdate(update)}</div>)
+          .map((update, i) => <AppUpdateCard update={update} key={i} />)
       ) : (
         <Typography variant="body1" gutterBottom>
           Loading...
