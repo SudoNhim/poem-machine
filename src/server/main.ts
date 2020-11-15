@@ -26,7 +26,7 @@ async function main() {
   try {
     // Database
     if (MONGODB_STR) mongoose.connect(MONGODB_STR);
-    else createTestDatabase("test");
+    else await createTestDatabase("test");
     await loadDocUpdates();
 
     // Auth config

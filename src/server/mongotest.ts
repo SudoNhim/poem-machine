@@ -9,22 +9,22 @@ export async function createTestDatabase(dbName: string): Promise<void> {
   const mongod = new MongoMemoryServer({ instance: { dbName } });
   mongoose.connect(await mongod.getUri());
 
-  Account.register(
+  await Account.register(
     new Account({ username: "augustine", email: "augustine@hippo" }),
     "confessions"
   );
 
-  Account.register(
+  await Account.register(
     new Account({ username: "anselm", email: "aquinas@sicily" }),
     "summa"
   );
 
-  Account.register(
+  await Account.register(
     new Account({ username: "aquinas", email: "aquinas@canterbury" }),
     "ontological"
   );
 
-  new ChatMessage({
+  await new ChatMessage({
     time: new Date(370, 9, 22, 8, 23),
     user: "augustine",
     content: [
@@ -35,7 +35,7 @@ export async function createTestDatabase(dbName: string): Promise<void> {
     ],
   }).save();
 
-  new ChatMessage({
+  await new ChatMessage({
     time: new Date(1093, 5, 3, 10, 17),
     user: "anselm",
     content: [
@@ -59,7 +59,7 @@ export async function createTestDatabase(dbName: string): Promise<void> {
     ],
   }).save();
 
-  new ChatMessage({
+  await new ChatMessage({
     time: new Date(1255, 1, 15, 18, 40),
     user: "aquinas",
     content: [
@@ -70,7 +70,7 @@ export async function createTestDatabase(dbName: string): Promise<void> {
     ],
   }).save();
 
-  new DocUpdate({
+  await new DocUpdate({
     docId: "song.gift",
     anchor: "p1.l4",
     file: {
@@ -109,4 +109,6 @@ export async function createTestDatabase(dbName: string): Promise<void> {
     time: "2020-11-15T18:07:25.372Z",
     user: "anonymous",
   }).save();
+
+  return;
 }
