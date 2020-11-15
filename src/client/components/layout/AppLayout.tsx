@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
       display: "flex",
       flexDirection: "row",
-      height: "100vh",
       padding: theme.spacing(2),
       [theme.breakpoints.down("sm")]: {
         // appbar offset

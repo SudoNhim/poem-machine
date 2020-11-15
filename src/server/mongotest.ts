@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 
 import { Account } from "./models/Account";
 import { ChatMessage } from "./models/ChatMessage";
+import { DocUpdate } from "./models/DocUpdate";
 
 export async function createTestDatabase(dbName: string): Promise<void> {
   const mongod = new MongoMemoryServer({ instance: { dbName } });
@@ -67,5 +68,45 @@ export async function createTestDatabase(dbName: string): Promise<void> {
         text: "The things that we love tell us what we are.",
       },
     ],
+  }).save();
+
+  new DocUpdate({
+    docId: "song.gift",
+    anchor: "p1.l4",
+    file: {
+      title: "Gift",
+      content: {
+        content: {
+          text: [
+            [
+              "You tell me that silence",
+              "is nearer to peace than poems",
+              "but if for my gift",
+              "I brought you silence",
+              "(for I know silence)",
+              "you would say",
+              "This is not silence",
+              "this is another poem",
+              "and you would hand it back to me.",
+            ],
+          ],
+        },
+      },
+      kind: "song",
+      annotations: [
+        {
+          anchor: "p1.l4",
+          annotations: [
+            {
+              user: "anonymous",
+              content: [{ kind: "text", text: "thanks I love silence" }],
+            },
+          ],
+        },
+      ],
+    },
+    operation: "add",
+    time: "2020-11-15T18:07:25.372Z",
+    user: "anonymous",
   }).save();
 }

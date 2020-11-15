@@ -6,7 +6,6 @@ import { getFeed, getStatistics } from "../api";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    flex: 1,
     padding: theme.spacing(2),
   },
   feedItem: {
@@ -95,7 +94,7 @@ const Home: React.FunctionComponent = () => {
           : "Loading..."}
       </Typography>
       <Typography variant="h6" gutterBottom>
-        Feed
+        Activity Feed
       </Typography>
       {feed ? (
         feed
