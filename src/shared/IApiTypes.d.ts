@@ -89,3 +89,34 @@ export interface ISearchResults {
   // A list of aggregated previews by docid/section
   previews: IDocReferencePreview[];
 }
+
+export interface IAppStatistics {
+  documentsCount: number;
+  stubsCount: number;
+  usersCount: number;
+  annotationsCount: number;
+  chatMessagesCount: number;
+}
+
+interface IAppUpdateBase {
+  time: string;
+}
+
+export interface IAnnotationUpdate extends IAppUpdateBase {
+  kind: "annotation";
+  user: string;
+  target: string;
+  anchor: string;
+  operation: "edit" | "add" | "delete";
+}
+
+export interface IChatUpdate extends IAppUpdateBase {
+  kind: "chat";
+  count: number;
+}
+
+export interface IDeploymentUpdate extends IAppUpdateBase {
+  kind: "deployment";
+}
+
+export type IAppUpdate = IAnnotationUpdate | IChatUpdate | IDeploymentUpdate;

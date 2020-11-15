@@ -6,6 +6,7 @@ import { IAnnotation, IDoc } from "../../shared/IApiTypes";
 import { AnnotationsController } from "../controllers/annotations";
 import { GraphController } from "../controllers/graph";
 import { SearchController } from "../controllers/search";
+import { StatisticsController } from "../controllers/statistics";
 import docsDb from "../database";
 import { GeneratePreview } from "../lib/generate-preview";
 import { compareAnchors } from "../lib/load-doc-updates";
@@ -20,6 +21,7 @@ export function apiRouter() {
   const graphProvider = new GraphController();
   const annotationsProvider = new AnnotationsController();
   const searchController = new SearchController();
+  const statisticsController = new StatisticsController();
 
   router.get("/docs/get/:docId", async (req, res) => {
     const doc = docsDb[req.params.docId];
@@ -78,7 +80,8 @@ export function apiRouter() {
       const group = docAnnotations.find((grp) => grp.anchor === anchor);
 
       // If this is an edit, edit in place
-      if (reqAnnotation.indexByUser >= 0) {
+      const isEdit = reqAnnotation.indexByUser >= 0;
+      if (isEdit) {
         const existing = group.annotations.filter(
           (anno) => anno.user === reqAnnotation.user
         );
@@ -94,7 +97,14 @@ export function apiRouter() {
       doc.annotations = docAnnotations;
       await DocUpdate.findOneAndUpdate(
         { docId },
-        { docId, file: doc },
+        {
+          time: new Date(),
+          docId,
+          file: doc,
+          user: username,
+          anchor,
+          operation: isEdit ? "edit" : "add",
+        },
         { upsert: true }
       );
 
@@ -130,7 +140,14 @@ export function apiRouter() {
 
       await DocUpdate.findOneAndUpdate(
         { docId },
-        { docId, file: doc },
+        {
+          time: new Date(),
+          docId,
+          file: doc,
+          user: username,
+          anchor,
+          operation: "delete",
+        },
         { upsert: true }
       );
 
@@ -214,6 +231,14 @@ export function apiRouter() {
         });
       }
     );
+  });
+
+  router.get("/statistics", async (req, res) => {
+    res.json(await statisticsController.getStatistics());
+  });
+
+  router.get("/feed", async (req, res) => {
+    res.json(await statisticsController.getFeed());
   });
 
   return router;
