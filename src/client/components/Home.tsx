@@ -38,10 +38,10 @@ const Home: React.FunctionComponent = () => {
       title = "Deployment";
       content = "The application re-deployed with updates.";
     } else if (update.kind === "chat") {
-      title = "Chat Activity";
+      title = "Chat activity";
       content = `${update.count} new messages`;
     } else {
-      title = `Annotation ${update.operation.toUpperCase()}`;
+      title = `Annotation ${update.operation}`;
       content = `User ${update.user} ${update.operation}ed an annotation to ${update.target}#${update.anchor}`;
     }
 
