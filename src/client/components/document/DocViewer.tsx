@@ -2,7 +2,7 @@ import { Paper, Typography } from "@material-ui/core";
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 
-import { IDoc, IDocMeta } from "../../../shared/IApiTypes";
+import { IDoc, IDocMeta } from "../../../shared/ApiTypes";
 import ContentView from "./ContentView";
 import DocReferencePreview from "./DocReferencePreview";
 import MetadataView from "./MetadataView";

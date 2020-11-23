@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 
-import { IDoc, IDocMeta } from "../../shared/IApiTypes";
+import { IDoc, IDocMeta } from "../../shared/ApiTypes";
 import { setDoc, setFocus } from "../actions";
 import { getDoc } from "../api";
 import { IAppState } from "../model";

@@ -56,6 +56,7 @@ export class StatisticsController {
     const docUpdates = await DocUpdate.find();
     const userActionUpdates: IUserActionUpdate[] = docUpdates.map((update) => ({
       kind: "userAction",
+      user: update.user,
       action: update.action,
       time: update.time.toISOString(),
     }));

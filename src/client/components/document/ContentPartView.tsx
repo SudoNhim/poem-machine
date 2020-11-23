@@ -3,7 +3,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { IAnnotation, IDocMeta } from "../../../shared/IApiTypes";
+import { IAnnotation, IDocMeta } from "../../../shared/ApiTypes";
 import { IAppState } from "../../model";
 import CanonTextView from "./CanonTextView";
 

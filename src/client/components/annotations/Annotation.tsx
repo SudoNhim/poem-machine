@@ -4,7 +4,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { IAnnotation } from "../../../shared/IApiTypes";
+import { IAnnotation } from "../../../shared/ApiTypes";
 import { IAppState } from "../../model";
 import ContentToken from "../shared/ContentToken";
 

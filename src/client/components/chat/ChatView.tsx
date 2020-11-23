@@ -2,7 +2,7 @@ import { Paper, TextField, Theme, makeStyles } from "@material-ui/core";
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { IChatMessage } from "../../../shared/IApiTypes";
+import { IChatMessage } from "../../../shared/ApiTypes";
 import { IAppState } from "../../model";
 import { textToTokens } from "../../util";
 import ChatMessage from "./ChatMessage";

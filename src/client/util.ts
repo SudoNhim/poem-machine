@@ -1,4 +1,4 @@
-import { IContentToken, IDoc } from "../shared/IApiTypes";
+import { IContentToken, IDoc } from "../shared/ApiTypes";
 
 function trimString(str: string, len: number): string {
   if (str.length < len) return str;

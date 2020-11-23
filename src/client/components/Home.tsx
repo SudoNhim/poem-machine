@@ -1,7 +1,7 @@
 import { Paper, Theme, Typography, makeStyles } from "@material-ui/core";
 import * as React from "react";
 
-import { IAppStatistics, IAppUpdate } from "../../shared/IApiTypes";
+import { IAppStatistics, IAppUpdate } from "../../shared/ApiTypes";
 import { getFeed, getStatistics } from "../api";
 import AppUpdateCard from "./widgets/AppUpdateCard";
 

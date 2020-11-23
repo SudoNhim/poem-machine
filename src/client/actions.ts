@@ -1,4 +1,4 @@
-import { IDoc, IDocGraph } from "../shared/IApiTypes";
+import { IDoc, IDocGraph } from "../shared/ApiTypes";
 import { IFocusState, IHoverState, IUserState, SideBarOpen } from "./model";
 
 export const SET_DOC = "SET_DOC";

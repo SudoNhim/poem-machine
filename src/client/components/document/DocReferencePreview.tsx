@@ -10,7 +10,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 
-import { IDocMeta, IDocReferencePreview } from "../../../shared/IApiTypes";
+import { IDocMeta, IDocReferencePreview } from "../../../shared/ApiTypes";
 import { SerializeDocRef } from "../../../shared/util";
 import { IAppState } from "../../model";
 

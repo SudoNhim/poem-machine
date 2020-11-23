@@ -106,6 +106,7 @@ interface IAppUpdateBase {
 
 export interface IUserActionUpdate extends IAppUpdateBase {
   kind: "userAction";
+  user: string;
   action: IUserAction;
 }
 

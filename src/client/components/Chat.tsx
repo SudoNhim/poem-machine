@@ -1,7 +1,7 @@
 import * as React from "react";
 import io from "socket.io-client";
 
-import { IChatMessage } from "../../shared/IApiTypes";
+import { IChatMessage } from "../../shared/ApiTypes";
 import ChatView from "./chat/ChatView";
 
 const Chat: React.FunctionComponent = () => {

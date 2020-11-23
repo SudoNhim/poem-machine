@@ -1,7 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { IAnnotationsGroup } from "../../../shared/IApiTypes";
+import { IAnnotationsGroup } from "../../../shared/ApiTypes";
 import { setDoc } from "../../actions";
 import { IAppState, IFocusState } from "../../model";
 import AnnotationsGroup from "./AnnotationsGroup";

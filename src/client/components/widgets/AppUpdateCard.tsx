@@ -54,10 +54,25 @@ const AppUpdateCard: React.FunctionComponent<IProps> = (props) => {
     destination = `/chat`;
     isExternalLink = false;
   } else {
+    let actionDesc: string;
+    switch (props.update.action.kind) {
+      case "addAnnotation":
+        title = "Annotation added";
+        actionDesc = "added an annotation to";
+        break;
+      case "editAnnotation":
+        title = "Annotation edited";
+        actionDesc = "edited an annotation on";
+        break;
+      case "deleteAnnotation":
+        title = "Annotation deleted";
+        actionDesc = "deleted an annotation on";
+    }
+
     title = `Action ${props.update.action.kind}`;
     const docTitle = props.graph[props.update.action.documentId].title;
     const docKind = props.graph[props.update.action.documentId].kind;
-    content = `User ${props.update.action.user} ${props.update.action.kind}ed an annotation to ${docKind} ${docTitle}`;
+    content = `User ${props.update.user} ${actionDesc} ${docKind} ${docTitle}`;
     destination = `/doc/${props.update.action.documentId}#${props.update.action.anchor}`;
     isExternalLink = false;
   }

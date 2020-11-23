@@ -1,4 +1,4 @@
-import { IDoc, IDocGraph } from "../shared/IApiTypes";
+import { IDoc, IDocGraph } from "../shared/ApiTypes";
 
 export interface IDocCache {
   [docId: string]: IDoc;
