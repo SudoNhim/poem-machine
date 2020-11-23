@@ -8,9 +8,9 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import React from "react";
 import { connect } from "react-redux";
 
-import { IAnnotation } from "../../../shared/IApiTypes";
+import { IAnnotation } from "../../../shared/ApiTypes";
 import { setDoc } from "../../actions";
-import { deleteAnnotation, getDoc } from "../../api";
+import { getDoc, postUserAction } from "../../api";
 import { IAppState } from "../../model";
 import Annotation from "./Annotation";
 
@@ -40,7 +40,13 @@ const DeleteDialog: React.FunctionComponent<IProps> = (props) => {
   const classes = useStyles();
 
   const handleDelete = async () => {
-    await deleteAnnotation(props.docId, props.anchor, props.annotation);
+    await postUserAction({
+      kind: "deleteAnnotation",
+      user: null,
+      documentId: props.docId,
+      anchor: props.anchor,
+      annotationId: props.annotation.id,
+    });
     const loaded = await getDoc(props.docId);
     props.setDoc(props.docId, loaded);
     props.onFinished();

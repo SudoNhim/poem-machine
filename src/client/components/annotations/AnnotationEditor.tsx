@@ -5,13 +5,13 @@ import {
   TextField,
   makeStyles,
 } from "@material-ui/core";
-import { Cancel, Check, Clear } from "@material-ui/icons";
+import { Check, Clear } from "@material-ui/icons";
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { IAnnotation } from "../../../shared/IApiTypes";
+import { IAnnotation } from "../../../shared/ApiTypes";
 import { setDoc } from "../../actions";
-import { addAnnotation, getDoc } from "../../api";
+import { getDoc, postUserAction } from "../../api";
 import { IAppState } from "../../model";
 import { textToTokens, tokensToText } from "../../util";
 import AddLinkDialog from "./AddLinkDialog";
@@ -56,11 +56,11 @@ const AnnotationEditor: React.FunctionComponent<IProps> = (props) => {
       setNewAnnotationText(tokensToText(props.annotation.content));
   }, [props.annotation]);
 
-  const newAnnotation = newAnnotationText
+  const newAnnotation: IAnnotation = newAnnotationText
     ? props.annotation
       ? { ...props.annotation, content: textToTokens(newAnnotationText) }
       : {
-          indexByUser: -1, // -1 for new annotation
+          id: null, // will be filled in server side
           user: props.username,
           content: textToTokens(newAnnotationText),
         }
@@ -70,7 +70,23 @@ const AnnotationEditor: React.FunctionComponent<IProps> = (props) => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    await addAnnotation(props.docId, props.anchor, newAnnotation);
+    if (props.annotation && props.annotation.id) {
+      await postUserAction({
+        kind: "editAnnotation",
+        documentId: props.docId,
+        anchor: props.anchor,
+        annotationId: newAnnotation.id,
+        content: newAnnotation.content,
+      });
+    } else {
+      await postUserAction({
+        kind: "addAnnotation",
+        documentId: props.docId,
+        anchor: props.anchor,
+        content: newAnnotation.content,
+      });
+    }
+
     const loaded = await getDoc(props.docId);
     props.setDoc(props.docId, loaded);
     setNewAnnotationText("");

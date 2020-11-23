@@ -7,7 +7,7 @@ import {
   IDocReference,
   IDocReferencePreview,
   ISearchResults,
-} from "../../shared/IApiTypes";
+} from "../../shared/ApiTypes";
 import { DeserializeDocRef, SerializeDocRef } from "../../shared/util";
 import { ExplodeAllSearchable } from "../lib/explode-searchable";
 import { GeneratePreview } from "../lib/generate-preview";

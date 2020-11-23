@@ -12,7 +12,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 
-import { IAppUpdate, IDocGraph } from "../../../shared/IApiTypes";
+import { IAppUpdate, IDocGraph } from "../../../shared/ApiTypes";
 import { IAppState } from "../../model";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -54,11 +54,11 @@ const AppUpdateCard: React.FunctionComponent<IProps> = (props) => {
     destination = `/chat`;
     isExternalLink = false;
   } else {
-    title = `Annotation ${props.update.operation}`;
-    const docTitle = props.graph[props.update.target].title;
-    const docKind = props.graph[props.update.target].kind;
-    content = `User ${props.update.user} ${props.update.operation}ed an annotation to ${docKind} ${docTitle}`;
-    destination = `/doc/${props.update.target}#${props.update.anchor}`;
+    title = `Action ${props.update.action.kind}`;
+    const docTitle = props.graph[props.update.action.documentId].title;
+    const docKind = props.graph[props.update.action.documentId].kind;
+    content = `User ${props.update.action.user} ${props.update.action.kind}ed an annotation to ${docKind} ${docTitle}`;
+    destination = `/doc/${props.update.action.documentId}#${props.update.action.anchor}`;
     isExternalLink = false;
   }
 

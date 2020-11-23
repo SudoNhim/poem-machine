@@ -2,7 +2,7 @@ import { isNullOrUndefined } from "util";
 
 import { Text } from "cohen-db/schema";
 
-import { IDocReference, IDocReferencePreview } from "../../shared/IApiTypes";
+import { IDocReference, IDocReferencePreview } from "../../shared/ApiTypes";
 import docsDb from "../database";
 
 /*
