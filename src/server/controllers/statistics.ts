@@ -1,10 +1,10 @@
 import {
-  IAnnotationUpdate,
   IAppStatistics,
   IAppUpdate,
   IChatUpdate,
   IDeploymentUpdate,
-} from "../../shared/IApiTypes";
+  IUserActionUpdate,
+} from "../../shared/ApiTypes";
 import docsDb from "../database";
 import { Account } from "../models/Account";
 import { ChatMessage } from "../models/ChatMessage";
@@ -54,15 +54,13 @@ export class StatisticsController {
     updates.push(...messageUpdates);
 
     const docUpdates = await DocUpdate.find();
-    const annotationUpdates: IAnnotationUpdate[] = docUpdates.map((update) => ({
-      kind: "annotation",
-      time: update.time?.toISOString(),
+    const userActionUpdates: IUserActionUpdate[] = docUpdates.map((update) => ({
+      kind: "userAction",
       user: update.user,
-      target: update.docId,
-      anchor: update.anchor,
-      operation: update.operation,
+      action: update.action,
+      time: update.time.toISOString(),
     }));
-    updates.push(...annotationUpdates);
+    updates.push(...userActionUpdates);
 
     // for any updates without time info, put in a time before time info was supported
     updates.forEach((update) => {

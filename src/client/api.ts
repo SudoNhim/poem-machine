@@ -7,7 +7,8 @@ import {
   IDoc,
   IDocGraph,
   ISearchResults,
-} from "../shared/IApiTypes";
+} from "../shared/ApiTypes";
+import { IUserAction } from "../shared/UserActions";
 
 export async function getDoc(id: string): Promise<IDoc> {
   const response = await axios.get(`/api/docs/get/${id}`);
@@ -26,23 +27,11 @@ export async function getSearchResults(term: string): Promise<ISearchResults> {
   return response.data as ISearchResults;
 }
 
-export async function addAnnotation(
-  docId: string,
-  anchor: string,
-  annotation: IAnnotation
-): Promise<void> {
-  await axios.post(`/api/docs/${docId}/annotations/${anchor}/add`, {
-    annotation,
-  });
-}
-
-export async function deleteAnnotation(
-  docId: string,
-  anchor: string,
-  annotation: IAnnotation
-): Promise<void> {
-  await axios.post(`/api/docs/${docId}/annotations/${anchor}/delete`, {
-    annotation,
+export async function postUserAction(
+  action: IUserAction
+): Promise<{ error?: string }> {
+  return await axios.post(`/api/docs/post`, {
+    action,
   });
 }
 

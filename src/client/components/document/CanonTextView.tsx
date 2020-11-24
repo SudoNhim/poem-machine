@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
 
-import { IAnnotation } from "../../../shared/IApiTypes";
+import { IAnnotation } from "../../../shared/ApiTypes";
 import { setHover, setSideBarOpen } from "../../actions";
 import { IAppState, IFocusState, IHoverState, SideBarOpen } from "../../model";
 

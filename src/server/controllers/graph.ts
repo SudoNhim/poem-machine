@@ -5,7 +5,7 @@ import {
   IContentTokenDocRef,
   IDocGraph,
   IDocReference,
-} from "../../shared/IApiTypes";
+} from "../../shared/ApiTypes";
 import { DeserializeDocRef } from "../../shared/util";
 import docsDb from "../database";
 

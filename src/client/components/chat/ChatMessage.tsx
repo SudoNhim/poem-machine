@@ -1,7 +1,7 @@
 import { Typography, makeStyles } from "@material-ui/core";
 import * as React from "react";
 
-import { IChatMessage } from "../../../shared/IApiTypes";
+import { IChatMessage } from "../../../shared/ApiTypes";
 import ContentToken from "../shared/ContentToken";
 
 const useStyles = makeStyles({

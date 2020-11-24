@@ -1,5 +1,7 @@
 import { CanonFile, Text } from "cohen-db/schema";
 
+import { IUserAction } from "./UserActions";
+
 export interface IDocMeta {
   kind: string;
   title: string;
@@ -66,7 +68,7 @@ export type IContentToken =
 
 export interface IAnnotation {
   user: string;
-  indexByUser: number; // -1 for new, positive for existing
+  id: string;
   content: IContentToken[];
 }
 
@@ -102,12 +104,10 @@ interface IAppUpdateBase {
   time: string;
 }
 
-export interface IAnnotationUpdate extends IAppUpdateBase {
-  kind: "annotation";
+export interface IUserActionUpdate extends IAppUpdateBase {
+  kind: "userAction";
   user: string;
-  target: string;
-  anchor: string;
-  operation: "edit" | "add" | "delete";
+  action: IUserAction;
 }
 
 export interface IChatUpdate extends IAppUpdateBase {
@@ -119,4 +119,4 @@ export interface IDeploymentUpdate extends IAppUpdateBase {
   kind: "deployment";
 }
 
-export type IAppUpdate = IAnnotationUpdate | IChatUpdate | IDeploymentUpdate;
+export type IAppUpdate = IUserActionUpdate | IChatUpdate | IDeploymentUpdate;

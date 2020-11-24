@@ -10,7 +10,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import React from "react";
 import { connect } from "react-redux";
 
-import { IDocGraph } from "../../../shared/IApiTypes";
+import { IDocGraph } from "../../../shared/ApiTypes";
 import { IAppState } from "../../model";
 
 const useStyles = makeStyles({

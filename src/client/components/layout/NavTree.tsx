@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
 
-import { IDocGraph, IDocMeta } from "../../../shared/IApiTypes";
+import { IDocGraph, IDocMeta } from "../../../shared/ApiTypes";
 import { IAppState, IFocusState } from "../../model";
 
 const useStyles = makeStyles({

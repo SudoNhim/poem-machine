@@ -11,7 +11,7 @@ import {
 import React from "react";
 import { connect } from "react-redux";
 
-import { IAnnotationsGroup } from "../../../shared/IApiTypes";
+import { IAnnotationsGroup } from "../../../shared/ApiTypes";
 import { setSideBarOpen } from "../../actions";
 import { IAppState, SideBarOpen } from "../../model";
 import AnnotationsView from "../annotations/AnnotationsView";

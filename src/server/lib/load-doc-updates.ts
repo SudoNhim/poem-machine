@@ -3,7 +3,10 @@ import { DocUpdate } from "../models/DocUpdate";
 
 export async function loadDocUpdates() {
   for await (const update of await DocUpdate.find()) {
-    docsDb[update.docId] = update.file;
+    const docId = update.action.documentId;
+    if (docsDb[docId].version < update.file.version) {
+      docsDb[docId] = update.file;
+    }
   }
 }
 

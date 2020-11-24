@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router";
 
-import { ISearchResults } from "../../shared/IApiTypes";
+import { ISearchResults } from "../../shared/ApiTypes";
 import { getSearchResults } from "../api";
 import DocReferencePreveiw from "./document/DocReferencePreview";
 

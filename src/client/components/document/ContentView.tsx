@@ -3,7 +3,7 @@ import { Content } from "cohen-db/schema";
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { IAnnotation } from "../../../shared/IApiTypes";
+import { IAnnotation } from "../../../shared/ApiTypes";
 import { IAppState } from "../../model";
 import CanonTextView from "./CanonTextView";
 import ContentPartView from "./ContentPartView";

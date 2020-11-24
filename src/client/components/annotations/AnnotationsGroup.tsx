@@ -2,11 +2,7 @@ import { Card, CardContent, Typography, makeStyles } from "@material-ui/core";
 import * as React from "react";
 import { connect } from "react-redux";
 
-import {
-  IAnnotation,
-  IAnnotationsGroup,
-  IDoc,
-} from "../../../shared/IApiTypes";
+import { IAnnotation, IAnnotationsGroup, IDoc } from "../../../shared/ApiTypes";
 import { setDoc } from "../../actions";
 import { IAppState, IHoverState } from "../../model";
 import { snippetFromDoc } from "../../util";

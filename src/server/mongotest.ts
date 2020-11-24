@@ -71,10 +71,19 @@ export async function createTestDatabase(dbName: string): Promise<void> {
   }).save();
 
   await new DocUpdate({
-    docId: "song.gift",
-    anchor: "p1.l4",
+    time: "2020-11-15T18:07:25.372Z",
+    user: "augustine",
+    action: {
+      kind: "addAnnotation",
+      documentId: "song.gift",
+      anchor: "p1.l4",
+      annotation: {
+        content: [{ kind: "text", text: "thanks I love silence" }],
+      },
+    },
     file: {
       title: "Gift",
+      version: 2,
       content: {
         content: {
           text: [
@@ -98,16 +107,13 @@ export async function createTestDatabase(dbName: string): Promise<void> {
           anchor: "p1.l4",
           annotations: [
             {
-              user: "anonymous",
+              user: "augustine",
               content: [{ kind: "text", text: "thanks I love silence" }],
             },
           ],
         },
       ],
     },
-    operation: "add",
-    time: "2020-11-15T18:07:25.372Z",
-    user: "anonymous",
   }).save();
 
   return;
