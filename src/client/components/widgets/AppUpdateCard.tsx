@@ -74,7 +74,6 @@ const AppUpdateCard: React.FunctionComponent<IProps> = (props) => {
         actionDesc = "deleted an annotation on";
     }
 
-    title = `Action ${props.update.action.kind}`;
     const docTitle = props.graph[props.update.action.documentId].title;
     const docKind = props.graph[props.update.action.documentId].kind;
     content = `User ${props.update.user} ${actionDesc} ${docKind} ${docTitle}`;
