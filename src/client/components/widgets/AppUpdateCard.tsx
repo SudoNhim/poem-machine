@@ -8,12 +8,17 @@ import {
   Typography,
   makeStyles,
 } from "@material-ui/core";
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
+import ReactTimeAgo from "react-time-ago";
 
 import { IAppUpdate, IDocGraph } from "../../../shared/ApiTypes";
 import { IAppState } from "../../model";
+
+TimeAgo.addLocale(en);
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -77,19 +82,11 @@ const AppUpdateCard: React.FunctionComponent<IProps> = (props) => {
     isExternalLink = false;
   }
 
-  const datePart = props.update.time.split("T")[0];
-  const dt = new Date(props.update.time);
-  const timePart = `${dt
-    .getHours()
-    .toString()
-    .padStart(2, "0")}:${dt.getMinutes().toString().padStart(2, "0")}`;
-  const dateTimeString = `${datePart} ${timePart}`;
-
   return (
     <Card className={classes.root}>
       <CardContent>
         <Typography className={classes.title} color="textSecondary">
-          {dateTimeString}
+          <ReactTimeAgo date={new Date(props.update.time)} locale="en-US" />
         </Typography>
         <Typography variant="h6" component="h2">
           {title}

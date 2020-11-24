@@ -64,7 +64,7 @@ export class StatisticsController {
 
     // for any updates without time info, put in a time before time info was supported
     updates.forEach((update) => {
-      if (!update.time) update.time = new Date(2020, 11, 13).toISOString();
+      if (!update.time) update.time = new Date(2020, 10, 13).toISOString();
     });
 
     updates.sort((a, b) => (a.time < b.time ? -1 : 1));
