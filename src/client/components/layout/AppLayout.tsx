@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     content: {
       flexGrow: 1,
-      display: "flex",
       flexDirection: "row",
       minHeight: "100vh",
       padding: theme.spacing(2),
