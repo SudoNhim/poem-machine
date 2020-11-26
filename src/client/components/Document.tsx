@@ -53,7 +53,9 @@ const Document: React.FunctionComponent<IProps> = (props) => {
   // Scroll to the hash fragment, if applicable
   React.useEffect(() => {
     if (doc && docPart && props.history.action === "PUSH")
-      document.getElementById(docPart).scrollIntoView({ behavior: "smooth" });
+      document
+        .getElementById(docPart)
+        .scrollIntoView({ behavior: "smooth", block: "center" });
   }, [doc]);
 
   if (!doc) return <p>Loading...</p>;

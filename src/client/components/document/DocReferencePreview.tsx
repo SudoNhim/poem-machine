@@ -16,7 +16,6 @@ import { IAppState } from "../../model";
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 275,
     marginTop: 10,
     marginBottom: 10,
   },
