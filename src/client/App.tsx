@@ -6,7 +6,6 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import { setGraph, setUser } from "./actions";
 import { getGraph, getUser } from "./api";
-import About from "./components/About";
 import Chat from "./components/Chat";
 import Document from "./components/Document";
 import Home from "./components/Home";
@@ -44,7 +43,6 @@ const AppImpl: React.FunctionComponent<IProps> = (props: IProps) => {
               <Route exact path="/chat" component={Chat} />
               <Route path="/doc/:docId" component={Document} />
               <Route path="/search/:searchTerm" component={SearchResults} />
-              <Route exact path="/about" component={About} />
               <Route exact path="/login" component={Login} />
             </Switch>
           ) : (

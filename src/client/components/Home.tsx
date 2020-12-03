@@ -1,4 +1,4 @@
-import { Paper, Theme, Typography, makeStyles } from "@material-ui/core";
+import { Link, Paper, Theme, Typography, makeStyles } from "@material-ui/core";
 import * as React from "react";
 
 import { IAppStatistics, IAppUpdate } from "../../shared/ApiTypes";
@@ -36,6 +36,18 @@ const Home: React.FunctionComponent = () => {
         Cohen's lyrics.
       </Typography>
       <Typography variant="h6" gutterBottom>
+        Activity Feed
+      </Typography>
+      {feed ? (
+        feed
+          .reverse()
+          .map((update, i) => <AppUpdateCard update={update} key={i} />)
+      ) : (
+        <Typography variant="body1" gutterBottom>
+          Loading...
+        </Typography>
+      )}
+      <Typography variant="h6" gutterBottom>
         Statistics
       </Typography>
       <Typography variant="body1" gutterBottom>
@@ -60,17 +72,19 @@ const Home: React.FunctionComponent = () => {
           : "Loading..."}
       </Typography>
       <Typography variant="h6" gutterBottom>
-        Activity Feed
+        Contact
       </Typography>
-      {feed ? (
-        feed
-          .reverse()
-          .map((update, i) => <AppUpdateCard update={update} key={i} />)
-      ) : (
-        <Typography variant="body1" gutterBottom>
-          Loading...
-        </Typography>
-      )}
+      <Typography variant="body1" gutterBottom>
+        For all inquiries you can use the chat feature, or message{" "}
+        <Link component="a" href="https://twitter.com/cohenmachine">
+          cohenmachine
+        </Link>{" "}
+        on twitter, or{" "}
+        <Link component="a" href="mailto:brenton.a.milne@gmail.com">
+          email me
+        </Link>
+        . Collaborators welcome!
+      </Typography>
     </Paper>
   );
 };
