@@ -1,3 +1,4 @@
+import { Divider } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -13,10 +14,14 @@ import { IAppState, IFocusState } from "../../model";
 
 const useStyles = makeStyles({
   root: {
-    marginTop: 14,
+    marginTop: 10,
     height: 240,
     flexGrow: 1,
     maxWidth: 400,
+  },
+  divider: {
+    marginTop: 6,
+    marginBottom: 6,
   },
 });
 
@@ -31,7 +36,7 @@ const NavTree = withRouter((props: IProps) => {
   function recurse(meta: IDocMeta): JSX.Element[] {
     return (meta.children || []).map((childId) => (
       <TreeItem
-        nodeId={childId}
+        nodeId={`/doc/${childId}`}
         label={props.graph[childId].title}
         key={childId}
       >
@@ -43,7 +48,7 @@ const NavTree = withRouter((props: IProps) => {
   function handleSelect(event: React.MouseEvent, nodeId) {
     // uncomment the following to make chevrons only expand/collapse
     if ((event.target as Element).classList.contains("MuiTreeItem-label"))
-      props.history.push(`/doc/${nodeId}`);
+      props.history.push(nodeId);
   }
 
   const selected = [];
@@ -57,6 +62,10 @@ const NavTree = withRouter((props: IProps) => {
       onNodeSelect={handleSelect}
       selected={selected}
     >
+      <TreeItem nodeId="/" label="Home" key="home" />
+      <Divider className={classes.divider} />
+      <TreeItem nodeId="/chat" label="Chat" key="chat" />
+      <Divider className={classes.divider} />
       {recurse(props.graph.db)}
     </TreeView>
   );
