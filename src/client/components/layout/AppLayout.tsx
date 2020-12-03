@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
     },
     content: {
+      display: "flex",
       maxWidth: "100%",
       flexGrow: 1,
       flexDirection: "row",
