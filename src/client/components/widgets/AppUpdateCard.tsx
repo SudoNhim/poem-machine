@@ -77,7 +77,7 @@ const AppUpdateCard: React.FunctionComponent<IProps> = (props) => {
     const docTitle = props.graph[props.update.action.documentId].title;
     const docKind = props.graph[props.update.action.documentId].kind;
     content = `User ${props.update.user} ${actionDesc} ${docKind} ${docTitle}`;
-    destination = `/doc/${props.update.action.documentId}#${props.update.action.anchor}`;
+    destination = `/doc/${props.update.action.documentId}#${props.update.action.anchor}/notes`;
     isExternalLink = false;
   }
 
