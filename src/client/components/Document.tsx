@@ -21,7 +21,7 @@ interface IProps extends RouteComponentProps<IMatchParams> {
 
 const Document: React.FunctionComponent<IProps> = (props) => {
   // Update focus
-  const docPart = props.location.hash.substr(1);
+  const docPart = props.location.hash.substr(1).split("/")[0];
   React.useEffect(() => {
     props.setFocus({
       docId,

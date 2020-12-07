@@ -8,10 +8,7 @@ import {
   useTheme,
 } from "@material-ui/core/styles";
 import React from "react";
-import { connect } from "react-redux";
 
-import { setSideBarOpen } from "../../actions";
-import { IAppState, SideBarOpen } from "../../model";
 import NavTree from "./NavTree";
 
 const drawerWidth = 280;
@@ -34,8 +31,8 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IProps {
-  sideBarOpen: SideBarOpen;
-  setSideBarOpen: typeof setSideBarOpen;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 function LeftSideBar(props: IProps) {
@@ -56,8 +53,8 @@ function LeftSideBar(props: IProps) {
         <Drawer
           variant="temporary"
           anchor="left"
-          open={props.sideBarOpen === SideBarOpen.left}
-          onClose={() => props.setSideBarOpen(SideBarOpen.none)}
+          open={props.isOpen}
+          onClose={() => props.onClose()}
           classes={{
             paper: classes.drawerPaper,
           }}
@@ -83,8 +80,4 @@ function LeftSideBar(props: IProps) {
   );
 }
 
-const mapStateToProps = (state: IAppState) => ({
-  sideBarOpen: state.ui.sideBarOpen,
-});
-
-export default connect(mapStateToProps, { setSideBarOpen })(LeftSideBar);
+export default LeftSideBar;

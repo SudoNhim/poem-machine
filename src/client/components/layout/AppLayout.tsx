@@ -1,5 +1,6 @@
 import { Theme, createStyles, makeStyles, useTheme } from "@material-ui/core";
 import * as React from "react";
+import { RouteComponentProps, withRouter } from "react-router";
 import ScrollMemory from "react-router-scroll-memory";
 
 import AppBar from "./AppBar";
@@ -32,22 +33,46 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const AppLayout: React.FunctionComponent = (props) => {
+interface IProps extends RouteComponentProps {}
+
+const AppLayout: React.FunctionComponent<IProps> = (props) => {
   const classes = useStyles();
-  const theme = useTheme();
+
+  // The left sidepane is controlled with stateful toggle,
+  // whereas the right sidepane is open when the URL fragment ends with '/notes'
+  const [sideBarOpen, setSideBarOpen] = React.useState<
+    "NONE" | "LEFT" | "RIGHT"
+  >("NONE");
+
+  React.useEffect(() => {
+    if (props.location.hash.endsWith("/notes")) setSideBarOpen("RIGHT");
+    else if (sideBarOpen === "RIGHT") setSideBarOpen("NONE");
+  }, [props.location.hash]);
+
+  const onRightClose = () => {
+    // Removes the hash fragment
+    props.history.replace(props.location.pathname);
+  };
+
   return (
     <div className={classes.root}>
-      <AppBar />
+      <AppBar openSideBar={() => setSideBarOpen("LEFT")} />
       <div className={classes.horizontal}>
-        <LeftSideBar />
+        <LeftSideBar
+          isOpen={sideBarOpen === "LEFT"}
+          onClose={() => setSideBarOpen("NONE")}
+        />
         <main id="app-content" className={classes.content}>
           <ScrollMemory elementID="app-content" />
           {props.children}
         </main>
-        <RightSideBar />
+        <RightSideBar
+          isOpen={sideBarOpen === "RIGHT"}
+          onClose={() => onRightClose()}
+        />
       </div>
     </div>
   );
 };
 
-export default AppLayout;
+export default withRouter(AppLayout);

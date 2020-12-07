@@ -4,10 +4,9 @@ import {
   SET_FOCUS,
   SET_GRAPH,
   SET_HOVER,
-  SET_SIDEBAR_OPEN,
   SET_USER,
 } from "./actions";
-import { IAppState, SideBarOpen } from "./model";
+import { IAppState } from "./model";
 
 const initialState: IAppState = {
   docs: {
@@ -22,9 +21,6 @@ const initialState: IAppState = {
   },
   focus: { docId: "db", docPart: null },
   hover: { docPart: null },
-  ui: {
-    sideBarOpen: SideBarOpen.none,
-  },
   user: {
     username: null,
   },
@@ -60,13 +56,6 @@ function rootReducer(state = initialState, action: ActionTypes): IAppState {
       return {
         ...state,
         hover: action.payload,
-      };
-    case SET_SIDEBAR_OPEN:
-      return {
-        ...state,
-        ui: {
-          sideBarOpen: action.payload,
-        },
       };
     case SET_USER:
       return {

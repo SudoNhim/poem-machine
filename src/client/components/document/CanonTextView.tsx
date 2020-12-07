@@ -4,22 +4,21 @@ import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
 
-import { IAnnotation } from "../../../shared/ApiTypes";
-import { setHover, setSideBarOpen } from "../../actions";
-import { IAppState, IFocusState, IHoverState, SideBarOpen } from "../../model";
+import { IAnnotationsGroup } from "../../../shared/ApiTypes";
+import { setHover } from "../../actions";
+import { IAppState, IFocusState, IHoverState } from "../../model";
 
 const css = require("./docviewer.css");
 
 interface IProps extends RouteComponentProps {
   docId: string;
-  annotations: IAnnotation[];
+  annotations: IAnnotationsGroup[];
   focusPart: string;
   text: Text;
   prefix: string;
   hover: IHoverState;
   focus: IFocusState;
   setHover: typeof setHover;
-  setSideBarOpen: typeof setSideBarOpen;
 }
 
 class CanonTextView extends React.Component<IProps> {
@@ -51,7 +50,7 @@ class CanonTextView extends React.Component<IProps> {
     const id = `${this.props.prefix}p${pi}.l${li}`;
     const classNames: string[] = [css.canonlinetext];
 
-    if (this.props.hover.docParts && this.props.hover.docParts.indexOf(id) >= 0)
+    if (this.props.hover.docPart && this.props.hover.docPart === id)
       classNames.push(css.canonhover);
     else if (this.props.focusPart === id) classNames.push(css.canonfocus);
     else if (this.props.annotations.find((anno) => anno.anchor === id))
@@ -74,20 +73,19 @@ class CanonTextView extends React.Component<IProps> {
 
   private onMouseOver(evt: React.MouseEvent, id: string) {
     evt.stopPropagation();
-    this.props.setHover({ docParts: [id] });
+    this.props.setHover({ docPart: id });
   }
 
   private onMouseOut(evt: React.MouseEvent, id: string) {
     evt.stopPropagation();
-    this.props.setHover({});
+    this.props.setHover({ docPart: null });
   }
 
   private onMouseUp(evt: React.MouseEvent, id: string) {
     evt.stopPropagation();
     const base = `/doc/${this.props.docId}`;
     if (this.props.location.hash === `#${id}`) this.props.history.push(base);
-    else this.props.history.push(`${base}#${id}`);
-    this.props.setSideBarOpen(SideBarOpen.right);
+    else this.props.history.push(`${base}#${id}/notes`);
   }
 }
 
@@ -101,6 +99,6 @@ const mapStateToProps = (state: IAppState, ownProps) => ({
   annotations: ownProps.annotations,
 });
 
-export default connect(mapStateToProps, { setHover, setSideBarOpen })(
+export default connect(mapStateToProps, { setHover })(
   withRouter(CanonTextView)
 );

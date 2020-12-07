@@ -9,11 +9,7 @@ import {
   useTheme,
 } from "@material-ui/core/styles";
 import React from "react";
-import { connect } from "react-redux";
 
-import { IAnnotationsGroup } from "../../../shared/ApiTypes";
-import { setSideBarOpen } from "../../actions";
-import { IAppState, SideBarOpen } from "../../model";
 import AnnotationsView from "../annotations/AnnotationsView";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -47,19 +43,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IProps {
-  annotations: IAnnotationsGroup[];
-  sideBarOpen: SideBarOpen;
-  setSideBarOpen: typeof setSideBarOpen;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 function RightSideBar(props: IProps) {
   const classes = useStyles();
   const theme = useTheme();
-
-  // annotations view needs to be updated
-  // for now assume if we see only one, we are focused
-  const allowEdit = props.annotations.length === 1;
-
   const drawer = (
     <div>
       <div className={classes.toolbar} />
@@ -81,8 +71,8 @@ function RightSideBar(props: IProps) {
           variant="temporary"
           anchor="right"
           elevation={0}
-          open={props.sideBarOpen === SideBarOpen.right && isSmall}
-          onClose={() => props.setSideBarOpen(SideBarOpen.none)}
+          open={props.isOpen && isSmall}
+          onClose={() => props.onClose()}
           classes={{
             paper: classes.drawerWidthSmall,
           }}
@@ -109,9 +99,4 @@ function RightSideBar(props: IProps) {
   );
 }
 
-const mapStateToProps = (state: IAppState) => ({
-  annotations: state.docs.cache[state.focus.docId]?.annotations || [],
-  sideBarOpen: state.ui.sideBarOpen,
-});
-
-export default connect(mapStateToProps, { setSideBarOpen })(RightSideBar);
+export default RightSideBar;

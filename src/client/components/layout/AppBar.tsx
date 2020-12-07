@@ -17,8 +17,7 @@ import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
 
-import { setSideBarOpen } from "../../actions";
-import { IAppState, SideBarOpen } from "../../model";
+import { IAppState } from "../../model";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -93,31 +92,12 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IProps extends RouteComponentProps {
-  sideBarOpen: boolean;
-  setSideBarOpen: typeof setSideBarOpen;
+  openSideBar: () => void;
   username: string;
 }
 
 const TopAppBar = withRouter((props: IProps) => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [
-    mobileMoreAnchorEl,
-    setMobileMoreAnchorEl,
-  ] = React.useState<null | HTMLElement>(null);
-
-  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
 
   const handleSearchOnKeyDown = (
     evt: React.KeyboardEvent<HTMLInputElement>
@@ -135,10 +115,6 @@ const TopAppBar = withRouter((props: IProps) => {
     props.history.push("/login", { prevPath: props.location.pathname });
   };
 
-  const toggleNavPane = () => {
-    props.setSideBarOpen(SideBarOpen.left);
-  };
-
   return (
     <div className={classes.grow}>
       <AppBar position="static" className={classes.AppBarOverrides}>
@@ -148,7 +124,7 @@ const TopAppBar = withRouter((props: IProps) => {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
-            onClick={toggleNavPane}
+            onClick={() => props.openSideBar()}
           >
             <MenuIcon />
           </IconButton>
@@ -190,9 +166,9 @@ const TopAppBar = withRouter((props: IProps) => {
   );
 });
 
-const mapStateToProps = (state: IAppState) => ({
-  sideBarOpen: !!state.ui.sideBarOpen,
+const mapStateToProps = (state: IAppState, ownProps) => ({
   username: state.user.username,
+  openSideBar: ownProps.openSideBar,
 });
 
-export default connect(mapStateToProps, { setSideBarOpen })(TopAppBar);
+export default connect(mapStateToProps)(TopAppBar);

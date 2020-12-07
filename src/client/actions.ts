@@ -1,12 +1,11 @@
 import { IDoc, IDocGraph } from "../shared/ApiTypes";
-import { IFocusState, IHoverState, IUserState, SideBarOpen } from "./model";
+import { IFocusState, IHoverState, IUserState } from "./model";
 
 export const SET_DOC = "SET_DOC";
 export const SET_GRAPH = "SET_GRAPH";
 export const SET_FOCUS = "SET_FOCUS";
 export const SET_HOVER = "SET_HOVER";
 export const SET_SCROLLED = "SET_SCROLLED";
-export const SET_SIDEBAR_OPEN = "SET_SIDEBAR_OPEN";
 export const SET_USER = "SET_USER";
 
 interface SetDocAction {
@@ -29,11 +28,6 @@ interface SetHoverAction {
   payload: IHoverState;
 }
 
-interface SetSideBarOpenAction {
-  type: typeof SET_SIDEBAR_OPEN;
-  payload: SideBarOpen;
-}
-
 interface SetUserAction {
   type: typeof SET_USER;
   payload: IUserState;
@@ -44,7 +38,6 @@ export type ActionTypes =
   | SetGraphAction
   | SetFocusAction
   | SetHoverAction
-  | SetSideBarOpenAction
   | SetUserAction;
 
 export function setDoc(docId: string, doc: IDoc): SetDocAction {
@@ -72,13 +65,6 @@ export function setHover(hover: IHoverState): SetHoverAction {
   return {
     type: SET_HOVER,
     payload: hover,
-  };
-}
-
-export function setSideBarOpen(state: SideBarOpen): SetSideBarOpenAction {
-  return {
-    type: SET_SIDEBAR_OPEN,
-    payload: state,
   };
 }
 
