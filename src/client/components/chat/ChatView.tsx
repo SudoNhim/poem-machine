@@ -46,12 +46,23 @@ const ChatView: React.FunctionComponent<IProps> = (props) => {
     evt.preventDefault();
   };
 
-  const handleKeyPress = (evt: React.KeyboardEvent<HTMLDivElement>) => {
-    if (evt.key === "Enter" && evt.shiftKey === false) handleSubmit(evt);
+  const rootRef = React.createRef<HTMLDivElement>();
+  const scrollToBottom = () => {
+    if (rootRef.current)
+      rootRef.current.scrollTop = rootRef.current.scrollHeight;
   };
 
+  const handleKeyPress = (evt: React.KeyboardEvent<HTMLDivElement>) => {
+    if (evt.key === "Enter" && evt.shiftKey === false) handleSubmit(evt);
+    scrollToBottom();
+  };
+
+  // When a new message arrives also scroll to bottom (if chat ever gets active this may
+  // need to be reworked)
+  React.useEffect(scrollToBottom, [props.messages]);
+
   return (
-    <div className={classes.root}>
+    <div className={classes.root} ref={rootRef}>
       <Paper className={classes.paper}>
         {props.messages.map((msg, i) => (
           <ChatMessage message={msg} key={i} />
