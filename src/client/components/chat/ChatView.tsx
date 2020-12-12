@@ -10,7 +10,6 @@ import ChatMessage from "./ChatMessage";
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     display: "flex",
-    flex: 1,
     flexDirection: "column-reverse",
     overflowY: "scroll",
   },

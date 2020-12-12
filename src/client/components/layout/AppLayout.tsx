@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       maxWidth: "100%",
       flexGrow: 1,
-      flexDirection: "row",
       minHeight: "100vh",
       padding: theme.spacing(2),
       [theme.breakpoints.down("sm")]: {
@@ -29,6 +28,13 @@ const useStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.up("sm")]: {
         paddingTop: 71,
       },
+    },
+    contentNormal: {
+      flexDirection: "row",
+    },
+    contentReverse: {
+      flexDirection: "column-reverse",
+      height: "100vh",
     },
   })
 );
@@ -54,6 +60,11 @@ const AppLayout: React.FunctionComponent<IProps> = (props) => {
     props.history.replace(props.location.pathname);
   };
 
+  const isChatPane = props.location.pathname.endsWith("/chat");
+  const contentClasses = `${classes.content} ${
+    isChatPane ? classes.contentReverse : classes.contentNormal
+  }`;
+
   return (
     <div className={classes.root}>
       <AppBar openSideBar={() => setSideBarOpen("LEFT")} />
@@ -62,7 +73,7 @@ const AppLayout: React.FunctionComponent<IProps> = (props) => {
           isOpen={sideBarOpen === "LEFT"}
           onClose={() => setSideBarOpen("NONE")}
         />
-        <main id="app-content" className={classes.content}>
+        <main id="app-content" className={contentClasses}>
           <ScrollMemory elementID="app-content" />
           {props.children}
         </main>
