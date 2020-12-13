@@ -59,7 +59,7 @@ const ChatView: React.FunctionComponent<IProps> = (props) => {
 
   // When a new message arrives also scroll to bottom (if chat ever gets active this may
   // need to be reworked)
-  React.useEffect(scrollToBottom, [props.messages]);
+  React.useEffect(scrollToBottom, [props.messages, rootRef.current]);
 
   return (
     <div className={classes.root} ref={rootRef}>
