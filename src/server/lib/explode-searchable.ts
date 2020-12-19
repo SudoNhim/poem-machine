@@ -1,4 +1,4 @@
-import { Text } from "cohen-db/schema";
+import { Fragment, TextFragment } from "cohen-db/schema";
 
 import { SerializeDocRef } from "../../shared/util";
 import docsDb from "../database";
@@ -18,7 +18,8 @@ export function ExplodeAllSearchable(): CanonShard[] {
     // titles
     out.push({
       docref: SerializeDocRef({
-        docId: key,
+        kind: "document",
+        documentId: key,
       }),
       text: doc.title,
     });
@@ -34,46 +35,43 @@ export function ExplodeAllSearchable(): CanonShard[] {
         if (loc.venue) parts.push(loc.venue);
         out.push({
           docref: SerializeDocRef({
-            docId: key,
+            kind: "document",
+            documentId: key,
           }),
           text: parts.join(" "),
         });
       }
     }
 
+    const fragToText = (frag: TextFragment): string => {
+      return frag.tokens
+        .map((tok) => (tok.kind === "text" ? tok.text : ""))
+        .join(" ");
+    };
+
     // text content
-    const addText = (text: Text, section?: number) => {
-      text.text.forEach((p, pi) => {
-        if (Array.isArray(p))
-          p.forEach((l, li) => {
-            out.push({
-              docref: SerializeDocRef({
-                docId: key,
-                section,
-                paragraph: pi + 1,
-                line: li + 1,
-              }),
-              text: l,
-            });
-          });
-        else
+    const addText = (text: Fragment[], sectionId?: string) => {
+      text.forEach((frag) => {
+        if (frag.kind === "text" && frag.id) {
           out.push({
             docref: SerializeDocRef({
-              docId: key,
-              section,
-              paragraph: pi + 1,
+              kind: "fragment",
+              documentId: key,
+              sectionId,
+              fragmentId: frag.id,
             }),
-            text: p,
+            text: fragToText(frag),
           });
+        }
       });
     };
 
     if (doc.content) {
-      if (Array.isArray(doc.content.content))
-        doc.content.content.forEach(
-          (cnt, i) => cnt.content && addText(cnt.content, i + 1)
-        );
-      else addText(doc.content.content, null);
+      if (doc.content.kind === "multipart") {
+        for (const section of doc.content.content) {
+          addText(section.fragments, section.id);
+        }
+      } else addText(doc.content.content.fragments, null);
     }
   }
 
