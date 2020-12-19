@@ -1,7 +1,6 @@
 import axios from "axios";
 
 import {
-  IAnnotation,
   IAppStatistics,
   IAppUpdate,
   IDoc,

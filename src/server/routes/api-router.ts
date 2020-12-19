@@ -2,7 +2,7 @@ import bodyParser from "body-parser";
 import { Router } from "express";
 import passport from "passport";
 
-import { IAnnotation, IDoc } from "../../shared/ApiTypes";
+import { IDoc } from "../../shared/ApiTypes";
 import { IUserAction } from "../../shared/UserActions";
 import { AnnotationsController } from "../controllers/annotations";
 import { GraphController } from "../controllers/graph";

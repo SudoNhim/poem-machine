@@ -1,4 +1,4 @@
-import { CanonFile, Text } from "cohen-db/schema";
+import { CanonFile, Fragment, Reference } from "cohen-db/schema";
 
 import { IUserAction } from "./UserActions";
 
@@ -41,8 +41,8 @@ export interface IDocGraph {
 }
 
 export interface IDocReferencePreview {
-  docRef: IDocReference;
-  preview: Text;
+  docRef: Reference;
+  preview: Fragment[];
 }
 
 export interface IContentTokenText {
