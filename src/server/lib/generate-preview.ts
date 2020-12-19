@@ -56,7 +56,7 @@ function GeneratePreviewText(frags: Fragment[], targetId?: string): Fragment[] {
   let balance = 0;
   let budget = 256;
   let result: Fragment[] = [];
-  while (budget > 0) {
+  while (budget > 32) {
     let toAdd: Fragment;
     let addBefore: boolean;
     if (balance <= 0 && indexBefore >= 0) {
