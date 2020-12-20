@@ -22,3 +22,7 @@ export function DeserializeDocRef(ref: string): Reference {
   if (!fragmentId) return { kind: "section", documentId, sectionId };
   else return { kind: "fragment", documentId, sectionId, fragmentId };
 }
+
+export function DocRefEquals(a: Reference, b: Reference): boolean {
+  return SerializeDocRef(a) === SerializeDocRef(b);
+}

@@ -1,3 +1,5 @@
+import { Reference } from "cohen-db/schema";
+
 import { IContentToken } from "./ApiTypes";
 
 // Any kind of update that creates a change in the docs DB
@@ -11,7 +13,7 @@ interface IUserActionBase {
 }
 
 interface IAnnotationUpdateBase extends IUserActionBase {
-  anchor: string;
+  anchor: Reference;
 }
 
 export interface IAddAnnotationUpdate extends IAnnotationUpdateBase {
