@@ -39,7 +39,9 @@ export function apiRouter() {
     };
 
     if (doc.children)
-      out.children = doc.children.map((id) => GeneratePreview({ docId: id }));
+      out.children = doc.children.map((id) =>
+        GeneratePreview({ kind: "document", documentId: id })
+      );
 
     if (referrers.length > 0)
       out.referrers = referrers.map((ref) => GeneratePreview(ref));

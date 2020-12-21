@@ -1,61 +1,49 @@
-import { Divider } from "@material-ui/core";
-import { Content } from "cohen-db/schema";
+import { Divider, Theme, makeStyles } from "@material-ui/core";
+import { Content, MainContent, SectionalContent } from "cohen-db/schema";
 import * as React from "react";
-import { connect } from "react-redux";
 
-import { IAnnotation } from "../../../shared/ApiTypes";
-import { IAppState } from "../../model";
-import CanonTextView from "./CanonTextView";
-import ContentPartView from "./ContentPartView";
+import FragmentView from "./FragmentView";
+import SectionTitle from "./SectionTitle";
+
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    paddingLeft: theme.spacing(0),
+    paddingRight: theme.spacing(0),
+  },
+}));
 
 interface IProps {
-  docId: string;
   content: Content;
-  annotations: IAnnotation[];
-  focusPart: string;
 }
 
-class ContentView extends React.Component<IProps> {
-  public componentDidMount() {}
+const ContentView: React.FunctionComponent<IProps> = (props) => {
+  const classes = useStyles();
 
-  public render() {
-    if (Array.isArray(this.props.content.content)) {
-      const parts = this.props.content.content.map((part, i) => (
-        <ContentPartView
-          section={i + 1}
-          key={i}
-          part={part}
-          focusPart={this.props.focusPart}
-          docId={this.props.docId}
-          annotations={this.props.annotations}
-        />
-      ));
-      let withDividers: JSX.Element[] = [];
-      parts.forEach((part, i) => {
-        withDividers.push(part);
-        if (i < parts.length - 1)
-          withDividers.push(<Divider key={i + parts.length} />);
-      });
-      return withDividers;
-    } else
-      return (
-        <CanonTextView
-          prefix={""}
-          docId={this.props.docId}
-          text={this.props.content.content}
-          focusPart={this.props.focusPart}
-          annotations={this.props.annotations}
-        />
-      );
+  if (props.content.kind === "multipart") {
+    const sections: SectionalContent[] = props.content.content;
+    return (
+      <div>
+        {props.content.content.map((section, i) => (
+          <React.Fragment key={i}>
+            <SectionTitle title={section.title} />
+            {section.fragments.map((frag, i) => (
+              <FragmentView fragment={frag} key={i} />
+            ))}
+            {i < sections.length - 1 && <Divider />}
+          </React.Fragment>
+        ))}
+      </div>
+    );
+  } else {
+    const mainContent: MainContent = props.content.content;
+    return (
+      <div className={classes.root}>
+        {mainContent.fragments.map((frag, i) => (
+          <FragmentView fragment={frag} key={i} />
+        ))}
+      </div>
+    );
   }
-}
+};
 
-// currently not using redux connection
-const mapStateToProps = (state: IAppState, ownProps: IProps) => ({
-  docId: ownProps.docId,
-  content: ownProps.content,
-  annotations: ownProps.annotations,
-  focusPart: ownProps.focusPart,
-});
-
-export default connect(mapStateToProps)(ContentView);
+export default ContentView;

@@ -13,6 +13,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { IDocMeta, IDocReferencePreview } from "../../../shared/ApiTypes";
 import { SerializeDocRef } from "../../../shared/util";
 import { IAppState } from "../../model";
+import FragmentView from "./FragmentView";
 
 const useStyles = makeStyles({
   root: {
@@ -37,7 +38,7 @@ interface IProps {
 const DocReferencePreview: React.FunctionComponent<IProps> = (props) => {
   const kind = props.docMeta.kind;
   const prefix = `${kind.charAt(0).toUpperCase()}${kind.substr(1)}`;
-  const refstr = SerializeDocRef(props.preview.docRef, false);
+  const refstr = SerializeDocRef(props.preview.docRef);
 
   const classes = useStyles();
   return (
@@ -50,17 +51,8 @@ const DocReferencePreview: React.FunctionComponent<IProps> = (props) => {
           {props.docMeta.title}
         </Typography>
         <Typography variant="body2" component="div">
-          {props.preview.preview.text.map((p, i) => (
-            <p key={i}>
-              {Array.isArray(p)
-                ? p.map((l, i2) => (
-                    <span key={i2}>
-                      {l}
-                      <br />
-                    </span>
-                  ))
-                : p}
-            </p>
+          {props.preview.preview.map((frag, i) => (
+            <FragmentView fragment={frag} key={i} />
           ))}
         </Typography>
       </CardContent>
@@ -74,7 +66,7 @@ const DocReferencePreview: React.FunctionComponent<IProps> = (props) => {
 };
 
 const mapStateToProps = (state: IAppState, ownProps) => ({
-  docMeta: state.docs.graph[ownProps.preview.docRef.docId],
+  docMeta: state.docs.graph[ownProps.preview.docRef.documentId],
   preview: ownProps.preview,
 });
 

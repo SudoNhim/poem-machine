@@ -4,8 +4,6 @@ import { connect } from "react-redux";
 
 import { IAppState } from "../../model";
 
-const css = require("./docviewer.css");
-
 interface IProps {
   metadata: Metadata;
 }

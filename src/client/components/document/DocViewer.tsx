@@ -63,12 +63,7 @@ class DocViewer extends React.Component<IProps, IState> {
               <MetadataView metadata={this.props.doc.file.metadata} />
             )}
             {this.props.doc.file.content && (
-              <ContentView
-                docId={this.props.id}
-                content={this.props.doc.file.content}
-                annotations={this.props.doc.annotations}
-                focusPart={this.props.focusPart}
-              />
+              <ContentView content={this.props.doc.file.content} />
             )}
           </Paper>
           {this.props.doc.children && (
