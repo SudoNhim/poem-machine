@@ -10,11 +10,11 @@ interface IProps {
 
 const SectionTitle: React.FunctionComponent<IProps> = (props) => {
   return (
-    <React.Fragment>
+    <div>
       {props.title.tokens.map((tok, i) => (
         <TokenView token={tok} key={i} />
       ))}
-    </React.Fragment>
+    </div>
   );
 };
 

@@ -12,7 +12,7 @@ const TokenView: React.FunctionComponent<IProps> = (props) => {
   } else if (tok.kind === "link") {
     return <a href={tok.link}>{tok.text || tok.link}</a>;
   } else {
-    return <span>{tok.reference}</span>;
+    return <span>{tok.reference.documentId}</span>;
   }
 };
 
