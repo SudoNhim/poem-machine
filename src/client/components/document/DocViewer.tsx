@@ -32,7 +32,7 @@ class DocViewer extends React.Component<IProps, IState> {
     if (!this.state.hasContentDom) this.setState({ hasContentDom: true });
   }
 
-  private onMouseUp(evt: React.MouseEvent) {
+  private onClick(evt: React.MouseEvent) {
     evt.stopPropagation();
     const base = `/doc/${this.props.id}`;
     if (this.props.location.hash) this.props.history.push(base);
@@ -52,10 +52,7 @@ class DocViewer extends React.Component<IProps, IState> {
     else
       return (
         <div>
-          <Paper
-            className={css.section}
-            onMouseUp={(evt) => this.onMouseUp(evt)}
-          >
+          <Paper className={css.section} onClick={(evt) => this.onClick(evt)}>
             <Typography variant="h6" component="h2">
               {this.props.docMeta.title}
             </Typography>
