@@ -1,4 +1,7 @@
+import { Reference } from "cohen-db/schema";
+
 import { IContentToken, IDoc } from "../shared/ApiTypes";
+import { FragmentToPlaintext } from "../shared/util";
 
 function trimString(str: string, len: number): string {
   if (str.length < len) return str;
@@ -7,29 +10,27 @@ function trimString(str: string, len: number): string {
   return str.substr(0, lastSpace) + "...";
 }
 
-export function snippetFromDoc(doc: IDoc, docPart: string): string {
-  const parts = {
-    s: 1,
-    p: 1,
-    l: 1,
-  };
-  docPart.split(".").forEach((bit) => {
-    const key = bit.substr(0, 1);
-    const val = parseInt(bit.substr(1));
-    parts[key] = val;
-  });
-
-  const content = doc.file.content?.content;
+export function snippetFromDoc(doc: IDoc, docRef: Reference): string {
+  const content = doc.file.content;
   if (!content) return "";
 
-  const text = Array.isArray(content)
-    ? content[parts.s - 1].content.text
-    : content.text;
+  const fragmentId = docRef.kind === "fragment" ? docRef.fragmentId : null;
+  const sectionId =
+    docRef.kind === "fragment" || docRef.kind === "section"
+      ? docRef.sectionId || null
+      : null;
+  const fragments =
+    content.kind === "multipart"
+      ? content.content.find(
+          (section) => !sectionId || section.id === sectionId
+        ).fragments
+      : content.content.fragments;
+  const fragment = fragments.find(
+    (frag) => !fragmentId || (frag.kind === "text" && frag.id === fragmentId)
+  );
+  const text = fragment ? FragmentToPlaintext(fragment) : "";
 
-  const paragraph = text[parts.p - 1];
-  const str = Array.isArray(paragraph) ? paragraph[parts.l - 1] : paragraph;
-
-  return trimString(str, 64);
+  return trimString(text, 64);
 }
 
 export function textToTokens(text: string): IContentToken[] {

@@ -2,7 +2,7 @@ import bodyParser from "body-parser";
 import { Router } from "express";
 import passport from "passport";
 
-import { IAnnotation, IDoc } from "../../shared/ApiTypes";
+import { IDoc } from "../../shared/ApiTypes";
 import { IUserAction } from "../../shared/UserActions";
 import { AnnotationsController } from "../controllers/annotations";
 import { GraphController } from "../controllers/graph";
@@ -39,7 +39,9 @@ export function apiRouter() {
     };
 
     if (doc.children)
-      out.children = doc.children.map((id) => GeneratePreview({ docId: id }));
+      out.children = doc.children.map((id) =>
+        GeneratePreview({ kind: "document", documentId: id })
+      );
 
     if (referrers.length > 0)
       out.referrers = referrers.map((ref) => GeneratePreview(ref));

@@ -1,13 +1,8 @@
-import { isNullOrUndefined } from "util";
-
+import { Reference } from "cohen-db/schema";
 import { Index } from "lunr";
 import lunr from "lunr";
 
-import {
-  IDocReference,
-  IDocReferencePreview,
-  ISearchResults,
-} from "../../shared/ApiTypes";
+import { IDocReferencePreview, ISearchResults } from "../../shared/ApiTypes";
 import { DeserializeDocRef, SerializeDocRef } from "../../shared/util";
 import { ExplodeAllSearchable } from "../lib/explode-searchable";
 import { GeneratePreview } from "../lib/generate-preview";
@@ -28,7 +23,7 @@ export class SearchController {
   constructor() {
     const controller = this;
     this.index = lunr(function () {
-      // Shards are identified by their JSONPath
+      // Shards are identified by their serialized Reference
       this.ref("docref");
       this.field("text");
 
@@ -45,21 +40,26 @@ export class SearchController {
   public search(term: string): ISearchResults {
     const hits = this.index.search(term);
 
-    const hitsByDocPart: { [ref: string]: IDocReference[] } = {};
+    const hitsByDocPart: { [ref: string]: Reference[] } = {};
     hits.forEach((hit) => {
       const ref = DeserializeDocRef(hit.ref);
-      ref.substrings = [];
+
+      /*
       Object.values(hit.matchData.metadata).forEach((v) => {
         if (v && v.text && v.text.position) {
           v.text.position.forEach((m: number[]) => {
-            ref.substrings.push([m[0], m[1]]);
+            // For now, do not bother with substrings
+            // ref.substrings.push([m[0], m[1]]);
           });
         }
       });
+      */
 
-      const sref = `${ref.docId}|${
-        isNullOrUndefined(ref.section) ? "" : ref.section
-      }`;
+      const sref =
+        ref.kind === "fragment" && ref.sectionId
+          ? `${ref.documentId}|${ref.sectionId}`
+          : ref.documentId;
+
       if (!hitsByDocPart[sref]) {
         hitsByDocPart[sref] = [];
       }
@@ -76,7 +76,7 @@ export class SearchController {
     };
   }
 
-  private generatePreview(refs: IDocReference[]): IDocReferencePreview {
+  private generatePreview(refs: Reference[]): IDocReferencePreview {
     // Because serialization yields order id/part/para/line/substring, we can use it
     // for sorting. It's a bit of a hack, but saves a lot of code.
     refs = refs.sort((a, b) =>

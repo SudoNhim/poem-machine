@@ -2,6 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import { IAnnotationsGroup } from "../../../shared/ApiTypes";
+import { DocRefEquals, DocRefIsChildOf } from "../../../shared/util";
 import { setDoc } from "../../actions";
 import { IAppState, IFocusState } from "../../model";
 import AnnotationsGroup from "./AnnotationsGroup";
@@ -18,15 +19,15 @@ const AnnotationsView: React.FunctionComponent<IProps> = (props) => {
   }
 
   let annotations: IAnnotationsGroup[] = props.annotations;
-  if (!!props.focus.docPart) {
+  if (!!props.focus.reference) {
     annotations = annotations.filter(
-      (grp) => grp.anchor === props.focus.docPart
+      (grp) =>
+        DocRefIsChildOf(grp.anchor, props.focus.reference) ||
+        DocRefEquals(grp.anchor, props.focus.reference)
     );
-    if (annotations.length > 1)
-      throw new Error("Expected only one annotation group per docpart");
-    if (annotations.length === 0)
+    if (annotations.length === 0 && props.focus.reference.kind === "fragment")
       annotations.push({
-        anchor: props.focus.docPart,
+        anchor: props.focus.reference,
         annotations: [],
       });
   }
@@ -36,7 +37,7 @@ const AnnotationsView: React.FunctionComponent<IProps> = (props) => {
       {annotations.map((grp, i) => (
         <AnnotationsGroup
           annotationsGroup={grp}
-          allowEdit={!!props.focus.docPart}
+          allowEdit={props.focus.reference.kind === "fragment"}
           key={i}
         />
       ))}
@@ -45,9 +46,10 @@ const AnnotationsView: React.FunctionComponent<IProps> = (props) => {
 };
 
 const mapStateToProps = (state: IAppState) => ({
-  annotations: state.docs.cache[state.focus.docId]?.annotations || [],
+  annotations:
+    state.docs.cache[state.focus?.reference?.documentId]?.annotations || [],
   focus: state.focus,
-  hasDoc: !!state.docs.cache[state.focus.docId],
+  hasDoc: !!state.docs.cache[state.focus?.reference?.documentId],
 });
 
 export default connect(mapStateToProps, { setDoc })(AnnotationsView);

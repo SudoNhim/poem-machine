@@ -19,7 +19,7 @@
 .section {
   flex-grow: 1;
   margin: 0.2cm;
-  padding: 0.2cm;
+  padding: 0.5cm;
 }
 
 .sectiontitle {

@@ -45,14 +45,15 @@ const NavTree = withRouter((props: IProps) => {
     ));
   }
 
-  function handleSelect(event: React.MouseEvent, nodeId) {
+  function handleSelect(event: React.ChangeEvent<{}>, nodeId) {
     // uncomment the following to make chevrons only expand/collapse
     if ((event.target as Element).classList.contains("MuiTreeItem-label"))
       props.history.push(nodeId);
   }
 
   const selected = [];
-  if (props.focus.docId) selected.push(props.focus.docId);
+  if (props.focus?.reference?.documentId)
+    selected.push(props.focus.reference.documentId);
 
   return (
     <TreeView

@@ -1,4 +1,4 @@
-import { CanonFile, Text } from "cohen-db/schema";
+import { CanonFile, Fragment, Reference } from "cohen-db/schema";
 
 import { IUserAction } from "./UserActions";
 
@@ -6,20 +6,6 @@ export interface IDocMeta {
   kind: string;
   title: string;
   children?: string[];
-}
-
-export interface IDocReference {
-  docId: string;
-
-  // Section is applicable only in a multipart document
-  section?: number;
-
-  // Location in canonical text
-  paragraph?: number;
-  line?: number;
-
-  // One or more pairs of [start, length]
-  substrings?: number[][];
 }
 
 export interface IDoc {
@@ -41,8 +27,8 @@ export interface IDocGraph {
 }
 
 export interface IDocReferencePreview {
-  docRef: IDocReference;
-  preview: Text;
+  docRef: Reference;
+  preview: Fragment[];
 }
 
 export interface IContentTokenText {
@@ -78,7 +64,7 @@ export interface IChatMessage {
 }
 
 export interface IAnnotationsGroup {
-  anchor: string;
+  anchor: Reference;
   annotations: IAnnotation[];
 }
 
@@ -86,7 +72,7 @@ export interface ISearchResults {
   term: string;
 
   // All search hits down to the line. Can be used for highlighting results in documents
-  hits: IDocReference[];
+  hits: Reference[];
 
   // A list of aggregated previews by docid/section
   previews: IDocReferencePreview[];

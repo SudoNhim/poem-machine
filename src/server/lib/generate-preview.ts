@@ -1,115 +1,161 @@
-import { isNullOrUndefined } from "util";
+import { Fragment, Reference, Token } from "cohen-db/schema";
 
-import { Text } from "cohen-db/schema";
-
-import { IDocReference, IDocReferencePreview } from "../../shared/ApiTypes";
+import { IDocReferencePreview } from "../../shared/ApiTypes";
+import { SerializeDocRef } from "../../shared/util";
 import docsDb from "../database";
 
-/*
-export function GenerateSnippet(docRef: IDocReference): string {
-  const doc = CanonData[docRef.docId];
-
-  if (!doc.content) {
-    return "";
-  }
-
-  // Build a preview around the first match position
-  const activeText: Text = Array.isArray(doc.content.content)
-    ? doc.content.content[docRef.section - 1 || 0].content
-    : doc.content.content;
-
-  const activeParagraph =
-    activeText.text[docRef.paragraph ? docRef.paragraph - 1 : 0];
-  const activeLine = Array.isArray(activeParagraph)
-    ? activeParagraph[docRef.line ? docRef.line - 1 : 0]
-    : activeParagraph;
-
-  return TrimString(activeLine, 64);
-} */
-
-export function GeneratePreview(docRef: IDocReference): IDocReferencePreview {
-  const doc = docsDb[docRef.docId];
+export function GeneratePreview(docRef: Reference): IDocReferencePreview {
+  const doc = docsDb[docRef.documentId];
 
   if (!doc.content) {
     return {
       docRef,
-      preview: {
-        text: [],
-      },
+      preview: [],
     };
   }
 
   // Build a preview around the first match position
-  const activeText: Text = Array.isArray(doc.content.content)
-    ? doc.content.content[docRef.section - 1 || 0].content
-    : doc.content.content;
-
-  const adjustedRef: IDocReference = {
-    docId: docRef.docId,
-  };
-
-  if (!isNullOrUndefined(docRef.section)) adjustedRef.section = docRef.section;
-
+  let activeFragments: Fragment[];
+  if (doc.content.kind === "multipart") {
+    if (
+      docRef.kind === "section" ||
+      (docRef.kind === "fragment" && docRef.sectionId)
+    ) {
+      activeFragments = doc.content.content.find(
+        (section) => section.id === docRef.sectionId
+      ).fragments;
+    } else if (docRef.kind === "document") {
+      activeFragments = doc.content.content[0].fragments;
+    } else {
+      throw new Error(
+        `The reference ${SerializeDocRef(docRef)} is not valid for document ${
+          docRef.documentId
+        }`
+      );
+    }
+  } else {
+    activeFragments = doc.content?.content.fragments;
+  }
   return {
     docRef,
     preview: GeneratePreviewText(
-      activeText,
-      docRef.paragraph || 1,
-      docRef.line || 1
+      activeFragments,
+      docRef.kind === "fragment" ? docRef.fragmentId : null
     ),
   };
 }
 
-// Generate a shortened preview view of the text that includes the indicated paragraph/line
-function GeneratePreviewText(
-  text: Text,
-  paragraph: number,
-  line: number
-): Text {
-  const budget = 4;
-  const linelen = 64;
-  var cost = 0;
+// Generate a shortened preview view of the text that includes the targeted fragment
+function GeneratePreviewText(frags: Fragment[], targetId?: string): Fragment[] {
+  const hit = targetId
+    ? frags.findIndex((frag) => frag.kind === "text" && frag.id === targetId)
+    : 0;
 
-  // 1-indexed to 0-indexed
-  paragraph--;
-  line--;
+  if (frags.length === 0) return [];
 
-  var out: string[][] = [];
-  while (cost < budget && paragraph < (text ? text.text.length : 0)) {
-    var pout: string[] = [];
-
-    const p = text.text[paragraph];
-    const start = Math.max(line - 1, 0);
-    const end = Math.max(line + 3, 3);
-    let lines: string[];
-    if (Array.isArray(p)) {
-      lines = p.filter((_, i) => i >= start && i <= end);
+  let indexBefore = hit;
+  let indexAfter = hit + 1;
+  let balance = 0;
+  let budget = 256;
+  let result: Fragment[] = [];
+  while (budget > 32) {
+    let toAdd: Fragment;
+    let addBefore: boolean;
+    if (balance <= 0 && indexBefore >= 0) {
+      toAdd = frags[indexBefore--];
+      addBefore = true;
+    } else if (balance > 0 && indexAfter < frags.length) {
+      toAdd = frags[indexAfter++];
+      addBefore = false;
     } else {
-      lines = [p];
+      break; // Consumed all fragments
     }
 
-    for (const str of lines) {
-      const c = Math.ceil(str.length / linelen);
-      cost += c;
-      if (cost <= budget) pout.push(str);
-      else {
-        pout.push(TrimString(str, (budget - cost + c) * linelen));
-        break;
-      }
+    let cost = costFragment(toAdd);
+    if (cost > budget) {
+      toAdd = trimFragment(toAdd, budget, addBefore);
+      cost = budget;
+
+      if (!toAdd) break; // Trimmed to nothing, don't add
     }
 
-    out.push(pout);
-    paragraph = paragraph + 1;
+    result = addBefore ? [toAdd, ...result] : [...result, toAdd];
+    budget -= cost;
+    balance += addBefore ? cost : -cost;
   }
 
-  return {
-    text: out,
-  };
+  return result;
 }
 
-function TrimString(str: string, len: number): string {
-  if (str.length < len) return str;
+// Estimate the space used by a fragment
+function costFragment(frag: Fragment): number {
+  if (frag.kind === "lineBreak") return 32;
+  else return frag.tokens.map((tok) => costToken(tok)).reduce((a, b) => a + b);
+}
 
-  const lastSpace = str.substr(0, len).lastIndexOf(" ");
-  return str.substr(0, lastSpace) + "...";
+function costToken(tok: Token): number {
+  return tok.kind === "text"
+    ? tok.text.length
+    : tok.kind === "link"
+    ? tok.text?.length || tok.link.length
+    : tok.reference.documentId.length;
+}
+
+// Reduce a fragment to the specified max length,
+// trimming from start or end
+function trimFragment(
+  frag: Fragment,
+  budget: number,
+  fromStart: boolean
+): Fragment | null {
+  if (frag.kind === "lineBreak") {
+    return null;
+  } else {
+    const result: Fragment = {
+      ...frag,
+      tokens: [],
+    };
+
+    const source = frag.tokens.map((tok) => tok);
+    if (fromStart) source.reverse();
+    for (const tok of source) {
+      let cost = costToken(tok);
+      let toAdd = tok;
+      if (cost > budget) {
+        if (toAdd.kind === "text") {
+          toAdd = {
+            ...toAdd,
+            text: trimText(toAdd.text, budget, fromStart),
+          };
+          cost = budget;
+        } else {
+          break;
+        }
+      }
+
+      result.tokens = fromStart
+        ? [toAdd, ...result.tokens]
+        : [...result.tokens, toAdd];
+      budget -= cost;
+      if (budget <= 0) break;
+    }
+
+    return result;
+  }
+}
+
+function trimText(text: string, budget: number, fromStart: boolean): string {
+  if (text.length <= budget) return text;
+
+  if (fromStart) {
+    const firstSpace = text
+      .substr(text.length - budget, text.length)
+      .indexOf(" ");
+    if (firstSpace < 0) return "...";
+    return "..." + text.substr(firstSpace, text.length);
+  } else {
+    const lastSpace = text.substr(0, text.length).lastIndexOf(" ");
+    if (lastSpace < 0) return "...";
+    return text.substr(0, lastSpace) + "...";
+  }
 }

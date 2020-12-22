@@ -1,7 +1,8 @@
-import { Annotation, CanonFile } from "cohen-db/schema";
+import { Annotation, CanonFile, Reference } from "cohen-db/schema";
 
 import { IContentToken } from "../../shared/ApiTypes";
 import { IUserAction } from "../../shared/UserActions";
+import { DocRefEquals } from "../../shared/util";
 import docsDb from "../database";
 import { DocUpdate } from "../models/DocUpdate";
 
@@ -51,11 +52,11 @@ export class UserActionsController {
   private addAnnotation(
     doc: CanonFile,
     user: string,
-    anchor: string,
+    anchor: Reference,
     content: IContentToken[]
   ): CanonFile {
     // If there's no group for this annotation, create one
-    if (!doc.annotations.find((grp) => grp.anchor === anchor)) {
+    if (!doc.annotations.find((grp) => DocRefEquals(grp.anchor, anchor))) {
       doc.annotations.push({
         anchor,
         annotations: [],
@@ -63,7 +64,7 @@ export class UserActionsController {
     }
 
     // Determine the id of the new annotation - one higher than exists
-    const grp = doc.annotations.find((grp) => grp.anchor === anchor);
+    const grp = doc.annotations.find((grp) => DocRefEquals(grp.anchor, anchor));
     let id = 0;
     for (var anno of grp.annotations) {
       id = Math.max(id, parseInt(anno.id));
@@ -84,11 +85,11 @@ export class UserActionsController {
   private editAnnotation(
     doc: CanonFile,
     user: string,
-    anchor: string,
+    anchor: Reference,
     annotationId: string,
     content: IContentToken[]
   ): CanonFile {
-    const grp = doc.annotations.find((grp) => grp.anchor === anchor);
+    const grp = doc.annotations.find((grp) => DocRefEquals(grp.anchor, anchor));
     const index = grp.annotations.findIndex((anno) => anno.id === annotationId);
 
     // Ensure that the user has permission to edit this annotation.
@@ -102,10 +103,10 @@ export class UserActionsController {
   private deleteAnnotation(
     doc: CanonFile,
     user: string,
-    anchor: string,
+    anchor: Reference,
     annoId: string
   ): CanonFile {
-    const grp = doc.annotations.find((grp) => grp.anchor === anchor);
+    const grp = doc.annotations.find((grp) => DocRefEquals(grp.anchor, anchor));
 
     // Ensure that the user has permission to delete this annotation
     const anno = grp.annotations.find((anno) => anno.id === annoId);
@@ -115,7 +116,9 @@ export class UserActionsController {
 
     // If the group now has no annotations, remove the group
     if (grp.annotations.length === 0) {
-      doc.annotations = doc.annotations.filter((grp) => grp.anchor !== anchor);
+      doc.annotations = doc.annotations.filter((grp) =>
+        DocRefEquals(grp.anchor, anchor)
+      );
     }
 
     return doc;

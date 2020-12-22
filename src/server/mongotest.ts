@@ -1,9 +1,10 @@
+import { CanonFile } from "cohen-db/schema";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 
 import { Account } from "./models/Account";
 import { ChatMessage } from "./models/ChatMessage";
-import { DocUpdate } from "./models/DocUpdate";
+import { DocUpdate, IDocUpdate } from "./models/DocUpdate";
 
 export async function createTestDatabase(dbName: string): Promise<void> {
   const mongod = new MongoMemoryServer({ instance: { dbName } });
@@ -70,43 +71,93 @@ export async function createTestDatabase(dbName: string): Promise<void> {
     ],
   }).save();
 
-  await new DocUpdate({
-    time: "2020-11-15T18:07:25.372Z",
+  const newUpdate = {
+    time: new Date("2020-11-15T18:07:25.372Z"),
     user: "augustine",
     action: {
       kind: "addAnnotation",
       documentId: "song.gift",
-      anchor: "p1.l4",
-      annotation: {
-        content: [{ kind: "text", text: "thanks I love silence" }],
-      },
+      anchor: { kind: "fragment", documentId: "song.gift", fragmentId: "1" },
+      content: [{ kind: "text", text: "thanks I love silence" }],
     },
     file: {
       title: "Gift",
+      user: "augustine",
       version: 2,
       content: {
+        kind: "simple",
         content: {
-          text: [
-            [
-              "You tell me that silence",
-              "is nearer to peace than poems",
-              "but if for my gift",
-              "I brought you silence",
-              "(for I know silence)",
-              "you would say",
-              "This is not silence",
-              "this is another poem",
-              "and you would hand it back to me.",
-            ],
+          fragments: [
+            {
+              id: "1",
+              kind: "text",
+              tokens: [{ kind: "text", text: "You tell me that silence" }],
+            },
+            { kind: "lineBreak" },
+            {
+              id: "2",
+              kind: "text",
+              tokens: [{ kind: "text", text: "is nearer to peace than poems" }],
+            },
+            { kind: "lineBreak" },
+            {
+              id: "3",
+              kind: "text",
+              tokens: [{ kind: "text", text: "but if for my gift" }],
+            },
+            { kind: "lineBreak" },
+            {
+              id: "4",
+              kind: "text",
+              tokens: [{ kind: "text", text: "I brought you silence" }],
+            },
+            { kind: "lineBreak" },
+            {
+              id: "5",
+              kind: "text",
+              tokens: [{ kind: "text", text: "(for I know silence)" }],
+            },
+            { kind: "lineBreak" },
+            {
+              id: "6",
+              kind: "text",
+              tokens: [{ kind: "text", text: "you would say" }],
+            },
+            { kind: "lineBreak" },
+            {
+              id: "7",
+              kind: "text",
+              tokens: [{ kind: "text", text: "This is not silence" }],
+            },
+            { kind: "lineBreak" },
+            {
+              id: "8",
+              kind: "text",
+              tokens: [{ kind: "text", text: "this is another poem" }],
+            },
+            { kind: "lineBreak" },
+            {
+              id: "9",
+              kind: "text",
+              tokens: [
+                { kind: "text", text: "and you would hand it back to me." },
+              ],
+            },
+            { kind: "lineBreak" },
           ],
         },
       },
       kind: "song",
       annotations: [
         {
-          anchor: "p1.l4",
+          anchor: {
+            kind: "fragment",
+            documentId: "song.gift",
+            fragmentId: "1",
+          },
           annotations: [
             {
+              id: "0",
               user: "augustine",
               content: [{ kind: "text", text: "thanks I love silence" }],
             },
@@ -114,7 +165,8 @@ export async function createTestDatabase(dbName: string): Promise<void> {
         },
       ],
     },
-  }).save();
+  };
+  await new DocUpdate(newUpdate).save();
 
   return;
 }

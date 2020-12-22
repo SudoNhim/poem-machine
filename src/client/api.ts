@@ -1,7 +1,6 @@
 import axios from "axios";
 
 import {
-  IAnnotation,
   IAppStatistics,
   IAppUpdate,
   IDoc,
@@ -11,7 +10,9 @@ import {
 import { IUserAction } from "../shared/UserActions";
 
 export async function getDoc(id: string): Promise<IDoc> {
-  const response = await axios.get(`/api/docs/get/${id}`);
+  const response = await axios.get(
+    `/api/docs/get/${id}?timestamp=${Date.now()}`
+  );
   return response.data as IDoc;
 }
 

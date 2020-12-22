@@ -1,51 +1,49 @@
-import { isNullOrUndefined } from "util";
+import { Fragment, Reference } from "cohen-db/schema";
 
-import { IDocReference } from "./ApiTypes";
-
-export function SerializeDocRef(
-  ref: IDocReference,
-  includeSubstr: boolean = true
-): string {
-  const parts: string[] = [];
-  if (!isNullOrUndefined(ref.section)) parts.push(`s${ref.section}`);
-  if (!isNullOrUndefined(ref.paragraph)) parts.push(`p${ref.paragraph}`);
-  if (!isNullOrUndefined(ref.line)) parts.push(`l${ref.line}`);
-
-  if (!isNullOrUndefined(ref.substrings) && includeSubstr)
-    parts.push(ref.substrings.map((s) => `i${s[0]}-${s[1]}`).join(""));
-
-  return `${ref.docId}${parts.length ? "#" : ""}${parts.join(".")}`;
+export function SerializeDocRef(ref: Reference): string {
+  switch (ref.kind) {
+    case "document":
+      return `${ref.documentId}`;
+    case "section":
+      return `${ref.documentId}#${ref.sectionId}:`;
+    case "fragment":
+      return ref.sectionId
+        ? `${ref.documentId}#${ref.sectionId}:${ref.fragmentId}`
+        : `${ref.documentId}#${ref.fragmentId}`;
+  }
 }
 
-export function DeserializeDocRef(ref: string): IDocReference {
-  const [docId, parts] = ref.split("#");
-  const out: IDocReference = {
-    docId,
-  };
+export function DeserializeDocRef(ref: string): Reference {
+  // If there is anything after (.e.g /notes) ignore
+  ref = ref.split("/")[0];
 
-  if (!parts) return out;
+  const [documentId, rest] = ref.split("#");
+  if (!rest) return { kind: "document", documentId };
+  if (!rest.includes(":"))
+    return { kind: "fragment", documentId, fragmentId: rest };
+  const [sectionId, fragmentId] = rest.split(":");
+  if (!fragmentId) return { kind: "section", documentId, sectionId };
+  else return { kind: "fragment", documentId, sectionId, fragmentId };
+}
 
-  for (var part of parts.split(".")) {
-    const code = part[0];
-    const valueStr = part.substring(1);
-    switch (code) {
-      case "s":
-        out.section = Number.parseInt(valueStr);
-        break;
-      case "p":
-        out.paragraph = Number.parseInt(valueStr);
-        break;
-      case "l":
-        out.line = Number.parseInt(valueStr);
-        break;
-      case "i":
-        out.substrings = valueStr
-          .split("i")
-          .map((s) => s.split("-").map(Number.parseInt));
-      default:
-        throw "Unrecognized code in docref";
-    }
+export function DocRefEquals(a: Reference, b: Reference): boolean {
+  return SerializeDocRef(a) === SerializeDocRef(b);
+}
+
+export function DocRefIsChildOf(a: Reference, b: Reference): boolean {
+  return SerializeDocRef(a).startsWith(SerializeDocRef(b)) && a.kind !== b.kind;
+}
+
+export function FragmentToPlaintext(frag: Fragment): string {
+  if (frag.kind === "text") {
+    return frag.tokens
+      .map((tok) =>
+        tok.kind === "text"
+          ? tok.text
+          : tok.kind === "reference"
+          ? tok.reference
+          : tok.text || tok.link
+      )
+      .join("");
   }
-
-  return out;
 }
