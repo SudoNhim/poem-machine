@@ -52,7 +52,7 @@ const DocReferencePreview: React.FunctionComponent<IProps> = (props) => {
         </Typography>
         <Typography variant="body2" component="div">
           {props.preview.preview.map((frag, i) => (
-            <FragmentView fragment={frag} key={i} />
+            <FragmentView fragment={frag} interactive={false} key={i} />
           ))}
         </Typography>
       </CardContent>

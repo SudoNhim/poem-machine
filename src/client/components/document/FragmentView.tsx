@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface IProps extends RouteComponentProps {
   fragment: Fragment;
   sectionId?: string;
+  interactive: boolean;
 }
 
 const FragmentView: React.FunctionComponent<IProps> = (props) => {
@@ -58,11 +59,13 @@ const FragmentView: React.FunctionComponent<IProps> = (props) => {
       <div
         id={fullId}
         className={
-          isSelected
-            ? `${classes.root} ${classes.selected}`
-            : `${classes.root} ${classes.selectable}`
+          props.interactive
+            ? isSelected
+              ? `${classes.root} ${classes.selected}`
+              : `${classes.root} ${classes.selectable}`
+            : classes.root
         }
-        onClick={(evt) => handleClick(evt)}
+        onClick={(evt) => props.interactive && handleClick(evt)}
       >
         {
           <Typography

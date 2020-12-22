@@ -30,7 +30,12 @@ const ContentView: React.FunctionComponent<IProps> = (props) => {
           <div id={`${section.id}:`} key={i}>
             <SectionTitle title={section.title} />
             {section.fragments.map((frag, i) => (
-              <FragmentView fragment={frag} sectionId={section.id} key={i} />
+              <FragmentView
+                fragment={frag}
+                sectionId={section.id}
+                interactive={true}
+                key={i}
+              />
             ))}
             {i < sections.length - 1 && <Divider className={classes.divider} />}
           </div>
@@ -42,7 +47,7 @@ const ContentView: React.FunctionComponent<IProps> = (props) => {
     return (
       <div className={classes.root}>
         {mainContent.fragments.map((frag, i) => (
-          <FragmentView fragment={frag} key={i} />
+          <FragmentView fragment={frag} interactive={true} key={i} />
         ))}
       </div>
     );
