@@ -1,8 +1,12 @@
 import { Theme, Typography, makeStyles } from "@material-ui/core";
 import { Fragment } from "cohen-db/schema";
 import * as React from "react";
+import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
 
+import { IAnnotationsGroup } from "../../../shared/ApiTypes";
+import { DocRefEquals, SerializeDocRef } from "../../../shared/util";
+import { IAppState } from "../../model";
 import TokenView from "./TokenView";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -13,12 +17,15 @@ const useStyles = makeStyles((theme: Theme) => ({
   selectable: {
     cursor: "pointer",
     "&:hover": {
-      background: "lightgrey",
+      background: "rgba(200, 200, 255, 0.2)",
     },
   },
   selected: {
     background: "lightyellow",
     cursor: "pointer",
+  },
+  annotationHint: {
+    background: "rgb(240, 240, 240)",
   },
   idLabel: {
     display: "inline-block",
@@ -35,6 +42,7 @@ interface IProps extends RouteComponentProps {
   fragment: Fragment;
   sectionId?: string;
   interactive: boolean;
+  annotations: IAnnotationsGroup[];
 }
 
 const FragmentView: React.FunctionComponent<IProps> = (props) => {
@@ -45,6 +53,9 @@ const FragmentView: React.FunctionComponent<IProps> = (props) => {
     return <br />;
   } else if (frag.id) {
     const fullId = props.sectionId ? `${props.sectionId}:${frag.id}` : frag.id;
+    const hasAnnotations = !!props.annotations.find(
+      (anno) => SerializeDocRef(anno.anchor).split("#")[1] === fullId
+    );
     const isSelected = props.location.hash.split("/")[0] === `#${fullId}`;
     const handleClick = (evt: React.MouseEvent<HTMLDivElement>) => {
       evt.stopPropagation();
@@ -62,6 +73,8 @@ const FragmentView: React.FunctionComponent<IProps> = (props) => {
           props.interactive
             ? isSelected
               ? `${classes.root} ${classes.selected}`
+              : hasAnnotations
+              ? `${classes.root} ${classes.selectable} ${classes.annotationHint}`
               : `${classes.root} ${classes.selectable}`
             : classes.root
         }
@@ -92,4 +105,12 @@ const FragmentView: React.FunctionComponent<IProps> = (props) => {
   }
 };
 
-export default withRouter(FragmentView);
+const mapStateToProps = (state: IAppState, ownProps) => ({
+  fragment: ownProps.fragment,
+  sessionId: ownProps.sessionId,
+  interactive: ownProps.interactive,
+  annotations:
+    state.docs.cache[state.focus?.reference.documentId]?.annotations || [],
+});
+
+export default connect(mapStateToProps, {})(withRouter(FragmentView));
