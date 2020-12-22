@@ -10,6 +10,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingLeft: theme.spacing(0),
     paddingRight: theme.spacing(0),
   },
+  divider: {
+    marginBottom: theme.spacing(1),
+  },
 }));
 
 interface IProps {
@@ -29,7 +32,7 @@ const ContentView: React.FunctionComponent<IProps> = (props) => {
             {section.fragments.map((frag, i) => (
               <FragmentView fragment={frag} key={i} />
             ))}
-            {i < sections.length - 1 && <Divider />}
+            {i < sections.length - 1 && <Divider className={classes.divider} />}
           </React.Fragment>
         ))}
       </div>
