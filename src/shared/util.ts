@@ -30,6 +30,10 @@ export function DocRefEquals(a: Reference, b: Reference): boolean {
   return SerializeDocRef(a) === SerializeDocRef(b);
 }
 
+export function DocRefIsChildOf(a: Reference, b: Reference): boolean {
+  return SerializeDocRef(a).startsWith(SerializeDocRef(b)) && a.kind !== b.kind;
+}
+
 export function FragmentToPlaintext(frag: Fragment): string {
   if (frag.kind === "text") {
     return frag.tokens

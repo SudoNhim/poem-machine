@@ -2,7 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import { IAnnotationsGroup } from "../../../shared/ApiTypes";
-import { DocRefEquals } from "../../../shared/util";
+import { DocRefIsChildOf } from "../../../shared/util";
 import { setDoc } from "../../actions";
 import { IAppState, IFocusState } from "../../model";
 import AnnotationsGroup from "./AnnotationsGroup";
@@ -21,11 +21,9 @@ const AnnotationsView: React.FunctionComponent<IProps> = (props) => {
   let annotations: IAnnotationsGroup[] = props.annotations;
   if (!!props.focus.reference) {
     annotations = annotations.filter((grp) =>
-      DocRefEquals(grp.anchor, props.focus.reference)
+      DocRefIsChildOf(grp.anchor, props.focus.reference)
     );
-    if (annotations.length > 1)
-      throw new Error("Expected only one annotation group per docpart");
-    if (annotations.length === 0)
+    if (annotations.length === 0 && props.focus.reference.kind === "fragment")
       annotations.push({
         anchor: props.focus.reference,
         annotations: [],
@@ -37,7 +35,7 @@ const AnnotationsView: React.FunctionComponent<IProps> = (props) => {
       {annotations.map((grp, i) => (
         <AnnotationsGroup
           annotationsGroup={grp}
-          allowEdit={!!props.focus.reference}
+          allowEdit={props.focus.reference.kind === "fragment"}
           key={i}
         />
       ))}
