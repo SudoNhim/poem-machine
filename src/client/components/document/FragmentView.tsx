@@ -56,6 +56,7 @@ const FragmentView: React.FunctionComponent<IProps> = (props) => {
 
     return (
       <div
+        id={fullId}
         className={
           isSelected
             ? `${classes.root} ${classes.selected}`

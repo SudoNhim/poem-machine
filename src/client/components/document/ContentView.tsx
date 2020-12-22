@@ -27,13 +27,13 @@ const ContentView: React.FunctionComponent<IProps> = (props) => {
     return (
       <div>
         {props.content.content.map((section, i) => (
-          <React.Fragment key={i}>
+          <div id={`${section.id}/`} key={i}>
             <SectionTitle title={section.title} />
             {section.fragments.map((frag, i) => (
               <FragmentView fragment={frag} sectionId={section.id} key={i} />
             ))}
             {i < sections.length - 1 && <Divider className={classes.divider} />}
-          </React.Fragment>
+          </div>
         ))}
       </div>
     );
