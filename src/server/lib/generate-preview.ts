@@ -34,7 +34,7 @@ export function GeneratePreview(docRef: Reference): IDocReferencePreview {
       );
     }
   } else {
-    activeFragments = doc.content.content.fragments;
+    activeFragments = doc.content?.content.fragments;
   }
   return {
     docRef,
@@ -50,6 +50,8 @@ function GeneratePreviewText(frags: Fragment[], targetId?: string): Fragment[] {
   const hit = targetId
     ? frags.findIndex((frag) => frag.kind === "text" && frag.id === targetId)
     : 0;
+
+  if (frags.length === 0) return [];
 
   let indexBefore = hit;
   let indexAfter = hit + 1;

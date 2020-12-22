@@ -28,7 +28,7 @@ export function snippetFromDoc(doc: IDoc, docRef: Reference): string {
   const fragment = fragments.find(
     (frag) => !fragmentId || (frag.kind === "text" && frag.id === fragmentId)
   );
-  const text = FragmentToPlaintext(fragment);
+  const text = fragment ? FragmentToPlaintext(fragment) : "";
 
   return trimString(text, 64);
 }
