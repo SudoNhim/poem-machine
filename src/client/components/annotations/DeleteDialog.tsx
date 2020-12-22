@@ -5,6 +5,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import { Reference } from "cohen-db/schema";
 import React from "react";
 import { connect } from "react-redux";
 
@@ -30,7 +31,7 @@ const useStyles = makeStyles({
 
 interface IProps {
   docId: string;
-  anchor: string;
+  anchor: Reference;
   annotation: IAnnotation;
   onFinished: () => void;
   setDoc: typeof setDoc;
@@ -42,7 +43,6 @@ const DeleteDialog: React.FunctionComponent<IProps> = (props) => {
   const handleDelete = async () => {
     await postUserAction({
       kind: "deleteAnnotation",
-      user: null,
       documentId: props.docId,
       anchor: props.anchor,
       annotationId: props.annotation.id,
@@ -80,8 +80,8 @@ const DeleteDialog: React.FunctionComponent<IProps> = (props) => {
 const mapStateToProps = (state: IAppState, ownProps) => ({
   annotation: ownProps.annotation,
   onFinished: ownProps.onFinished,
-  docId: state.focus.docId,
-  anchor: state.focus.docPart,
+  docId: state.focus.reference.documentId,
+  anchor: state.focus.reference,
 });
 
 export default connect(mapStateToProps, { setDoc })(DeleteDialog);

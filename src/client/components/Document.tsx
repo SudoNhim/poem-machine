@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 
 import { IDoc, IDocMeta } from "../../shared/ApiTypes";
+import { DeserializeDocRef, SerializeDocRef } from "../../shared/util";
 import { setDoc, setFocus } from "../actions";
 import { getDoc } from "../api";
 import { IAppState } from "../model";
@@ -21,20 +22,20 @@ interface IProps extends RouteComponentProps<IMatchParams> {
 
 const Document: React.FunctionComponent<IProps> = (props) => {
   // Update focus
-  const docPart = props.location.hash.substr(1).split("/")[0];
+  const reference = DeserializeDocRef(
+    props.match.params.docId + props.location.hash
+  );
   React.useEffect(() => {
     props.setFocus({
-      docId,
-      docPart,
+      reference,
     });
 
     // Cleanup focus when unmount
     return () =>
       props.setFocus({
-        docId: null,
-        docPart: null,
+        reference: null,
       });
-  }, [props.doc, docPart]);
+  }, [props.doc, props.location.hash]);
 
   if (!props.docMeta) return <p>Document does not exist</p>;
 
@@ -52,9 +53,9 @@ const Document: React.FunctionComponent<IProps> = (props) => {
 
   // Scroll to the hash fragment, if applicable
   React.useEffect(() => {
-    if (doc && docPart && props.history.action === "PUSH")
+    if (doc && props.location.hash && props.history.action === "PUSH")
       document
-        .getElementById(docPart)
+        .getElementById(SerializeDocRef(reference).split("#")[1])
         .scrollIntoView({ behavior: "smooth", block: "center" });
   }, [doc]);
 
@@ -62,12 +63,7 @@ const Document: React.FunctionComponent<IProps> = (props) => {
   else
     return (
       <div>
-        <DocViewer
-          id={docId}
-          docMeta={props.docMeta}
-          doc={doc}
-          focusPart={docPart}
-        />
+        <DocViewer id={docId} docMeta={props.docMeta} doc={doc} />
       </div>
     );
 };

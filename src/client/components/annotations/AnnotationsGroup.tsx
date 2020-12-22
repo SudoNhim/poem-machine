@@ -84,8 +84,8 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
 
 const mapStateToProps = (state: IAppState, ownProps) => ({
   annotationsGroup: ownProps.annotationsGroup,
-  doc: state.docs.cache[state.focus.docId],
-  docId: state.focus.docId,
+  doc: state.docs.cache[state.focus.reference.documentId],
+  docId: state.focus.reference.documentId,
   hover: state.hover,
   allowEdit: ownProps.allowEdit,
 });

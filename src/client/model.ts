@@ -1,3 +1,5 @@
+import { Reference } from "cohen-db/schema";
+
 import { IDoc, IDocGraph } from "../shared/ApiTypes";
 
 export interface IDocCache {
@@ -10,8 +12,7 @@ export interface IDocState {
 }
 
 export interface IFocusState {
-  docId: string;
-  docPart: string;
+  reference: Reference;
 }
 
 export interface IHoverState {

@@ -19,7 +19,7 @@ const initialState: IAppState = {
       },
     },
   },
-  focus: { docId: "db", docPart: null },
+  focus: { reference: { kind: "document", documentId: "db" } },
   hover: { docPart: null },
   user: {
     username: null,

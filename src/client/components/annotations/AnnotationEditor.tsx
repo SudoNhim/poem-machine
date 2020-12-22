@@ -6,6 +6,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import { Check, Clear } from "@material-ui/icons";
+import { Reference } from "cohen-db/schema";
 import * as React from "react";
 import { connect } from "react-redux";
 
@@ -37,7 +38,7 @@ const useStyles = makeStyles({
 
 interface IProps {
   docId: string;
-  anchor: string;
+  anchor: Reference;
   annotation?: IAnnotation;
   username: string;
   setDoc: typeof setDoc;
@@ -156,8 +157,8 @@ const mapStateToProps = (state: IAppState, ownProps) => ({
   annotation: ownProps.annotation,
   onChange: ownProps.onChange,
   onFinished: ownProps.onFinished,
-  anchor: state.focus.docPart,
-  docId: state.focus.docId,
+  anchor: state.focus.reference,
+  docId: state.focus.reference.documentId,
   username: state.user.username || "anonymous",
 });
 

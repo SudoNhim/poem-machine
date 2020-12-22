@@ -13,7 +13,6 @@ interface IProps extends RouteComponentProps {
   id: string;
   doc: IDoc;
   docMeta: IDocMeta;
-  focusPart: string;
 }
 
 interface IState {
