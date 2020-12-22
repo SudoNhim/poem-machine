@@ -27,7 +27,7 @@ const ContentView: React.FunctionComponent<IProps> = (props) => {
     return (
       <div>
         {props.content.content.map((section, i) => (
-          <div id={`${section.id}/`} key={i}>
+          <div id={`${section.id}:`} key={i}>
             <SectionTitle title={section.title} />
             {section.fragments.map((frag, i) => (
               <FragmentView fragment={frag} sectionId={section.id} key={i} />

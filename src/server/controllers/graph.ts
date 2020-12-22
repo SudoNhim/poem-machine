@@ -57,8 +57,9 @@ export class GraphController {
                 token.reference.documentId === key
               ) {
                 refs.push({
-                  kind: "document",
+                  kind: "section",
                   documentId: otherKey,
+                  sectionId: section.id,
                 });
               }
             }
