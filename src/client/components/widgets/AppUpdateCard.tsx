@@ -16,6 +16,7 @@ import { Link as RouterLink } from "react-router-dom";
 import ReactTimeAgo from "react-time-ago";
 
 import { IAppUpdate, IDocGraph } from "../../../shared/ApiTypes";
+import { SerializeDocRef } from "../../../shared/util";
 import { IAppState } from "../../model";
 
 TimeAgo.addLocale(en);
@@ -77,7 +78,7 @@ const AppUpdateCard: React.FunctionComponent<IProps> = (props) => {
     const docTitle = props.graph[props.update.action.documentId].title;
     const docKind = props.graph[props.update.action.documentId].kind;
     content = `User ${props.update.user} ${actionDesc} ${docKind} ${docTitle}`;
-    destination = `/doc/${props.update.action.documentId}#${props.update.action.anchor}/notes`;
+    destination = `/doc/${SerializeDocRef(props.update.action.anchor)}/notes`;
     isExternalLink = false;
   }
 

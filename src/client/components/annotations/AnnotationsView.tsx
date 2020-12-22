@@ -47,9 +47,9 @@ const AnnotationsView: React.FunctionComponent<IProps> = (props) => {
 
 const mapStateToProps = (state: IAppState) => ({
   annotations:
-    state.docs.cache[state.focus.reference.documentId]?.annotations || [],
+    state.docs.cache[state.focus?.reference?.documentId]?.annotations || [],
   focus: state.focus,
-  hasDoc: !!state.docs.cache[state.focus.reference.documentId],
+  hasDoc: !!state.docs.cache[state.focus?.reference?.documentId],
 });
 
 export default connect(mapStateToProps, { setDoc })(AnnotationsView);
