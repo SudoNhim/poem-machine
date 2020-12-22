@@ -43,7 +43,7 @@ const FragmentView: React.FunctionComponent<IProps> = (props) => {
   if (frag.kind === "lineBreak") {
     return <br />;
   } else if (frag.id) {
-    const fullId = props.sectionId ? `${props.sectionId}/${frag.id}` : frag.id;
+    const fullId = props.sectionId ? `${props.sectionId}:${frag.id}` : frag.id;
     const isSelected = props.location.hash.split("/")[0] === `#${fullId}`;
     const handleClick = (evt: React.MouseEvent<HTMLDivElement>) => {
       evt.stopPropagation();

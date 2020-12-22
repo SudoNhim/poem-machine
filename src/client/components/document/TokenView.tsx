@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
 
 import { IDocGraph } from "../../../shared/ApiTypes";
+import { SerializeDocRef } from "../../../shared/util";
 import { IAppState } from "../../model";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -31,7 +32,7 @@ const TokenView: React.FunctionComponent<IProps> = (props) => {
     const meta = props.graph[tok.reference.documentId];
     const handleClick = (evt: React.MouseEvent) => {
       evt.stopPropagation();
-      props.history.push(`/doc/${tok.reference.documentId}`);
+      props.history.push(`/doc/${SerializeDocRef(tok.reference)}`);
     };
     return (
       <div className={classes.reference} onClick={handleClick}>
