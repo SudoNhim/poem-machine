@@ -40,6 +40,7 @@ const Home: React.FunctionComponent = () => {
       </Typography>
       {feed ? (
         feed
+          .map((el) => el)
           .reverse()
           .map((update, i) => <AppUpdateCard update={update} key={i} />)
       ) : (
