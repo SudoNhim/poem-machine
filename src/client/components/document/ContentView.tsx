@@ -32,6 +32,7 @@ const ContentView: React.FunctionComponent<IProps> = (props) => {
             {section.fragments.map((frag, i) => (
               <FragmentView
                 fragment={frag}
+                previous={section.fragments[i - 1]}
                 sectionId={section.id}
                 interactive={true}
                 key={i}
@@ -47,7 +48,12 @@ const ContentView: React.FunctionComponent<IProps> = (props) => {
     return (
       <div className={classes.root}>
         {mainContent.fragments.map((frag, i) => (
-          <FragmentView fragment={frag} interactive={true} key={i} />
+          <FragmentView
+            fragment={frag}
+            previous={mainContent.fragments[i - 1]}
+            interactive={true}
+            key={i}
+          />
         ))}
       </div>
     );
