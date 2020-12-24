@@ -115,7 +115,7 @@ const FragmentView: React.FunctionComponent<IProps> = (props) => {
     const renderSpeaker = frag.speaker && props.previous?.kind !== "text";
     return renderSpeaker ? (
       <React.Fragment>
-        <span className={classes.speakerTag}>{frag.speaker}</span>
+        <span className={classes.speakerTag}>{frag.speaker}:</span>
         {textPart}
       </React.Fragment>
     ) : (
