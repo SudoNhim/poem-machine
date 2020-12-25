@@ -130,7 +130,7 @@ const mapStateToProps = (state: IAppState, ownProps) => ({
   sessionId: ownProps.sessionId,
   interactive: ownProps.interactive,
   annotations:
-    state.docs.cache[state.focus?.reference.documentId]?.annotations || [],
+    state.docs.cache[state.focus?.reference?.documentId]?.annotations || [],
 });
 
 export default connect(mapStateToProps, {})(withRouter(FragmentView));

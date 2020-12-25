@@ -7,7 +7,6 @@ import { RouteComponentProps } from "react-router";
 import { ISearchResults } from "../../shared/ApiTypes";
 import { setUser } from "../actions";
 import { getUser, login, register } from "../api";
-import { IAppState } from "../model";
 
 const styles = {
   main: {
