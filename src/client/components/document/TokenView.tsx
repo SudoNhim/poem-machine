@@ -14,6 +14,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     cursor: "pointer",
     textDecoration: "underline",
   },
+  secondary: {
+    color: theme.palette.text.secondary,
+  },
 }));
 
 interface IProps extends RouteComponentProps {
@@ -25,7 +28,8 @@ const TokenView: React.FunctionComponent<IProps> = (props) => {
   const classes = useStyles();
   const tok = props.token;
   if (tok.kind === "text") {
-    return <span>{tok.text}</span>;
+    const className = tok.secondary ? classes.secondary : "";
+    return <span className={className}>{tok.text}</span>;
   } else if (tok.kind === "link") {
     return <a href={tok.link}>{tok.text || tok.link}</a>;
   } else {
