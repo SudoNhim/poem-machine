@@ -28,8 +28,11 @@ const TokenView: React.FunctionComponent<IProps> = (props) => {
   const classes = useStyles();
   const tok = props.token;
   if (tok.kind === "text") {
-    const className = tok.secondary ? classes.secondary : "";
-    return <span className={className}>{tok.text}</span>;
+    return tok.secondary ? (
+      <span className={classes.secondary}>[{tok.text}]</span>
+    ) : (
+      <span>{tok.text}</span>
+    );
   } else if (tok.kind === "link") {
     return <a href={tok.link}>{tok.text || tok.link}</a>;
   } else {
