@@ -125,7 +125,7 @@ export class UserActionsController {
 
   private authCheck(user: string, owner: string) {
     if (user !== "sudonhim" && owner !== "anonymous") {
-      if (user !== "owner") {
+      if (user !== owner) {
         throw new Error(
           `User ${user} does not have authorization to edit content owned by ${owner}`
         );
