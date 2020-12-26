@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const Home: React.FunctionComponent = () => {
+const HomePage: React.FunctionComponent = () => {
   const classes = useStyles();
 
   const [statistics, setStatistics] = React.useState<IAppStatistics>();
@@ -90,4 +90,4 @@ const Home: React.FunctionComponent = () => {
   );
 };
 
-export default Home;
+export default HomePage;

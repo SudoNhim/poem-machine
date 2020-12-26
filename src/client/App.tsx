@@ -6,12 +6,12 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import { setGraph, setUser } from "./actions";
 import { getGraph, getUser } from "./api";
-import Chat from "./components/Chat";
-import Document from "./components/Document";
-import Home from "./components/Home";
+import ChatPage from "./components/ChatPage";
+import DocumentPage from "./components/DocumentPage";
+import HomePage from "./components/HomePage";
 import AppLayout from "./components/layout/AppLayout";
-import Login from "./components/Login";
-import SearchResults from "./components/SearchResults";
+import LoginPage from "./components/LoginPage";
+import SearchResultsPage from "./components/SearchResultsPage";
 
 interface IProps {
   setGraph: typeof setGraph;
@@ -38,11 +38,11 @@ const AppImpl: React.FunctionComponent<IProps> = (props: IProps) => {
         <AppLayout>
           {ready ? (
             <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/chat" component={Chat} />
-              <Route path="/doc/:docId" component={Document} />
-              <Route path="/search/:searchTerm" component={SearchResults} />
-              <Route exact path="/login" component={Login} />
+              <Route exact path="/" component={HomePage} />
+              <Route exact path="/chat" component={ChatPage} />
+              <Route path="/doc/:docId" component={DocumentPage} />
+              <Route path="/search/:searchTerm" component={SearchResultsPage} />
+              <Route exact path="/login" component={LoginPage} />
             </Switch>
           ) : (
             <p>Loading...</p>

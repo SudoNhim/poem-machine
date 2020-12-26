@@ -1,8 +1,7 @@
-import { Typography } from "@material-ui/core";
 import { TextFragment } from "cohen-db/schema";
 import * as React from "react";
 
-import TokenView from "./TokenView";
+import TokenView from "../shared/TokenView";
 
 interface IProps {
   title: TextFragment;

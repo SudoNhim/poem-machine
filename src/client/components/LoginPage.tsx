@@ -40,7 +40,7 @@ interface IState {
   registerFailed: string;
 }
 
-class LoginForm extends React.Component<IProps, IState> {
+class LoginPage extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -250,4 +250,4 @@ class LoginForm extends React.Component<IProps, IState> {
   }
 }
 
-export default connect(null, { setUser })(withStyles(styles)(LoginForm));
+export default connect(null, { setUser })(withStyles(styles)(LoginPage));

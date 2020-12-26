@@ -13,7 +13,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { IDocMeta, IDocReferencePreview } from "../../../shared/ApiTypes";
 import { SerializeDocRef } from "../../../shared/util";
 import { IAppState } from "../../model";
-import FragmentView from "./FragmentView";
+import FragmentView from "../shared/FragmentView";
 
 const useStyles = makeStyles({
   root: {
@@ -35,7 +35,7 @@ interface IProps {
   preview: IDocReferencePreview;
 }
 
-const DocReferencePreview: React.FunctionComponent<IProps> = (props) => {
+const ReferencePreview: React.FunctionComponent<IProps> = (props) => {
   const kind = props.docMeta.kind;
   const prefix = `${kind.charAt(0).toUpperCase()}${kind.substr(1)}`;
   const refstr = SerializeDocRef(props.preview.docRef);
@@ -70,4 +70,4 @@ const mapStateToProps = (state: IAppState, ownProps) => ({
   preview: ownProps.preview,
 });
 
-export default connect(mapStateToProps)(DocReferencePreview);
+export default connect(mapStateToProps)(ReferencePreview);

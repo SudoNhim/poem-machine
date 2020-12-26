@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 
 import { ISearchResults } from "../../shared/ApiTypes";
 import { getSearchResults } from "../api";
-import DocReferencePreveiw from "./document/DocReferencePreview";
+import ReferencePreview from "./widgets/ReferencePreview";
 
 const css = require("./all.css");
 
@@ -13,7 +13,7 @@ const emptySearchResults: ISearchResults = {
   previews: [],
 };
 
-const SearchResults: React.FunctionComponent = () => {
+const SearchResultsPage: React.FunctionComponent = () => {
   const { searchTerm }: { searchTerm: string } = useParams();
   const [results, setResults] = React.useState(emptySearchResults);
 
@@ -27,11 +27,11 @@ const SearchResults: React.FunctionComponent = () => {
       <div>
         {results.previews.map((p, index) => (
           <div className={css.viewsection} key={index}>
-            <DocReferencePreveiw preview={p} />
+            <ReferencePreview preview={p} />
           </div>
         ))}
       </div>
     );
 };
 
-export default SearchResults;
+export default SearchResultsPage;

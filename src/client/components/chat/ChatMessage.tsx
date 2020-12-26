@@ -2,7 +2,7 @@ import { Typography, makeStyles } from "@material-ui/core";
 import * as React from "react";
 
 import { IChatMessage } from "../../../shared/ApiTypes";
-import TokenView from "../document/TokenView";
+import TokenView from "../shared/TokenView";
 
 const useStyles = makeStyles({
   content: {

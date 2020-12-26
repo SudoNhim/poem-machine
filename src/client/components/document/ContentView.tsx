@@ -2,7 +2,7 @@ import { Divider, Theme, makeStyles } from "@material-ui/core";
 import { Content, MainContent, SectionalContent } from "cohen-db/schema";
 import * as React from "react";
 
-import FragmentView from "./FragmentView";
+import FragmentView from "../shared/FragmentView";
 import SectionTitle from "./SectionTitle";
 
 const useStyles = makeStyles((theme: Theme) => ({

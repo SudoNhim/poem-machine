@@ -3,8 +3,8 @@ import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 
 import { IDoc, IDocMeta } from "../../../shared/ApiTypes";
+import ReferencePreview from "../widgets/ReferencePreview";
 import ContentView from "./ContentView";
-import DocReferencePreview from "./DocReferencePreview";
 import MetadataView from "./MetadataView";
 
 const css = require("./docviewer.css");
@@ -15,22 +15,7 @@ interface IProps extends RouteComponentProps {
   docMeta: IDocMeta;
 }
 
-interface IState {
-  hasContentDom: boolean;
-}
-
-class DocViewer extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
-    this.state = {
-      hasContentDom: false,
-    };
-  }
-
-  public componentDidMount() {
-    if (!this.state.hasContentDom) this.setState({ hasContentDom: true });
-  }
-
+class DocumentView extends React.Component<IProps> {
   private onClick(evt: React.MouseEvent) {
     evt.stopPropagation();
     const base = `/doc/${this.props.id}`;
@@ -66,7 +51,7 @@ class DocViewer extends React.Component<IProps, IState> {
             <div className={css.section}>
               <div className={css.sectiontitle}>Children</div>
               {this.props.doc.children.map((child, i) => (
-                <DocReferencePreview preview={child} key={i} />
+                <ReferencePreview preview={child} key={i} />
               ))}
             </div>
           )}
@@ -74,7 +59,7 @@ class DocViewer extends React.Component<IProps, IState> {
             <div className={css.section}>
               <div className={css.sectiontitle}>References</div>
               {this.props.doc.referrers.map((referrer, i) => (
-                <DocReferencePreview preview={referrer} key={i} />
+                <ReferencePreview preview={referrer} key={i} />
               ))}
             </div>
           )}
@@ -83,4 +68,4 @@ class DocViewer extends React.Component<IProps, IState> {
   }
 }
 
-export default withRouter(DocViewer);
+export default withRouter(DocumentView);

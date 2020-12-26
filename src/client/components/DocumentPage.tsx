@@ -7,7 +7,7 @@ import { DeserializeDocRef, SerializeDocRef } from "../../shared/util";
 import { setDoc, setFocus } from "../actions";
 import { getDoc } from "../api";
 import { IAppState } from "../model";
-import DocViewer from "./document/DocViewer";
+import DocumentView from "./document/DocumentView";
 
 interface IMatchParams {
   docId?: string;
@@ -20,7 +20,7 @@ interface IProps extends RouteComponentProps<IMatchParams> {
   setFocus: typeof setFocus;
 }
 
-const Document: React.FunctionComponent<IProps> = (props) => {
+const DocumentPage: React.FunctionComponent<IProps> = (props) => {
   // Update focus
   const reference = DeserializeDocRef(
     props.match.params.docId + props.location.hash
@@ -63,7 +63,7 @@ const Document: React.FunctionComponent<IProps> = (props) => {
   else
     return (
       <div>
-        <DocViewer id={docId} docMeta={props.docMeta} doc={doc} />
+        <DocumentView id={docId} docMeta={props.docMeta} doc={doc} />
       </div>
     );
 };
@@ -76,4 +76,4 @@ const mapStateToProps = (
   doc: state.docs.cache[ownProps.match.params.docId || "db"] || null,
 });
 
-export default connect(mapStateToProps, { setDoc, setFocus })(Document);
+export default connect(mapStateToProps, { setDoc, setFocus })(DocumentPage);

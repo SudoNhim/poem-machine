@@ -4,7 +4,7 @@ import io from "socket.io-client";
 import { IChatMessage } from "../../shared/ApiTypes";
 import ChatView from "./chat/ChatView";
 
-const Chat: React.FunctionComponent = () => {
+const ChatPage: React.FunctionComponent = () => {
   const [chatLog, setChatLog] = React.useState<IChatMessage[]>([]);
 
   React.useEffect(() => {
@@ -25,4 +25,4 @@ const Chat: React.FunctionComponent = () => {
   return <ChatView messages={[...chatLog]} postMessage={sendMessage} />;
 };
 
-export default Chat;
+export default ChatPage;

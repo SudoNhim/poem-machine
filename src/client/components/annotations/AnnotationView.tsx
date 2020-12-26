@@ -6,7 +6,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import { IAppState } from "../../model";
-import TokenView from "../document/TokenView";
+import TokenView from "../shared/TokenView";
 
 const useStyles = makeStyles({
   content: {
