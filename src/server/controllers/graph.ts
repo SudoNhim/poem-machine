@@ -75,10 +75,10 @@ export class GraphController {
       const annotations = docsDb[key].annotations || [];
       for (var annoGroup of annotations) {
         for (var anno of annoGroup.annotations) {
-          for (var tok of anno.content) {
-            if (tok.kind === "docref")
-              this.references[tok.docRef] = [
-                ...this.references[tok.docRef],
+          for (var tok of anno.tokens) {
+            if (tok.kind === "reference")
+              this.references[tok.reference.documentId] = [
+                ...this.references[tok.reference.documentId],
                 annoGroup.anchor,
               ];
           }

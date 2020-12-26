@@ -14,7 +14,6 @@ import Login from "./components/Login";
 import SearchResults from "./components/SearchResults";
 
 interface IProps {
-  isReady: boolean;
   setGraph: typeof setGraph;
   setUser: typeof setUser;
 }

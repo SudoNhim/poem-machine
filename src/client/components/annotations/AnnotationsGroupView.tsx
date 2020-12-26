@@ -1,13 +1,14 @@
 import { Card, CardContent, Typography, makeStyles } from "@material-ui/core";
+import { Annotation, AnnotationsGroup } from "cohen-db/schema";
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { IAnnotation, IAnnotationsGroup, IDoc } from "../../../shared/ApiTypes";
+import { IDoc } from "../../../shared/ApiTypes";
 import { setDoc } from "../../actions";
 import { IAppState, IHoverState } from "../../model";
 import { snippetFromDoc } from "../../util";
-import Annotation from "./Annotation";
 import AnnotationEditor from "./AnnotationEditor";
+import AnnotationView from "./AnnotationView";
 import DeleteDialog from "./DeleteDialog";
 
 const useStyles = makeStyles({
@@ -24,19 +25,19 @@ const useStyles = makeStyles({
 interface IProps {
   docId: string;
   doc: IDoc;
-  annotationsGroup: IAnnotationsGroup;
+  annotationsGroup: AnnotationsGroup;
   hover: IHoverState;
   allowEdit: boolean;
   setDoc: typeof setDoc;
 }
 
-const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
+const AnnotationsGroupView: React.FunctionComponent<IProps> = (props) => {
   const classes = useStyles();
   const [editIndex, setEditIndex] = React.useState(-1);
-  const [editingAnnotation, setEditingAnnotation] = React.useState<IAnnotation>(
+  const [editingAnnotation, setEditingAnnotation] = React.useState<Annotation>(
     null
   );
-  const [deleteAnnotation, setDeleteAnnotation] = React.useState<IAnnotation>(
+  const [deleteAnnotation, setDeleteAnnotation] = React.useState<Annotation>(
     null
   );
 
@@ -47,7 +48,7 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
           {snippetFromDoc(props.doc, props.annotationsGroup.anchor)}
         </Typography>
         {props.annotationsGroup.annotations.map((anno, i) => (
-          <Annotation
+          <AnnotationView
             annotation={(i === editIndex ? editingAnnotation : anno) || anno}
             key={i}
             isPreview={i === editIndex}
@@ -60,7 +61,7 @@ const AnnotationsGroup: React.FunctionComponent<IProps> = (props) => {
           />
         ))}
         {editingAnnotation && editIndex === -1 && (
-          <Annotation annotation={editingAnnotation} isPreview={true} />
+          <AnnotationView annotation={editingAnnotation} isPreview={true} />
         )}
         {props.allowEdit && (
           <AnnotationEditor
@@ -90,4 +91,4 @@ const mapStateToProps = (state: IAppState, ownProps) => ({
   allowEdit: ownProps.allowEdit,
 });
 
-export default connect(mapStateToProps, { setDoc })(AnnotationsGroup);
+export default connect(mapStateToProps, { setDoc })(AnnotationsGroupView);

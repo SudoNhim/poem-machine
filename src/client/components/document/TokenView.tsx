@@ -14,6 +14,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     cursor: "pointer",
     textDecoration: "underline",
   },
+  unresolvedReference: {
+    display: "inline",
+    cursor: "not-allowed",
+    textDecoration: "underline",
+    color: theme.palette.error.main,
+  },
+  link: {
+    cursor: "pointer",
+    textDecoration: "underline",
+    color: theme.palette.primary.main,
+  },
   secondary: {
     color: theme.palette.text.secondary,
   },
@@ -34,18 +45,30 @@ const TokenView: React.FunctionComponent<IProps> = (props) => {
       <span>{tok.text}</span>
     );
   } else if (tok.kind === "link") {
-    return <a href={tok.link}>{tok.text || tok.link}</a>;
+    return (
+      <a className={classes.link} href={tok.link}>
+        {tok.text || tok.link}
+      </a>
+    );
   } else {
     const meta = props.graph[tok.reference.documentId];
-    const handleClick = (evt: React.MouseEvent) => {
-      evt.stopPropagation();
-      props.history.push(`/doc/${SerializeDocRef(tok.reference)}`);
-    };
-    return (
-      <div className={classes.reference} onClick={handleClick}>
-        {meta.title}
-      </div>
-    );
+    if (meta) {
+      const handleClick = (evt: React.MouseEvent) => {
+        evt.stopPropagation();
+        props.history.push(`/doc/${SerializeDocRef(tok.reference)}`);
+      };
+      return (
+        <div className={classes.reference} onClick={handleClick}>
+          {meta.title}
+        </div>
+      );
+    } else {
+      return (
+        <div className={classes.unresolvedReference}>
+          #{SerializeDocRef(tok.reference)}
+        </div>
+      );
+    }
   }
 };
 

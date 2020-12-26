@@ -46,7 +46,7 @@ export async function createTestDatabase(dbName: string): Promise<void> {
       },
       {
         kind: "docref",
-        docRef: "song.master_song",
+        docRef: "song.master_song", // test old reference token
       },
       {
         kind: "text",
@@ -67,6 +67,27 @@ export async function createTestDatabase(dbName: string): Promise<void> {
       {
         kind: "text",
         text: "The things that we love tell us what we are.",
+      },
+    ],
+  }).save();
+
+  // test new reference style
+  await new ChatMessage({
+    time: new Date(1255, 1, 15, 18, 40),
+    user: "aquinas",
+    tokens: [
+      {
+        kind: "text",
+        text: "Also check out",
+      },
+      {
+        kind: "reference",
+        reference: {
+          kind: "section",
+          documentId:
+            "interview.1994_08_07_bbc_radio_1_leonard_cohens_tower_of_song",
+          sectionId: "on_suzanne",
+        },
       },
     ],
   }).save();
@@ -159,7 +180,7 @@ export async function createTestDatabase(dbName: string): Promise<void> {
             {
               id: "0",
               user: "augustine",
-              content: [{ kind: "text", text: "thanks I love silence" }],
+              tokens: [{ kind: "text", text: "thanks I love silence" }],
             },
           ],
         },

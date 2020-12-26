@@ -2,7 +2,7 @@ import { Typography, makeStyles } from "@material-ui/core";
 import * as React from "react";
 
 import { IChatMessage } from "../../../shared/ApiTypes";
-import ContentToken from "../shared/ContentToken";
+import TokenView from "../document/TokenView";
 
 const useStyles = makeStyles({
   content: {
@@ -36,8 +36,8 @@ const ChatMessage: React.FunctionComponent<IProps> = (props) => {
           {props.message.user || "anonymous"}:&nbsp;
         </Typography>
         <Typography className={classes.content} component="span">
-          {props.message.content.map((tok, i) => (
-            <ContentToken token={tok} key={i} />
+          {props.message.tokens.map((tok, i) => (
+            <TokenView token={tok} key={i} />
           ))}
         </Typography>
       </div>

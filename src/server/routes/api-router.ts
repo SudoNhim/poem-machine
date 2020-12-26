@@ -4,7 +4,6 @@ import passport from "passport";
 
 import { IDoc } from "../../shared/ApiTypes";
 import { IUserAction } from "../../shared/UserActions";
-import { AnnotationsController } from "../controllers/annotations";
 import { GraphController } from "../controllers/graph";
 import { SearchController } from "../controllers/search";
 import { StatisticsController } from "../controllers/statistics";
@@ -20,7 +19,6 @@ const jsonParser = bodyParser.json();
 export function apiRouter() {
   const router = Router();
   const graphProvider = new GraphController();
-  const annotationsProvider = new AnnotationsController();
   const searchController = new SearchController();
   const statisticsController = new StatisticsController();
   const userActionsController = new UserActionsController();
@@ -31,11 +29,9 @@ export function apiRouter() {
     if (doc == null) return res.sendStatus(404);
 
     const referrers = graphProvider.getReferrers(req.params.docId);
-    const annotations = annotationsProvider.getAnnotations(req.params.docId);
 
     const out: IDoc = {
       file: doc,
-      annotations,
     };
 
     if (doc.children)

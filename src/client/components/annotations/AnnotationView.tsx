@@ -1,12 +1,12 @@
 import { Divider, IconButton, Typography, makeStyles } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
+import { Annotation } from "cohen-db/schema";
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { IAnnotation } from "../../../shared/ApiTypes";
 import { IAppState } from "../../model";
-import ContentToken from "../shared/ContentToken";
+import TokenView from "../document/TokenView";
 
 const useStyles = makeStyles({
   content: {
@@ -35,7 +35,7 @@ const useStyles = makeStyles({
 });
 
 interface IProps {
-  annotation: IAnnotation;
+  annotation: Annotation;
   isPreview: boolean;
   allowEdit: boolean;
   onEdit: () => void;
@@ -43,7 +43,7 @@ interface IProps {
   username: string;
 }
 
-const Annotation: React.FunctionComponent<IProps> = (props) => {
+const AnnotationView: React.FunctionComponent<IProps> = (props) => {
   const classes = useStyles();
 
   const containerClasses = props.isPreview
@@ -65,8 +65,8 @@ const Annotation: React.FunctionComponent<IProps> = (props) => {
           {props.annotation.user || "anonymous"}:&nbsp;
         </Typography>
         <Typography className={classes.content} component="span">
-          {props.annotation.content.map((tok, i) => (
-            <ContentToken token={tok} key={i} />
+          {props.annotation.tokens.map((tok, i) => (
+            <TokenView token={tok} key={i} />
           ))}
         </Typography>
         {props.allowEdit &&
@@ -95,4 +95,4 @@ const mapStateToProps = (state: IAppState, ownProps) => ({
   username: state.user.username,
 });
 
-export default connect(mapStateToProps)(Annotation);
+export default connect(mapStateToProps)(AnnotationView);

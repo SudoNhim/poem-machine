@@ -1,4 +1,4 @@
-import { CanonFile, Fragment, Reference } from "cohen-db/schema";
+import { CanonFile, Fragment, Reference, Token } from "cohen-db/schema";
 
 import { IUserAction } from "./UserActions";
 
@@ -15,10 +15,6 @@ export interface IDoc {
 
   // List of previews of docs that have links to this one
   referrers?: IDocReferencePreview[];
-
-  annotations: IAnnotationsGroup[];
-
-  // Annotations, discussion thread....
 }
 
 export interface IDocGraph {
@@ -31,41 +27,9 @@ export interface IDocReferencePreview {
   preview: Fragment[];
 }
 
-export interface IContentTokenText {
-  kind: "text";
-  text: string;
-}
-
-export interface IContentTokenLink {
-  kind: "link";
-  text: string;
-  link: string;
-}
-
-export interface IContentTokenDocRef {
-  kind: "docref";
-  docRef: string;
-}
-
-export type IContentToken =
-  | IContentTokenText
-  | IContentTokenLink
-  | IContentTokenDocRef;
-
-export interface IAnnotation {
-  user: string;
-  id: string;
-  content: IContentToken[];
-}
-
 export interface IChatMessage {
   user: string;
-  content: IContentToken[];
-}
-
-export interface IAnnotationsGroup {
-  anchor: Reference;
-  annotations: IAnnotation[];
+  tokens: Token[];
 }
 
 export interface ISearchResults {

@@ -6,11 +6,10 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import { Check, Clear } from "@material-ui/icons";
-import { Reference } from "cohen-db/schema";
+import { Annotation, Reference } from "cohen-db/schema";
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { IAnnotation } from "../../../shared/ApiTypes";
 import { setDoc } from "../../actions";
 import { getDoc, postUserAction } from "../../api";
 import { IAppState } from "../../model";
@@ -39,10 +38,10 @@ const useStyles = makeStyles({
 interface IProps {
   docId: string;
   anchor: Reference;
-  annotation?: IAnnotation;
+  annotation?: Annotation;
   username: string;
   setDoc: typeof setDoc;
-  onChange: (anno: IAnnotation) => void;
+  onChange: (anno: Annotation) => void;
   onFinished: () => void;
 }
 
@@ -54,16 +53,16 @@ const AnnotationEditor: React.FunctionComponent<IProps> = (props) => {
 
   React.useEffect(() => {
     if (props.annotation)
-      setNewAnnotationText(tokensToText(props.annotation.content));
+      setNewAnnotationText(tokensToText(props.annotation.tokens));
   }, [props.annotation]);
 
-  const newAnnotation: IAnnotation = newAnnotationText
+  const newAnnotation: Annotation = newAnnotationText
     ? props.annotation
-      ? { ...props.annotation, content: textToTokens(newAnnotationText) }
+      ? { ...props.annotation, tokens: textToTokens(newAnnotationText) }
       : {
           id: null, // will be filled in server side
           user: props.username,
-          content: textToTokens(newAnnotationText),
+          tokens: textToTokens(newAnnotationText),
         }
     : null;
 
@@ -77,14 +76,14 @@ const AnnotationEditor: React.FunctionComponent<IProps> = (props) => {
         documentId: props.docId,
         anchor: props.anchor,
         annotationId: newAnnotation.id,
-        content: newAnnotation.content,
+        tokens: newAnnotation.tokens,
       });
     } else {
       await postUserAction({
         kind: "addAnnotation",
         documentId: props.docId,
         anchor: props.anchor,
-        content: newAnnotation.content,
+        tokens: newAnnotation.tokens,
       });
     }
 

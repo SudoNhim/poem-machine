@@ -39,7 +39,7 @@ const ChatView: React.FunctionComponent<IProps> = (props) => {
   ) => {
     const message: IChatMessage = {
       user: props.username,
-      content: textToTokens(newMessage),
+      tokens: textToTokens(newMessage),
     };
     props.postMessage(message);
     setNewMessage("");

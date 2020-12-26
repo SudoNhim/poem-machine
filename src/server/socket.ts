@@ -1,8 +1,9 @@
 import http from "http";
 
-import { RequestHandler, response } from "express";
+import { RequestHandler } from "express";
 import { Socket, Server as SocketIOServer } from "socket.io";
 
+import { DeserializeDocRef } from "../shared/util";
 import { ChatMessage, IChatMessage } from "./models/ChatMessage";
 
 import _socketio = require("socket.io");
@@ -31,7 +32,25 @@ export function setupSocketIo(
           // Send the last messages to the user.
           socket.emit(
             "init",
-            messages.map((msg) => msg.toObject())
+            messages
+              .map((msg) => msg.toObject())
+              .map((msg: IChatMessage) => {
+                // This is to handle legacy format docref messages
+                if (msg.content) {
+                  msg.tokens = msg.content.map((tok) => {
+                    if (tok.kind === "docref") {
+                      return {
+                        kind: "reference",
+                        reference: DeserializeDocRef(tok.docRef),
+                      };
+                    } else {
+                      return tok;
+                    }
+                  });
+                  msg.content = undefined;
+                  return msg;
+                }
+              })
           );
         });
 

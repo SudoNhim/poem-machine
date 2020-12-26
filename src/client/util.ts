@@ -1,7 +1,11 @@
-import { Reference } from "cohen-db/schema";
+import { Reference, Token } from "cohen-db/schema";
 
-import { IContentToken, IDoc } from "../shared/ApiTypes";
-import { FragmentToPlaintext } from "../shared/util";
+import { IDoc } from "../shared/ApiTypes";
+import {
+  DeserializeDocRef,
+  FragmentToPlaintext,
+  SerializeDocRef,
+} from "../shared/util";
 
 function trimString(str: string, len: number): string {
   if (str.length < len) return str;
@@ -33,10 +37,10 @@ export function snippetFromDoc(doc: IDoc, docRef: Reference): string {
   return trimString(text, 64);
 }
 
-export function textToTokens(text: string): IContentToken[] {
+export function textToTokens(text: string): Token[] {
   const extLinksRegex = /\[([^\[]+)\]\((\S*)\)/;
   const docRefsRegex = /\B#(\w*[A-Za-z_]\.[A-Za-z_0-9]*)/;
-  const tokens: IContentToken[] = [];
+  const tokens: Token[] = [];
   while (text) {
     const extLinkMatch = text.match(extLinksRegex);
     const docRefMatch = text.match(docRefsRegex);
@@ -54,8 +58,8 @@ export function textToTokens(text: string): IContentToken[] {
       text = text.substr(extLinkMatch[0].length);
     } else if (docRefMatch && docRefMatch.index === 0) {
       tokens.push({
-        kind: "docref",
-        docRef: docRefMatch[1],
+        kind: "reference",
+        reference: DeserializeDocRef(docRefMatch[1]),
       });
       text = text.substr(docRefMatch[0].length);
     } else {
@@ -67,11 +71,11 @@ export function textToTokens(text: string): IContentToken[] {
   return tokens;
 }
 
-export function tokensToText(tokens: IContentToken[]): string {
+export function tokensToText(tokens: Token[]): string {
   return tokens
     .map((tok) => {
       if (tok.kind === "text") return tok.text;
-      if (tok.kind === "docref") return `#${tok.docRef}`;
+      if (tok.kind === "reference") return `#${SerializeDocRef(tok.reference)}`;
       else return `[${tok.text}](${tok.link})`;
     })
     .join("");

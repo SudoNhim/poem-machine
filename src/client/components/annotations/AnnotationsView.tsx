@@ -1,15 +1,15 @@
+import { AnnotationsGroup } from "cohen-db/schema";
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { IAnnotationsGroup } from "../../../shared/ApiTypes";
 import { DocRefEquals, DocRefIsChildOf } from "../../../shared/util";
 import { setDoc } from "../../actions";
 import { IAppState, IFocusState } from "../../model";
-import AnnotationsGroup from "./AnnotationsGroup";
+import AnnotationsGroupView from "./AnnotationsGroupView";
 
 interface IProps {
   focus: IFocusState;
-  annotations: IAnnotationsGroup[];
+  annotations: AnnotationsGroup[];
   hasDoc: boolean;
 }
 
@@ -18,7 +18,7 @@ const AnnotationsView: React.FunctionComponent<IProps> = (props) => {
     return null;
   }
 
-  let annotations: IAnnotationsGroup[] = props.annotations;
+  let annotations: AnnotationsGroup[] = props.annotations;
   if (!!props.focus.reference) {
     annotations = annotations.filter(
       (grp) =>
@@ -35,7 +35,7 @@ const AnnotationsView: React.FunctionComponent<IProps> = (props) => {
   return (
     <React.Fragment>
       {annotations.map((grp, i) => (
-        <AnnotationsGroup
+        <AnnotationsGroupView
           annotationsGroup={grp}
           allowEdit={props.focus.reference.kind === "fragment"}
           key={i}
@@ -47,7 +47,8 @@ const AnnotationsView: React.FunctionComponent<IProps> = (props) => {
 
 const mapStateToProps = (state: IAppState) => ({
   annotations:
-    state.docs.cache[state.focus?.reference?.documentId]?.annotations || [],
+    state.docs.cache[state.focus?.reference?.documentId]?.file.annotations ||
+    [],
   focus: state.focus,
   hasDoc: !!state.docs.cache[state.focus?.reference?.documentId],
 });

@@ -1,6 +1,4 @@
-import { Reference } from "cohen-db/schema";
-
-import { IContentToken } from "./ApiTypes";
+import { Reference, Token } from "cohen-db/schema";
 
 // Any kind of update that creates a change in the docs DB
 export type IUserAction =
@@ -18,13 +16,13 @@ interface IAnnotationUpdateBase extends IUserActionBase {
 
 export interface IAddAnnotationUpdate extends IAnnotationUpdateBase {
   kind: "addAnnotation";
-  content: IContentToken[];
+  tokens: Token[];
 }
 
 export interface IEditAnnotationUpdate extends IAnnotationUpdateBase {
   kind: "editAnnotation";
   annotationId: string;
-  content: IContentToken[];
+  tokens: Token[];
 }
 
 export interface IDeleteAnnotationUpdate extends IAnnotationUpdateBase {

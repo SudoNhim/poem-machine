@@ -5,15 +5,14 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { Reference } from "cohen-db/schema";
+import { Annotation, Reference } from "cohen-db/schema";
 import React from "react";
 import { connect } from "react-redux";
 
-import { IAnnotation } from "../../../shared/ApiTypes";
 import { setDoc } from "../../actions";
 import { getDoc, postUserAction } from "../../api";
 import { IAppState } from "../../model";
-import Annotation from "./Annotation";
+import AnnotationView from "./AnnotationView";
 
 const useStyles = makeStyles({
   input: {
@@ -32,7 +31,7 @@ const useStyles = makeStyles({
 interface IProps {
   docId: string;
   anchor: Reference;
-  annotation: IAnnotation;
+  annotation: Annotation;
   onFinished: () => void;
   setDoc: typeof setDoc;
 }
@@ -64,7 +63,7 @@ const DeleteDialog: React.FunctionComponent<IProps> = (props) => {
           <DialogContentText>
             Are you sure you want to delete this annotation?
           </DialogContentText>
-          <Annotation annotation={props.annotation} />
+          <AnnotationView annotation={props.annotation} />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => props.onFinished()}>Cancel</Button>

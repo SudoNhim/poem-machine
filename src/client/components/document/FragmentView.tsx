@@ -1,10 +1,9 @@
 import { Theme, Typography, makeStyles } from "@material-ui/core";
-import { Fragment } from "cohen-db/schema";
+import { AnnotationsGroup, Fragment } from "cohen-db/schema";
 import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
 
-import { IAnnotationsGroup } from "../../../shared/ApiTypes";
 import { SerializeDocRef } from "../../../shared/util";
 import { IAppState } from "../../model";
 import TokenView from "./TokenView";
@@ -46,7 +45,7 @@ interface IProps extends RouteComponentProps {
   previous: Fragment;
   sectionId?: string;
   interactive: boolean;
-  annotations: IAnnotationsGroup[];
+  annotations: AnnotationsGroup[];
 }
 
 const FragmentView: React.FunctionComponent<IProps> = (props) => {
@@ -130,7 +129,8 @@ const mapStateToProps = (state: IAppState, ownProps) => ({
   sessionId: ownProps.sessionId,
   interactive: ownProps.interactive,
   annotations:
-    state.docs.cache[state.focus?.reference?.documentId]?.annotations || [],
+    state.docs.cache[state.focus?.reference?.documentId]?.file.annotations ||
+    [],
 });
 
 export default connect(mapStateToProps, {})(withRouter(FragmentView));

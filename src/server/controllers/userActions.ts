@@ -1,6 +1,5 @@
-import { Annotation, CanonFile, Reference } from "cohen-db/schema";
+import { Annotation, CanonFile, Reference, Token } from "cohen-db/schema";
 
-import { IContentToken } from "../../shared/ApiTypes";
 import { IUserAction } from "../../shared/UserActions";
 import { DocRefEquals } from "../../shared/util";
 import docsDb from "../database";
@@ -28,14 +27,14 @@ export class UserActionsController {
 
     switch (action.kind) {
       case "addAnnotation":
-        return this.addAnnotation(doc, user, action.anchor, action.content);
+        return this.addAnnotation(doc, user, action.anchor, action.tokens);
       case "editAnnotation":
         return this.editAnnotation(
           doc,
           user,
           action.anchor,
           action.annotationId,
-          action.content
+          action.tokens
         );
       case "deleteAnnotation":
         return this.deleteAnnotation(
@@ -53,7 +52,7 @@ export class UserActionsController {
     doc: CanonFile,
     user: string,
     anchor: Reference,
-    content: IContentToken[]
+    tokens: Token[]
   ): CanonFile {
     // If there's no group for this annotation, create one
     if (!doc.annotations.find((grp) => DocRefEquals(grp.anchor, anchor))) {
@@ -75,7 +74,7 @@ export class UserActionsController {
     const newAnno: Annotation = {
       id: `${id}`,
       user,
-      content,
+      tokens,
     };
     grp.annotations.push(newAnno);
 
@@ -87,7 +86,7 @@ export class UserActionsController {
     user: string,
     anchor: Reference,
     annotationId: string,
-    content: IContentToken[]
+    content: Token[]
   ): CanonFile {
     const grp = doc.annotations.find((grp) => DocRefEquals(grp.anchor, anchor));
     const index = grp.annotations.findIndex((anno) => anno.id === annotationId);
@@ -95,7 +94,7 @@ export class UserActionsController {
     // Ensure that the user has permission to edit this annotation.
     this.authCheck(user, grp.annotations[index].user);
 
-    grp.annotations[index].content = content;
+    grp.annotations[index].tokens = content;
 
     return doc;
   }
