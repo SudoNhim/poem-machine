@@ -6,12 +6,9 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
-import Autocomplete from "@material-ui/lab/Autocomplete";
 import React from "react";
-import { connect } from "react-redux";
 
-import { IDocGraph } from "../../../shared/ApiTypes";
-import { IAppState } from "../../model";
+import DocumentChoiceInput from "../shared/DocumentChoiceInput";
 
 const useStyles = makeStyles({
   input: {
@@ -21,22 +18,11 @@ const useStyles = makeStyles({
   divider: {
     margin: 20,
   },
-  kind: {
-    fontSize: 14,
-    color: "lightGrey",
-  },
 });
 
 interface IProps {
-  graph: IDocGraph;
   isOpen: boolean;
   handleSubmit: (str: string) => void;
-}
-
-interface IDocumentOption {
-  docId: string;
-  title: string;
-  kind: string;
 }
 
 const AddLinkDialog: React.FunctionComponent<IProps> = (props) => {
@@ -44,31 +30,22 @@ const AddLinkDialog: React.FunctionComponent<IProps> = (props) => {
 
   const [urlText, setUrlText] = React.useState("");
   const [urlDisplayText, setUrlDisplayText] = React.useState("");
-  const [document, setDocument] = React.useState<string | IDocumentOption>(
-    null
-  );
+  const [documentId, setDocumentId] = React.useState<string | null>(null);
 
   // wipe on open/close
   React.useEffect(() => {
     setUrlText("");
     setUrlDisplayText("");
-    setDocument(null);
+    setDocumentId(null);
   }, [props.isOpen]);
 
   const handleInsert = () => {
-    if (document && typeof document !== "string")
-      props.handleSubmit(`#${document.docId}`);
+    if (documentId) props.handleSubmit(`#${documentId}`);
     else if (urlText) props.handleSubmit(`[${urlDisplayText}](${urlText})`);
     else props.handleSubmit(urlDisplayText);
   };
 
-  const documentOptions = Object.keys(props.graph)
-    .sort()
-    .map((docId) => ({
-      title: props.graph[docId].title,
-      kind: props.graph[docId].kind,
-      docId,
-    }));
+  const documentChoiceDisabled = !!urlText || !!urlDisplayText;
 
   return (
     <div>
@@ -105,29 +82,9 @@ const AddLinkDialog: React.FunctionComponent<IProps> = (props) => {
           <DialogContentText>
             Or, link to another document in the site
           </DialogContentText>
-          <Autocomplete<IDocumentOption>
-            value={document}
-            onChange={(evt, newValue) => setDocument(newValue)}
-            options={documentOptions}
-            getOptionLabel={(opt) => opt.title}
-            renderOption={(opt) => (
-              <span>
-                {opt.title}
-                &nbsp;
-                <span className={classes.kind}>{opt.kind}</span>
-              </span>
-            )}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                className={classes.input}
-                size="small"
-                fullWidth={true}
-                label="Document, e.g. 'Suzanne'"
-                variant="outlined"
-                disabled={!!urlText || !!urlDisplayText}
-              />
-            )}
+          <DocumentChoiceInput
+            onChange={setDocumentId}
+            disabled={documentChoiceDisabled}
           />
         </DialogContent>
         <DialogActions>
@@ -143,10 +100,4 @@ const AddLinkDialog: React.FunctionComponent<IProps> = (props) => {
   );
 };
 
-const mapStateToProps = (state: IAppState, ownProps) => ({
-  graph: state.docs.graph,
-  isOpen: ownProps.isOpen,
-  handleSubmit: ownProps.handleSubmit,
-});
-
-export default connect(mapStateToProps)(AddLinkDialog);
+export default AddLinkDialog;
