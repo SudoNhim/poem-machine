@@ -83,6 +83,7 @@ const AddLinkDialog: React.FunctionComponent<IProps> = (props) => {
             Or, link to another document in the site
           </DialogContentText>
           <DocumentChoiceInput
+            value={documentId}
             onChange={setDocumentId}
             disabled={documentChoiceDisabled}
           />

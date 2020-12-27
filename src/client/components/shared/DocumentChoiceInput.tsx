@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 interface IProps {
   graph: IDocGraph;
   disabled: boolean;
-  initialDocumentId: string;
+  value: string;
   onChange: (documentId: string) => void;
 }
 
@@ -34,17 +34,15 @@ interface IDocumentOption {
 const DocumentChoiceInput: React.FunctionComponent<IProps> = (props) => {
   const classes = useStyles();
 
-  const [document, setDocument] = React.useState<string | IDocumentOption>(
-    null
-  );
-
-  React.useEffect(() => {
-    if (!document || typeof document === "string") {
+  const onChange = (value: IDocumentOption | string) => {
+    if (value === null) {
       props.onChange(null);
+    } else if (typeof value === "string") {
+      props.onChange(value);
     } else {
-      props.onChange(document.documentId);
+      props.onChange(value.documentId);
     }
-  });
+  };
 
   const documentOptions: IDocumentOption[] = Object.keys(props.graph)
     .sort()
@@ -54,17 +52,16 @@ const DocumentChoiceInput: React.FunctionComponent<IProps> = (props) => {
       documentId,
     }));
 
-  const defaultOption = documentOptions.find(
-    (opt) => opt.documentId === props.initialDocumentId
-  );
+  const value: IDocumentOption | string =
+    documentOptions.find((option) => option.documentId === props.value) ||
+    props.value;
 
   return (
     <Autocomplete<IDocumentOption>
-      value={document}
-      defaultValue={defaultOption}
-      onChange={(evt, newValue) => setDocument(newValue)}
+      value={value}
+      onChange={(evt, newValue) => onChange(newValue)}
       options={documentOptions}
-      getOptionSelected={(a, b) => a.documentId === b.documentId}
+      getOptionSelected={(a, b) => a.documentId === (b?.documentId || b)}
       getOptionLabel={(opt) => opt.title}
       renderOption={(opt) => (
         <span>
@@ -91,6 +88,7 @@ const DocumentChoiceInput: React.FunctionComponent<IProps> = (props) => {
 const mapStateToProps = (state: IAppState, ownProps) => ({
   graph: state.docs.graph,
   disabled: ownProps.disabled,
+  value: ownProps.value,
   onChange: ownProps.onChange,
 });
 
