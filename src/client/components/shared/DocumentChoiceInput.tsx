@@ -21,6 +21,7 @@ const useStyles = makeStyles({
 interface IProps {
   graph: IDocGraph;
   disabled: boolean;
+  initialDocumentId: string;
   onChange: (documentId: string) => void;
 }
 
@@ -53,11 +54,17 @@ const DocumentChoiceInput: React.FunctionComponent<IProps> = (props) => {
       documentId,
     }));
 
+  const defaultOption = documentOptions.find(
+    (opt) => opt.documentId === props.initialDocumentId
+  );
+
   return (
     <Autocomplete<IDocumentOption>
       value={document}
+      defaultValue={defaultOption}
       onChange={(evt, newValue) => setDocument(newValue)}
       options={documentOptions}
+      getOptionSelected={(a, b) => a.documentId === b.documentId}
       getOptionLabel={(opt) => opt.title}
       renderOption={(opt) => (
         <span>
