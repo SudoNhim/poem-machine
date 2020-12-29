@@ -86,6 +86,7 @@ const AddLinkDialog: React.FunctionComponent<IProps> = (props) => {
             value={documentId}
             onChange={setDocumentId}
             disabled={documentChoiceDisabled}
+            label={"Document, e.g. 'Suzanne'"}
           />
         </DialogContent>
         <DialogActions>

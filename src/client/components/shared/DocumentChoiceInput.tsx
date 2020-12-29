@@ -9,7 +9,6 @@ import { IAppState } from "../../model";
 
 const useStyles = makeStyles({
   input: {
-    marginBottom: 10,
     marginTop: 10,
   },
   kind: {
@@ -22,6 +21,7 @@ interface IProps {
   graph: IDocGraph;
   disabled: boolean;
   value: string;
+  label: string;
   onChange: (documentId: string) => void;
 }
 
@@ -76,7 +76,7 @@ const DocumentChoiceInput: React.FunctionComponent<IProps> = (props) => {
           className={classes.input}
           size="small"
           fullWidth={true}
-          label="Document, e.g. 'Suzanne'"
+          label={props.label}
           variant="outlined"
           disabled={props.disabled}
         />
@@ -89,6 +89,7 @@ const mapStateToProps = (state: IAppState, ownProps) => ({
   graph: state.docs.graph,
   disabled: ownProps.disabled,
   value: ownProps.value,
+  label: ownProps.label,
   onChange: ownProps.onChange,
 });
 

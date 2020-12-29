@@ -15,14 +15,16 @@ import { setDoc } from "../actions";
 import { getDoc } from "../api";
 import { IAppState } from "../model";
 import { findParentId } from "../util";
+import MetadataEditor from "./editor/MetadataEditor";
 import DocumentChoiceInput from "./shared/DocumentChoiceInput";
 import DocumentKindSelect from "./shared/DocumentKindSelect";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: theme.spacing(2),
+    minWidth: "70vw",
   },
-  input: {
+  inputPart: {
     marginBottom: 10,
     marginTop: 10,
   },
@@ -97,44 +99,51 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
         <Typography variant="h5" gutterBottom>
           {isNewDocument ? "Create Document" : "Edit Document"}
         </Typography>
-        <Typography>Child of:</Typography>
-        <DocumentChoiceInput
-          value={parentDocumentId}
-          onChange={setParentDocumentId}
-        />
-        Title:
-        <TextField
-          className={classes.input}
-          size="small"
-          fullWidth={true}
-          label="title, e.g. 'Everybody Knows'"
-          variant="outlined"
-          type="url"
-          value={activeDocument.file.title}
-          onChange={(evt) =>
-            setActiveDocument({
-              ...activeDocument,
-              file: {
-                ...activeDocument.file,
-                title: evt.target.value,
-              },
-            })
-          }
-        />
-        Kind:
-        <DocumentKindSelect
-          value={activeDocument.file.kind}
-          onChange={(value) =>
-            setActiveDocument({
-              ...activeDocument,
-              file: {
-                ...activeDocument.file,
-                kind: value,
-              },
-            })
-          }
-        />
-        Kind: Metadata: Content type: Content:
+        <div className={classes.inputPart}>
+          <DocumentChoiceInput
+            label={"Parent"}
+            value={parentDocumentId}
+            onChange={setParentDocumentId}
+          />
+        </div>
+        <div className={classes.inputPart}>
+          <DocumentKindSelect
+            value={activeDocument.file.kind}
+            onChange={(value) =>
+              setActiveDocument({
+                ...activeDocument,
+                file: {
+                  ...activeDocument.file,
+                  kind: value,
+                },
+              })
+            }
+          />
+        </div>
+        <div className={classes.inputPart}>
+          <TextField
+            size="small"
+            fullWidth={true}
+            label="Title"
+            variant="outlined"
+            type="url"
+            value={activeDocument.file.title}
+            onChange={(evt) =>
+              setActiveDocument({
+                ...activeDocument,
+                file: {
+                  ...activeDocument.file,
+                  title: evt.target.value,
+                },
+              })
+            }
+          />
+        </div>
+        <div className={classes.inputPart}>
+          <Typography>Metadata:</Typography>
+          <MetadataEditor metadata={activeDocument.file.metadata} />
+        </div>
+        Content type: Content:
       </Paper>
     )
   );
