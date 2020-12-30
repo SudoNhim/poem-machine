@@ -1,10 +1,4 @@
-import {
-  MenuItem,
-  OutlinedInput,
-  Select,
-  TextField,
-  makeStyles,
-} from "@material-ui/core";
+import { MenuItem, TextField, makeStyles } from "@material-ui/core";
 import React from "react";
 
 const useStyles = makeStyles({
@@ -43,6 +37,7 @@ const kinds: DocumentKind[] = [
 
 interface IProps {
   value: DocumentKind;
+  required?: boolean;
   onChange: (value: DocumentKind) => void;
 }
 
@@ -57,6 +52,7 @@ const DocumentKindSelect: React.FunctionComponent<IProps> = (props) => {
       fullWidth={true}
       label={"Type"}
       size="small"
+      required={props.required}
     >
       {kinds.map((kind, i) => (
         <MenuItem value={kind} key={i}>{`${kind

@@ -15,7 +15,6 @@ import { setDoc } from "../actions";
 import { getDoc } from "../api";
 import { IAppState } from "../model";
 import { findParentId } from "../util";
-import MetadataEditor from "./editor/MetadataEditor";
 import DocumentChoiceInput from "./shared/DocumentChoiceInput";
 import DocumentKindSelect from "./shared/DocumentKindSelect";
 
@@ -101,6 +100,7 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
         </Typography>
         <div className={classes.inputPart}>
           <DocumentChoiceInput
+            required={true}
             label={"Parent"}
             value={parentDocumentId}
             onChange={setParentDocumentId}
@@ -108,6 +108,7 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
         </div>
         <div className={classes.inputPart}>
           <DocumentKindSelect
+            required={true}
             value={activeDocument.file.kind}
             onChange={(value) =>
               setActiveDocument({
@@ -127,6 +128,7 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
             label="Title"
             variant="outlined"
             type="url"
+            required={true}
             value={activeDocument.file.title}
             onChange={(evt) =>
               setActiveDocument({
@@ -140,8 +142,27 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
           />
         </div>
         <div className={classes.inputPart}>
-          <Typography>Metadata:</Typography>
-          <MetadataEditor metadata={activeDocument.file.metadata} />
+          <TextField
+            size="small"
+            fullWidth={true}
+            label="Date"
+            variant="outlined"
+            type="date"
+            InputLabelProps={{ shrink: true }}
+            value={activeDocument.file.metadata?.date}
+            onChange={(evt) =>
+              setActiveDocument({
+                ...activeDocument,
+                file: {
+                  ...activeDocument.file,
+                  metadata: {
+                    ...activeDocument.file.metadata,
+                    date: evt.target.value,
+                  },
+                },
+              })
+            }
+          />
         </div>
         Content type: Content:
       </Paper>

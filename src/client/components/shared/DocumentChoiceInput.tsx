@@ -20,6 +20,7 @@ const useStyles = makeStyles({
 interface IProps {
   graph: IDocGraph;
   disabled: boolean;
+  required?: boolean;
   value: string;
   label: string;
   onChange: (documentId: string) => void;
@@ -78,6 +79,7 @@ const DocumentChoiceInput: React.FunctionComponent<IProps> = (props) => {
           fullWidth={true}
           label={props.label}
           variant="outlined"
+          required={props.required}
           disabled={props.disabled}
         />
       )}
