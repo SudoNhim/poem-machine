@@ -18,6 +18,7 @@ import { setDoc } from "../actions";
 import { getDoc } from "../api";
 import { IAppState } from "../model";
 import { findParentId } from "../util";
+import ContentEditor from "./editor/ContentEditor";
 import DocumentChoiceInput from "./shared/DocumentChoiceInput";
 import DocumentKindSelect from "./shared/DocumentKindSelect";
 
@@ -74,6 +75,9 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
     null
   );
 
+  // Can only be changed when there is no content
+  const [isMultipart, setIsMultipart] = React.useState(false);
+
   React.useEffect(() => {
     const documentId = props.match.params.docId;
     if (documentId === "new") {
@@ -89,7 +93,10 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
       if (props.graph[documentId]) {
         setActiveDocumentId(documentId);
         setParentDocumentId(findParentId(documentId, props.graph));
-        getDoc(documentId).then((doc) => setActiveDocument(doc));
+        getDoc(documentId).then((doc) => {
+          setActiveDocument(doc);
+          setIsMultipart(!!(doc.file.content?.kind === "multipart"));
+        });
       } else {
         throw new Error(`Document ${documentId} not found`);
       }
@@ -178,8 +185,30 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
         </div>
         <div className={classes.inputPart}>
           <FormControlLabel
-            control={<Switch color="primary" />}
+            control={
+              <Switch
+                color="primary"
+                value={isMultipart}
+                onChange={() => setIsMultipart(!isMultipart)}
+                disabled={!!activeDocument.file.content}
+              />
+            }
             label="Multipart"
+          />
+        </div>
+        <div className={classes.inputPart}>
+          <ContentEditor
+            content={activeDocument.file.content}
+            useMultipart={isMultipart}
+            onChange={(content) =>
+              setActiveDocument({
+                ...activeDocument,
+                file: {
+                  ...activeDocument.file,
+                  content,
+                },
+              })
+            }
           />
         </div>
       </Paper>
