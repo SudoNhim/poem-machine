@@ -45,6 +45,7 @@
     "passport-local-mongoose": "^6.0.1",
     "passport-remember-me-extended": "0.0.3",
     "react-time-ago": "^6.2.2",
+    "slugify": "^1.4.6",
     "socket.io": "2.3.0",
     "tslib": "^1.14.1"
   },

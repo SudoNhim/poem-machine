@@ -1,4 +1,5 @@
-import { Fragment, Reference } from "cohen-db/schema";
+import { CanonFile, Fragment, Reference } from "cohen-db/schema";
+import slugify from "slugify";
 
 export function SerializeDocRef(ref: Reference): string {
   switch (ref.kind) {
@@ -46,4 +47,12 @@ export function FragmentToPlaintext(frag: Fragment): string {
       )
       .join("");
   }
+}
+
+export function GenerateIdFromDoc(doc: CanonFile): string {
+  const titlePart = slugify(doc.title, {
+    replacement: "_",
+    lower: true,
+  }).replace(/\W/g, "");
+  return `${doc.kind}.${titlePart}`;
 }

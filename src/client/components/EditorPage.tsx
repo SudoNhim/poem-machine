@@ -1,5 +1,7 @@
 import {
+  FormControlLabel,
   Paper,
+  Switch,
   TextField,
   Theme,
   Typography,
@@ -11,6 +13,7 @@ import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 
 import { IDoc, IDocGraph } from "../../shared/ApiTypes";
+import { GenerateIdFromDoc } from "../../shared/util";
 import { setDoc } from "../actions";
 import { getDoc } from "../api";
 import { IAppState } from "../model";
@@ -26,6 +29,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   inputPart: {
     marginBottom: 10,
     marginTop: 10,
+  },
+  secondary: {
+    color: theme.palette.text.secondary,
   },
 }));
 
@@ -91,6 +97,7 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
   }, [props.match.params.docId]);
 
   const isNewDocument = props.match.params.docId === "new";
+  const id = activeDocument && GenerateIdFromDoc(activeDocument?.file);
 
   return (
     activeDocument && (
@@ -109,6 +116,7 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
         <div className={classes.inputPart}>
           <DocumentKindSelect
             required={true}
+            disabled={!isNewDocument}
             value={activeDocument.file.kind}
             onChange={(value) =>
               setActiveDocument({
@@ -128,6 +136,7 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
             label="Title"
             variant="outlined"
             type="url"
+            disabled={!isNewDocument}
             required={true}
             value={activeDocument.file.title}
             onChange={(evt) =>
@@ -141,6 +150,9 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
             }
           />
         </div>
+        <Typography className={classes.secondary}>
+          Generated ID: {id}
+        </Typography>
         <div className={classes.inputPart}>
           <TextField
             size="small"
@@ -164,7 +176,12 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
             }
           />
         </div>
-        Content type: Content:
+        <div className={classes.inputPart}>
+          <FormControlLabel
+            control={<Switch color="primary" />}
+            label="Multipart"
+          />
+        </div>
       </Paper>
     )
   );

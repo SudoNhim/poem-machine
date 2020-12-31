@@ -38,6 +38,7 @@ const kinds: DocumentKind[] = [
 interface IProps {
   value: DocumentKind;
   required?: boolean;
+  disabled?: boolean;
   onChange: (value: DocumentKind) => void;
 }
 
@@ -46,6 +47,7 @@ const DocumentKindSelect: React.FunctionComponent<IProps> = (props) => {
   return (
     <TextField
       select
+      disabled={props.disabled}
       value={props.value}
       onChange={(evt) => props.onChange(evt.target.value as DocumentKind)}
       variant="outlined"
