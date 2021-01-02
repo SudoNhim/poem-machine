@@ -188,7 +188,7 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
             control={
               <Switch
                 color="primary"
-                value={isMultipart}
+                checked={isMultipart}
                 onChange={() => setIsMultipart(!isMultipart)}
                 disabled={!!activeDocument.file.content}
               />
