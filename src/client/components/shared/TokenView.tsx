@@ -40,7 +40,7 @@ const TokenView: React.FunctionComponent<IProps> = (props) => {
   const tok = props.token;
   if (tok.kind === "text") {
     return tok.secondary ? (
-      <span className={classes.secondary}>[{tok.text}]</span>
+      <span className={classes.secondary}>{tok.text}</span>
     ) : (
       <span>{tok.text}</span>
     );
