@@ -17,17 +17,21 @@ interface IProps {
 const FragmentsEditor: React.FunctionComponent<IProps> = (props) => {
   const classes = useStyles();
 
+  const [editIndex, setEditIndex] = React.useState(-1);
+
   const fragments = props.fragments.map((frag, i) => {
     if (frag.kind === "lineBreak") {
       return (
         <React.Fragment key={i}>
-          <div className={classes.root}>⏎</div>
+          <div className={classes.root} onClick={() => setEditIndex(i)}>
+            ⏎
+          </div>
           <br />
         </React.Fragment>
       );
     } else {
       return (
-        <div className={classes.root} key={i}>
+        <div className={classes.root} key={i} onClick={() => setEditIndex(i)}>
           {frag.tokens.map((tok) =>
             tok.kind === "reference" ? tok.reference : tok.text
           )}
