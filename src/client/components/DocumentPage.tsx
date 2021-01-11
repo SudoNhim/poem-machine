@@ -53,7 +53,7 @@ const DocumentPage: React.FunctionComponent<IProps> = (props) => {
 
   // Scroll to the hash fragment, if applicable
   React.useEffect(() => {
-    if (doc && props.location.hash && props.history.action === "PUSH")
+    if (doc && props.location.hash)
       document
         .getElementById(SerializeDocRef(reference).split("#")[1])
         .scrollIntoView({ behavior: "smooth", block: "center" });
