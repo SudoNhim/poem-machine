@@ -1,5 +1,6 @@
 import {
   FormControlLabel,
+  IconButton,
   Paper,
   Switch,
   TextField,
@@ -7,6 +8,8 @@ import {
   Typography,
   makeStyles,
 } from "@material-ui/core";
+import RedoIcon from "@material-ui/icons/Redo";
+import UndoIcon from "@material-ui/icons/Undo";
 import { CanonFile } from "cohen-db/schema";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -75,6 +78,53 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
     null
   );
 
+  const [undoStack, setUndoStack] = React.useState<{
+    back: IDoc[];
+    forward: IDoc[];
+    coalesce: string | null;
+  }>({ back: [], forward: [], coalesce: null });
+
+  const makeEdit = (edit: IDoc, coalesce: string | null) => {
+    setActiveDocument(edit);
+
+    // If update is of the same coalesce type, edit top of stack
+    // instead of pushing a new entry
+    if (coalesce && undoStack.coalesce === coalesce) {
+      setUndoStack({
+        back: [
+          ...undoStack.back.slice(0, undoStack.back.length - 1),
+          activeDocument,
+        ],
+        forward: [],
+        coalesce,
+      });
+    } else {
+      setUndoStack({
+        back: [...undoStack.back, activeDocument],
+        forward: [],
+        coalesce,
+      });
+    }
+  };
+
+  const undo = () => {
+    setActiveDocument(undoStack.back[undoStack.back.length - 1]);
+    setUndoStack({
+      back: undoStack.back.slice(0, undoStack.back.length - 1),
+      forward: [activeDocument, ...undoStack.forward],
+      coalesce: null,
+    });
+  };
+
+  const redo = () => {
+    setActiveDocument(undoStack.forward[0]);
+    setUndoStack({
+      back: [...undoStack.back, activeDocument],
+      forward: undoStack.forward.slice(1),
+      coalesce: null,
+    });
+  };
+
   // Can only be changed when there is no content
   const [isMultipart, setIsMultipart] = React.useState(false);
 
@@ -112,6 +162,12 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
         <Typography variant="h5" gutterBottom>
           {isNewDocument ? "Create Document" : "Edit Document"}
         </Typography>
+        <IconButton onClick={undo} disabled={!undoStack.back.length}>
+          <UndoIcon />
+        </IconButton>
+        <IconButton onClick={redo} disabled={!undoStack.forward.length}>
+          <RedoIcon />
+        </IconButton>
         <div className={classes.inputPart}>
           <DocumentChoiceInput
             required={true}
@@ -126,13 +182,16 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
             disabled={!isNewDocument}
             value={activeDocument.file.kind}
             onChange={(value) =>
-              setActiveDocument({
-                ...activeDocument,
-                file: {
-                  ...activeDocument.file,
-                  kind: value,
+              makeEdit(
+                {
+                  ...activeDocument,
+                  file: {
+                    ...activeDocument.file,
+                    kind: value,
+                  },
                 },
-              })
+                null
+              )
             }
           />
         </div>
@@ -147,13 +206,16 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
             required={true}
             value={activeDocument.file.title}
             onChange={(evt) =>
-              setActiveDocument({
-                ...activeDocument,
-                file: {
-                  ...activeDocument.file,
-                  title: evt.target.value,
+              makeEdit(
+                {
+                  ...activeDocument,
+                  file: {
+                    ...activeDocument.file,
+                    title: evt.target.value,
+                  },
                 },
-              })
+                "titleEdit"
+              )
             }
           />
         </div>
@@ -170,16 +232,19 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
             InputLabelProps={{ shrink: true }}
             value={activeDocument.file.metadata?.date}
             onChange={(evt) =>
-              setActiveDocument({
-                ...activeDocument,
-                file: {
-                  ...activeDocument.file,
-                  metadata: {
-                    ...activeDocument.file.metadata,
-                    date: evt.target.value,
+              makeEdit(
+                {
+                  ...activeDocument,
+                  file: {
+                    ...activeDocument.file,
+                    metadata: {
+                      ...activeDocument.file.metadata,
+                      date: evt.target.value,
+                    },
                   },
                 },
-              })
+                "dateEdit"
+              )
             }
           />
         </div>
@@ -201,13 +266,16 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
             content={activeDocument.file.content}
             useMultipart={isMultipart}
             onChange={(content) =>
-              setActiveDocument({
-                ...activeDocument,
-                file: {
-                  ...activeDocument.file,
-                  content,
+              makeEdit(
+                {
+                  ...activeDocument,
+                  file: {
+                    ...activeDocument.file,
+                    content,
+                  },
                 },
-              })
+                null
+              )
             }
           />
         </div>
