@@ -28,14 +28,49 @@ const ContentEditor: React.FunctionComponent<IProps> = (props) => {
       : { kind: "simple", content: emptyMainContent });
 
   if (content.kind === "simple") {
-    return <FragmentsEditor fragments={content.content.fragments} />;
+    return (
+      <FragmentsEditor
+        tabIndex={0}
+        fragments={content.content.fragments}
+        onChange={(fragments) =>
+          props.onChange(
+            fragments
+              ? {
+                  ...content,
+                  content: {
+                    ...content.content,
+                    fragments,
+                  },
+                }
+              : null
+          )
+        }
+      />
+    );
   } else {
     return (
       <React.Fragment>
         {content.content.map((section, i) => (
           <React.Fragment key={i}>
             <SectionTitleEditor value={section.title} />
-            <FragmentsEditor fragments={section.fragments} />
+            <FragmentsEditor
+              tabIndex={i}
+              fragments={section.fragments}
+              onChange={(fragments) =>
+                props.onChange(
+                  fragments || content.content.length > 1
+                    ? {
+                        ...content,
+                        content: content.content.map((curSection, curIndex) =>
+                          curIndex === i
+                            ? { ...curSection, fragments }
+                            : curSection
+                        ),
+                      }
+                    : null
+                )
+              }
+            />
           </React.Fragment>
         ))}
       </React.Fragment>
