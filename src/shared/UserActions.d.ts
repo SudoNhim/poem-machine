@@ -1,10 +1,13 @@
-import { Reference, Token } from "cohen-db/schema";
+import { CanonFile, Reference, Token } from "cohen-db/schema";
 
 // Any kind of update that creates a change in the docs DB
 export type IUserAction =
   | IAddAnnotationUpdate
   | IEditAnnotationUpdate
-  | IDeleteAnnotationUpdate;
+  | IDeleteAnnotationUpdate
+  | IAddDocumentUpdate
+  | IEditDocumentUpdate
+  | IDeleteDocumentUpdate;
 
 interface IUserActionBase {
   documentId: string;
@@ -28,4 +31,18 @@ export interface IEditAnnotationUpdate extends IAnnotationUpdateBase {
 export interface IDeleteAnnotationUpdate extends IAnnotationUpdateBase {
   kind: "deleteAnnotation";
   annotationId: string;
+}
+
+export interface IAddDocumentUpdate extends IUserActionBase {
+  kind: "addDocument";
+  file: CanonFile;
+}
+
+export interface IEditDocumentUpdate extends IUserActionBase {
+  kind: "editDocument";
+  file: CanonFile;
+}
+
+export interface IDeleteDocumentUpdate extends IUserActionBase {
+  kind: "deleteDocument";
 }

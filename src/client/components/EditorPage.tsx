@@ -1,6 +1,5 @@
 import {
   FormControlLabel,
-  IconButton,
   Paper,
   Switch,
   TextField,
@@ -8,8 +7,6 @@ import {
   Typography,
   makeStyles,
 } from "@material-ui/core";
-import RedoIcon from "@material-ui/icons/Redo";
-import UndoIcon from "@material-ui/icons/Undo";
 import { CanonFile } from "cohen-db/schema";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -18,7 +15,7 @@ import { RouteComponentProps } from "react-router";
 import { IDoc, IDocGraph } from "../../shared/ApiTypes";
 import { GenerateIdFromDoc } from "../../shared/util";
 import { setDoc } from "../actions";
-import { getDoc } from "../api";
+import { getDoc, postUserAction } from "../api";
 import { IAppState } from "../model";
 import { findParentId } from "../util";
 import ContentEditor from "./editor/ContentEditor";
@@ -158,6 +155,24 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
   const isNewDocument = props.match.params.docId === "new";
   const id = activeDocument && GenerateIdFromDoc(activeDocument?.file);
 
+  const save = async () => {
+    const result = await postUserAction({
+      kind: isNewDocument ? "addDocument" : "editDocument",
+      documentId: id,
+      file: activeDocument.file,
+    });
+
+    setDoc(id, activeDocument);
+
+    if (result.error) throw result.error;
+    else
+      setUndoStack({
+        ...undoStack,
+        back: [],
+        coalesce: null,
+      });
+  };
+
   return (
     <div>
       <EditorRibbon
@@ -165,12 +180,11 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
         undoDisabled={!undoStack.back.length}
         onRedo={redo}
         redoDisabled={!undoStack.forward.length}
+        onSave={save}
+        saveDisabled={!activeDocument || !undoStack.back.length}
       />
       {activeDocument && (
         <Paper className={classes.root}>
-          <Typography variant="h5" gutterBottom>
-            {isNewDocument ? "Create Document" : "Edit Document"}
-          </Typography>
           <div className={classes.inputPart}>
             <DocumentChoiceInput
               required={true}
