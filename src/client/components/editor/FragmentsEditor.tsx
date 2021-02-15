@@ -3,6 +3,7 @@ import { Fragment } from "cohen-db/schema";
 import * as React from "react";
 
 import FragmentView from "../shared/FragmentView";
+import TextFragmentEditor from "./TextFragmentEditor";
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -35,7 +36,16 @@ const FragmentsEditor: React.FunctionComponent<IProps> = (props) => {
 
   const [editIndex, setEditIndex] = React.useState(-1);
 
-  const onKeyDown = (evt: React.KeyboardEvent<HTMLDivElement>) => {
+  const [isCaretMode, setIsCaretMode] = React.useState<boolean>(false);
+
+  const fragRefs = props.fragments.map((_) =>
+    React.createRef<HTMLDivElement>()
+  );
+  React.useEffect(() => {
+    fragRefs[editIndex]?.current?.focus();
+  }, [editIndex, isCaretMode]);
+
+  const onKeyDownFragmentsMode = (evt: React.KeyboardEvent<HTMLDivElement>) => {
     if (editIndex < 0 || editIndex >= props.fragments.length) return;
 
     switch (evt.key) {
@@ -78,12 +88,13 @@ const FragmentsEditor: React.FunctionComponent<IProps> = (props) => {
       // Delete current fragment
       case "Backspace":
       case "Delete":
-        props.onChange(props.fragments.filter((frag, i) => i !== editIndex));
+        props.onChange(props.fragments.filter((_, i) => i !== editIndex));
         setEditIndex(editIndex - 1);
+        evt.preventDefault();
         return;
 
       // Shift-Enter: insert line break before
-      // Enter: enter fragment edit mode
+      // Enter: enter caret mode
       case "Enter":
         if (evt.shiftKey) {
           props.onChange([
@@ -92,27 +103,54 @@ const FragmentsEditor: React.FunctionComponent<IProps> = (props) => {
             ...props.fragments.slice(editIndex),
           ]);
           setEditIndex(editIndex + 1);
+          evt.preventDefault();
+        } else {
+          if (props.fragments[editIndex].kind === "text") setIsCaretMode(true);
+          evt.preventDefault();
         }
     }
   };
 
+  const onKeyDownCaretMode = (evt: React.KeyboardEvent<HTMLDivElement>) => {
+    if (editIndex < 0 || editIndex >= props.fragments.length) return;
+
+    switch (evt.key) {
+      case "Enter":
+      case "Escape":
+        setIsCaretMode(false);
+        evt.preventDefault();
+    }
+  };
+
   const fragments = props.fragments.map((frag, i) => {
-    const classNames =
-      editIndex === i
-        ? `${classes.root} ${classes.editing}`
-        : `${classes.root}`;
+    const isEditIndex = editIndex === i;
+    const isCaretEditing = isEditIndex && isCaretMode;
+    const classNames = isEditIndex
+      ? `${classes.root} ${classes.editing}`
+      : `${classes.root}`;
     if (frag.kind === "lineBreak") {
       return (
         <React.Fragment key={i}>
-          <div className={classNames} onClick={() => setEditIndex(i)}>
+          <div
+            ref={fragRefs[i]}
+            className={classNames}
+            onClick={() => setEditIndex(i)}
+          >
             ⏎
           </div>
           <br />
         </React.Fragment>
       );
     } else {
-      return (
-        <div className={classNames} key={i} onClick={() => setEditIndex(i)}>
+      return isCaretEditing ? (
+        <TextFragmentEditor fragment={frag} key={i} />
+      ) : (
+        <div
+          ref={fragRefs[i]}
+          className={classNames}
+          key={i}
+          onClick={() => setEditIndex(i)}
+        >
           <FragmentView fragment={frag} interactive={false} annotations={[]} />
         </div>
       );
@@ -122,7 +160,7 @@ const FragmentsEditor: React.FunctionComponent<IProps> = (props) => {
     <div
       className={classes.container}
       tabIndex={props.tabIndex}
-      onKeyDown={onKeyDown}
+      onKeyDown={isCaretMode ? onKeyDownCaretMode : onKeyDownFragmentsMode}
     >
       {fragments}
     </div>

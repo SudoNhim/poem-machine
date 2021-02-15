@@ -1,4 +1,4 @@
-import { Paper } from "@material-ui/core";
+import { Divider, Paper } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -16,14 +16,11 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
       position: "fixed",
-      left: theme.spacing(1),
-      right: theme.spacing(1),
-      zIndex: 5,
-    },
-    buttonLeft: {},
-    buttonRight: {
-      position: "absolute",
-      right: theme.spacing(2),
+      left: "10%",
+      right: "10%",
+      bottom: theme.spacing(1),
+      zIndex: 2000,
+      backgroundColor: theme.palette.grey[100],
     },
   })
 );
@@ -44,7 +41,15 @@ const EditorRibbon = withRouter((props: IProps) => {
     <Paper className={classes.container} elevation={2}>
       <Toolbar variant="dense">
         <IconButton
-          className={classes.buttonLeft}
+          size="small"
+          color="primary"
+          onClick={props.onSave}
+          disabled={props.saveDisabled}
+        >
+          <SaveIcon fontSize="small" />
+        </IconButton>
+        <Divider orientation="vertical" />
+        <IconButton
           size="small"
           onClick={props.onUndo}
           disabled={props.undoDisabled}
@@ -52,21 +57,11 @@ const EditorRibbon = withRouter((props: IProps) => {
           <UndoIcon fontSize="small" />
         </IconButton>
         <IconButton
-          className={classes.buttonLeft}
           size="small"
           onClick={props.onRedo}
           disabled={props.redoDisabled}
         >
           <RedoIcon fontSize="small" />
-        </IconButton>
-        <IconButton
-          className={classes.buttonRight}
-          size="small"
-          color="primary"
-          onClick={props.onSave}
-          disabled={props.saveDisabled}
-        >
-          <SaveIcon fontSize="small" />
         </IconButton>
       </Toolbar>
     </Paper>

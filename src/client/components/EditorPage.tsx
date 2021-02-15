@@ -27,7 +27,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: theme.spacing(2),
     minWidth: "90vw",
-    marginTop: 60,
   },
   inputPart: {
     marginBottom: 10,
@@ -278,6 +277,11 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
               label="Multipart"
             />
           </div>
+          <Typography className={classes.secondary}>
+            ARROW KEYS or MOUSE to navigate. ENTER to enter/exit a fragment.
+            SHIFT+ENTER to insert a newline. BACKSPACE to remove characters or
+            fragments.
+          </Typography>
           <div className={classes.inputPart}>
             <ContentEditor
               content={activeDocument.file.content}
