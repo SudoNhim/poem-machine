@@ -1,8 +1,9 @@
 import { Theme, makeStyles } from "@material-ui/core";
 import { TextFragment } from "cohen-db/schema";
 import * as React from "react";
+import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 
-import { tokensToText } from "../../util";
+import { textToTokens, tokensToText } from "../../util";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -14,6 +15,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface IProps {
   fragment: TextFragment;
+  onChange: (value: TextFragment) => void;
 }
 
 const TextFragmentEditor: React.FunctionComponent<IProps> = (props) => {
@@ -32,10 +34,21 @@ const TextFragmentEditor: React.FunctionComponent<IProps> = (props) => {
     selection.addRange(range);
   }, []);
 
+  const handleChange = (evt: ContentEditableEvent) => {
+    const tokens = textToTokens(evt.target.value);
+    props.onChange({
+      ...props.fragment,
+      tokens,
+    });
+  };
+
   return (
-    <div ref={ref} className={classes.root} contentEditable>
-      {tokensToText(props.fragment.tokens)}
-    </div>
+    <ContentEditable
+      className={classes.root}
+      innerRef={ref}
+      html={tokensToText(props.fragment.tokens)}
+      onChange={handleChange}
+    />
   );
 };
 

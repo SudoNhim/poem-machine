@@ -1,5 +1,5 @@
 import { Theme, makeStyles } from "@material-ui/core";
-import { Fragment } from "cohen-db/schema";
+import { Fragment, TextFragment } from "cohen-db/schema";
 import * as React from "react";
 
 import FragmentView from "../shared/FragmentView";
@@ -143,7 +143,17 @@ const FragmentsEditor: React.FunctionComponent<IProps> = (props) => {
       );
     } else {
       return isCaretEditing ? (
-        <TextFragmentEditor fragment={frag} key={i} />
+        <TextFragmentEditor
+          fragment={frag}
+          key={i}
+          onChange={(frag: TextFragment) => {
+            props.onChange([
+              ...props.fragments.slice(0, editIndex),
+              frag,
+              ...props.fragments.slice(editIndex + 1),
+            ]);
+          }}
+        />
       ) : (
         <div
           ref={fragRefs[i]}
