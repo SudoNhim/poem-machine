@@ -42,7 +42,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface IProps extends RouteComponentProps {
   fragment: Fragment;
-  previous: Fragment;
   sectionId?: string;
   interactive: boolean;
   annotations: AnnotationsGroup[];
@@ -117,7 +116,6 @@ const FragmentView: React.FunctionComponent<IProps> = (props) => {
 
 const mapStateToProps = (state: IAppState, ownProps) => ({
   fragment: ownProps.fragment,
-  previous: ownProps.previous,
   sessionId: ownProps.sessionId,
   interactive: ownProps.interactive,
   annotations:

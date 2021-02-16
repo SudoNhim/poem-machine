@@ -43,6 +43,12 @@ export class UserActionsController {
           action.anchor,
           action.annotationId
         );
+      case "addDocument":
+        throw new Error("Add document not implemented");
+      case "editDocument":
+        return this.editDocument(doc, user, action.file);
+      case "deleteDocument":
+        throw new Error("Delete document not implemented");
       default:
         throw new Error("Unrecognized user action");
     }
@@ -121,6 +127,15 @@ export class UserActionsController {
     }
 
     return doc;
+  }
+
+  private editDocument(
+    doc: CanonFile,
+    user: string,
+    file: CanonFile
+  ): CanonFile {
+    // this.authCheck(user, doc.user);
+    return file;
   }
 
   private authCheck(user: string, owner: string) {

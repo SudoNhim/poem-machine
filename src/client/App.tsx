@@ -8,6 +8,7 @@ import { setGraph, setUser } from "./actions";
 import { getGraph, getUser } from "./api";
 import ChatPage from "./components/ChatPage";
 import DocumentPage from "./components/DocumentPage";
+import EditorPage from "./components/EditorPage";
 import HomePage from "./components/HomePage";
 import AppLayout from "./components/layout/AppLayout";
 import LoginPage from "./components/LoginPage";
@@ -41,8 +42,9 @@ const AppImpl: React.FunctionComponent<IProps> = (props: IProps) => {
               <Route exact path="/" component={HomePage} />
               <Route exact path="/chat" component={ChatPage} />
               <Route path="/doc/:docId" component={DocumentPage} />
-              <Route path="/search/:searchTerm" component={SearchResultsPage} />
+              <Route path="/edit/:docId" component={EditorPage} />
               <Route exact path="/login" component={LoginPage} />
+              <Route path="/search/:searchTerm" component={SearchResultsPage} />
             </Switch>
           ) : (
             <p>Loading...</p>

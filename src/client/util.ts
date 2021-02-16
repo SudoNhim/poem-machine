@@ -1,6 +1,6 @@
 import { Reference, Token } from "cohen-db/schema";
 
-import { IDoc } from "../shared/ApiTypes";
+import { IDoc, IDocGraph } from "../shared/ApiTypes";
 import {
   DeserializeDocRef,
   FragmentToPlaintext,
@@ -79,4 +79,14 @@ export function tokensToText(tokens: Token[]): string {
       else return `[${tok.text}](${tok.link})`;
     })
     .join("");
+}
+
+export function findParentId(documentId: string, graph: IDocGraph) {
+  for (const parentId in graph) {
+    if ((graph[parentId].children || []).includes(documentId)) {
+      return parentId;
+    }
+  }
+
+  throw new Error(`No parent found for ${documentId}`);
 }
