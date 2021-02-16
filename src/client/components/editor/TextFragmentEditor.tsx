@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface IProps {
   fragment: TextFragment;
-  onChange: (value: TextFragment) => void;
+  onChange: (values: TextFragment[]) => void;
 }
 
 const TextFragmentEditor: React.FunctionComponent<IProps> = (props) => {
@@ -40,10 +40,38 @@ const TextFragmentEditor: React.FunctionComponent<IProps> = (props) => {
 
   const handleChange = (evt: ContentEditableEvent) => {
     const html = evt.target.value;
-    props.onChange({
-      ...props.fragment,
-      tokens: textToTokens(htmlToText(html)),
-    });
+    props.onChange([
+      {
+        ...props.fragment,
+        tokens: textToTokens(htmlToText(html)),
+      },
+    ]);
+  };
+
+  const onKeyDown = (evt: React.KeyboardEvent<HTMLDivElement>) => {
+    if (evt.key === "Enter" && evt.shiftKey) {
+      // split the element at the caret and generate two fragments
+      var range = window.getSelection().getRangeAt(0);
+      const text1 = range.startContainer.textContent.substring(
+        0,
+        range.startOffset
+      );
+      const text2 = range.startContainer.textContent.substring(
+        range.startOffset
+      );
+
+      props.onChange([
+        {
+          ...props.fragment,
+          tokens: textToTokens(text1),
+        },
+        {
+          kind: "text",
+          tokens: textToTokens(text2),
+        },
+      ]);
+      evt.stopPropagation();
+    }
   };
 
   const html = tokensToText(props.fragment.tokens)
@@ -58,6 +86,7 @@ const TextFragmentEditor: React.FunctionComponent<IProps> = (props) => {
       // innerRef={ref}
       html={html}
       onChange={handleChange}
+      onKeyDown={onKeyDown}
     />
   );
 };

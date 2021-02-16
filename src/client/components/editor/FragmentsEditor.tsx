@@ -140,12 +140,13 @@ const FragmentsEditor: React.FunctionComponent<IProps> = (props) => {
         <TextFragmentEditor
           fragment={frag}
           key={i}
-          onChange={(frag: TextFragment) => {
+          onChange={(frags: TextFragment[]) => {
             props.onChange([
               ...props.fragments.slice(0, editIndex),
-              frag,
+              ...frags,
               ...props.fragments.slice(editIndex + 1),
             ]);
+            if (frags.length === 2) setEditIndex(editIndex + 1);
           }}
         />
       ) : (
