@@ -1,5 +1,6 @@
 import { Theme, makeStyles } from "@material-ui/core";
 import { TextFragment } from "cohen-db/schema";
+import { htmlToText } from "html-to-text";
 import * as React from "react";
 import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 
@@ -21,13 +22,16 @@ interface IProps {
 const TextFragmentEditor: React.FunctionComponent<IProps> = (props) => {
   const classes = useStyles();
 
-  const ref = React.createRef<HTMLDivElement>();
+  // Nasty! There seems to be a bug in using the ref with the
+  // ContentEditable component, so get the element manually for now
+  //const ref = React.createRef<HTMLDivElement>();
   React.useEffect(() => {
-    ref.current.focus();
+    //ref.current.focus();
+    const elem = document.getElementById("text-fragment-editor");
 
     // set caret to end of element
     const range = document.createRange();
-    range.selectNodeContents(ref.current);
+    range.selectNodeContents(elem);
     range.collapse(false);
     const selection = window.getSelection();
     selection.removeAllRanges();
@@ -35,18 +39,24 @@ const TextFragmentEditor: React.FunctionComponent<IProps> = (props) => {
   }, []);
 
   const handleChange = (evt: ContentEditableEvent) => {
-    const tokens = textToTokens(evt.target.value);
+    const html = evt.target.value;
     props.onChange({
       ...props.fragment,
-      tokens,
+      tokens: textToTokens(htmlToText(html)),
     });
   };
 
+  const html = tokensToText(props.fragment.tokens)
+    .replace("&", "&amp;")
+    .replace("<", "&lt;")
+    .replace(">", "&gt;");
+
   return (
     <ContentEditable
+      id="text-fragment-editor"
       className={classes.root}
-      innerRef={ref}
-      html={tokensToText(props.fragment.tokens)}
+      // innerRef={ref}
+      html={html}
       onChange={handleChange}
     />
   );

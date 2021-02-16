@@ -38,11 +38,9 @@ const FragmentsEditor: React.FunctionComponent<IProps> = (props) => {
 
   const [isCaretMode, setIsCaretMode] = React.useState<boolean>(false);
 
-  const fragRefs = props.fragments.map((_) =>
-    React.createRef<HTMLDivElement>()
-  );
+  const containerRef = React.createRef<HTMLDivElement>();
   React.useEffect(() => {
-    fragRefs[editIndex]?.current?.focus();
+    if (!isCaretMode) containerRef.current.focus();
   }, [editIndex, isCaretMode]);
 
   const onKeyDownFragmentsMode = (evt: React.KeyboardEvent<HTMLDivElement>) => {
@@ -131,11 +129,7 @@ const FragmentsEditor: React.FunctionComponent<IProps> = (props) => {
     if (frag.kind === "lineBreak") {
       return (
         <React.Fragment key={i}>
-          <div
-            ref={fragRefs[i]}
-            className={classNames}
-            onClick={() => setEditIndex(i)}
-          >
+          <div className={classNames} onClick={() => setEditIndex(i)}>
             ⏎
           </div>
           <br />
@@ -155,12 +149,7 @@ const FragmentsEditor: React.FunctionComponent<IProps> = (props) => {
           }}
         />
       ) : (
-        <div
-          ref={fragRefs[i]}
-          className={classNames}
-          key={i}
-          onClick={() => setEditIndex(i)}
-        >
+        <div className={classNames} key={i} onClick={() => setEditIndex(i)}>
           <FragmentView fragment={frag} interactive={false} annotations={[]} />
         </div>
       );
@@ -169,6 +158,7 @@ const FragmentsEditor: React.FunctionComponent<IProps> = (props) => {
   return (
     <div
       className={classes.container}
+      ref={containerRef}
       tabIndex={props.tabIndex}
       onKeyDown={isCaretMode ? onKeyDownCaretMode : onKeyDownFragmentsMode}
     >
