@@ -65,20 +65,43 @@ const AppUpdateCard: React.FunctionComponent<IProps> = (props) => {
       case "addAnnotation":
         title = "Annotation added";
         actionDesc = "added an annotation to";
+        destination = `/doc/${SerializeDocRef(
+          props.update.action.anchor
+        )}/notes`;
         break;
       case "editAnnotation":
         title = "Annotation edited";
         actionDesc = "edited an annotation on";
+        destination = `/doc/${SerializeDocRef(
+          props.update.action.anchor
+        )}/notes`;
         break;
       case "deleteAnnotation":
         title = "Annotation deleted";
         actionDesc = "deleted an annotation on";
+        destination = `/doc/${SerializeDocRef(
+          props.update.action.anchor
+        )}/notes`;
+      case "addDocument":
+        title = "Document added";
+        actionDesc = "added";
+        destination = `/doc/${props.update.action.documentId}`;
+        break;
+      case "editDocument":
+        title = "Document edited";
+        actionDesc = "edited";
+        destination = `/doc/${props.update.action.documentId}`;
+        break;
+      case "deleteDocument":
+        title = "Document deleted";
+        actionDesc = "deleted";
+        destination = `/doc/${props.update.action.documentId}`;
+        break;
     }
 
     const docTitle = props.graph[props.update.action.documentId].title;
     const docKind = props.graph[props.update.action.documentId].kind;
     content = `User ${props.update.user} ${actionDesc} ${docKind} ${docTitle}`;
-    destination = `/doc/${SerializeDocRef(props.update.action.anchor)}/notes`;
     isExternalLink = false;
   }
 
