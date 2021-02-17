@@ -26,7 +26,7 @@ import DocumentKindSelect from "./shared/DocumentKindSelect";
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: theme.spacing(2),
-    minWidth: "90vw",
+    minWidth: "32em",
   },
   inputPart: {
     marginBottom: 10,
