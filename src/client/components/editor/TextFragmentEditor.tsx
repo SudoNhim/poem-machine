@@ -51,14 +51,16 @@ const TextFragmentEditor: React.FunctionComponent<IProps> = (props) => {
   const onKeyDown = (evt: React.KeyboardEvent<HTMLDivElement>) => {
     if (evt.key === "Enter" && evt.shiftKey) {
       // split the element at the caret and generate two fragments
-      var range = window.getSelection().getRangeAt(0);
-      const text1 = range.startContainer.textContent.substring(
-        0,
-        range.startOffset
-      );
-      const text2 = range.startContainer.textContent.substring(
-        range.startOffset
-      );
+      const range = window.getSelection().getRangeAt(0);
+
+      // weird bug - if caret is at end, offset comes back as 1
+      const offset =
+        range.startOffset === 1
+          ? range.startContainer.textContent.length
+          : range.startOffset;
+
+      const text1 = range.startContainer.textContent.substring(0, offset);
+      const text2 = range.startContainer.textContent.substring(offset);
 
       props.onChange([
         {
