@@ -161,7 +161,7 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
       file: activeDocument.file,
     });
 
-    setDoc(id, activeDocument);
+    props.setDoc(id, activeDocument);
 
     if (result.error) throw result.error;
     else

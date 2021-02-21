@@ -1,4 +1,5 @@
-import { Paper, Typography } from "@material-ui/core";
+import { IconButton, Paper, Typography } from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 
@@ -22,6 +23,11 @@ class DocumentView extends React.Component<IProps> {
     if (this.props.location.hash) this.props.history.push(base);
   }
 
+  private onClickEdit(evt: React.MouseEvent) {
+    evt.stopPropagation();
+    this.props.history.push(`/edit/${this.props.id}`);
+  }
+
   public render() {
     if (!this.props.docMeta) return <div>Document does not exist.</div>;
     else if (!this.props.doc)
@@ -37,9 +43,16 @@ class DocumentView extends React.Component<IProps> {
       return (
         <div>
           <Paper className={css.section} onClick={(evt) => this.onClick(evt)}>
-            <Typography variant="h6" component="h2">
+            <Typography variant="h6" component="span">
               {this.props.docMeta.title}
             </Typography>
+            <IconButton
+              style={{ float: "right" }}
+              size="small"
+              onClick={(evt) => this.onClickEdit(evt)}
+            >
+              <EditIcon color="primary" fontSize="small" />
+            </IconButton>
             {this.props.doc.file.metadata && (
               <MetadataView metadata={this.props.doc.file.metadata} />
             )}
