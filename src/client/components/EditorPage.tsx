@@ -128,10 +128,10 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
 
   React.useEffect(() => {
     const documentId = props.match.params.docId;
-    if (documentId === "new") {
+    if (!documentId) {
       const newFile: CanonFile = {
-        title: null,
-        kind: null,
+        title: "",
+        kind: "",
         user: props.user,
         version: 0,
         annotations: [],
@@ -151,7 +151,7 @@ const EditorPage: React.FunctionComponent<IProps> = (props: IProps) => {
     }
   }, [props.match.params.docId]);
 
-  const isNewDocument = props.match.params.docId === "new";
+  const isNewDocument = !props.match.params.docId;
   const id = activeDocument && GenerateIdFromDoc(activeDocument?.file);
 
   const save = async () => {

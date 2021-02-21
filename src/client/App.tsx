@@ -43,6 +43,7 @@ const AppImpl: React.FunctionComponent<IProps> = (props: IProps) => {
               <Route exact path="/chat" component={ChatPage} />
               <Route path="/doc/:docId" component={DocumentPage} />
               <Route path="/edit/:docId" component={EditorPage} />
+              <Route path="/create" component={EditorPage} />
               <Route exact path="/login" component={LoginPage} />
               <Route path="/search/:searchTerm" component={SearchResultsPage} />
             </Switch>

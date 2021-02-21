@@ -65,6 +65,8 @@ const NavTree = withRouter((props: IProps) => {
     >
       <TreeItem nodeId="/" label="Home" key="home" />
       <Divider className={classes.divider} />
+      <TreeItem nodeId="/create" label="Create" key="create" />
+      <Divider className={classes.divider} />
       <TreeItem nodeId="/chat" label="Chat" key="chat" />
       <Divider className={classes.divider} />
       {recurse(props.graph.db)}
